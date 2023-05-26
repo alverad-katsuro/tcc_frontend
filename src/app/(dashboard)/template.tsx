@@ -15,11 +15,11 @@ export default function Template({
         <>
             <SidebarProvider>
                 <Header />
-                <div className="flex dark:bg-gray-900">
-                    <SidebarStyled />
-                    <div className="order-1 h-screen">
+                <div className="flex h-full overflow-hidden bg-white dark:bg-gray-900">
+                    <div className="order-1 flex">
+                        <SidebarStyled />
                     </div>
-                    <div className="order-2 mx-4 mt-4 mb-24 flex-[1_0_16rem]">
+                    <div className="order-2 w-full flex-1 overflow-auto p-4">
                         <Suspense fallback={<Loading />}>
                             {children}
                         </Suspense>

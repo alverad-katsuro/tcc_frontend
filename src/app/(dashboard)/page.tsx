@@ -1,13 +1,13 @@
 'use client';
 
+import Iframe from "react-iframe";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center justify-between p-16 overflow-auto">
-
-      <h1 className="mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">Kanban</h1>
-
-
-    </main>
+      <Iframe url="https://dgp.cnpq.br/dgp/espelhogrupo/2864417251425584"
+        id=""
+        className="w-full h-full"
+        display="block"
+        position="relative"/>
   )
 }
