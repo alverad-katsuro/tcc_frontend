@@ -4,7 +4,7 @@ import imageMock from "@/images/bannerUFPA.png"
 import planosMock from "@/mock/PlanoTrabalho.json"
 import { PlanoModel } from "@/model/response/PlanoModel";
 import PlanoTrabalhoModal from "./PlanoTrabalhoModal";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 const planos: PlanoModel[] = JSON.parse(JSON.stringify(planosMock));
 export default function PlanosDeTrabalho() {
@@ -21,7 +21,9 @@ export default function PlanosDeTrabalho() {
     return (
 
         <main className="flex flex-col items-center justify-between p-16 overflow-auto">
-            <PlanoTrabalhoModal planoTrabalho={planoTrabalho} open={open} onClose={setOpen} />
+            <Suspense>
+                <PlanoTrabalhoModal planoTrabalho={planoTrabalho} open={open} onClose={setOpen} />
+            </Suspense>
 
             <h1 className="mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">Planos de Trabalho</h1>
 
