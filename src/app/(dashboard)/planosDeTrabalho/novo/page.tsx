@@ -17,8 +17,6 @@ export default function NovoPlanoTrabalho() {
         ]
     };
 
-
-
     return (
         <main className="flex flex-col items-center justify-between p-16 overflow-auto gap-4">
 

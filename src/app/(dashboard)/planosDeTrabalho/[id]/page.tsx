@@ -3,7 +3,7 @@ import { consultaPlanoTrabalho } from "@/api/api";
 import PlanosDeTrabalhoForms from "@/components/planosDeTrabalho/PlanosDeTrabalhoForms";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 
-export default async function NovoPlanoTrabalho({ params }: { params: { id: number } }) {
+export default async function AtualizarPlanoTrabalho({ params }: { params: { id: number } }) {
 
     const plano: PlanoTrabalhoModel = await consultaPlanoTrabalho(params.id);
 
