@@ -1,12 +1,12 @@
-import { Button, Card, Modal } from "@/components/flowbite-components";
-import { PlanoModel } from "@/model/response/PlanoModel";
-import imageMock from "@/images/bannerUFPA.png"
+import { Button, Modal } from "@/components/flowbite-components";
+import imageMock from "@/images/bannerUFPA.png";
+import { PlanoTrabalhoModel } from "@/model/response/PlanoModel";
 
 
 export interface PlanoTrabalhoModalProps {
     onClose: (open: boolean) => void;
     open: boolean;
-    planoTrabalho?: PlanoModel;
+    planoTrabalho?: PlanoTrabalhoModel;
 }
 
 export default function PlanoTrabalhoModal(props: PlanoTrabalhoModalProps) {

@@ -1,14 +1,12 @@
 'use client';
-
+import { usePathname } from 'next/navigation';
 import { Avatar, DarkThemeToggle, Dropdown, Navbar } from "@/components/flowbite-components";
-import { useRouter } from "next/navigation";
 import { FC } from "react";
 import HeaderSidebar from "./HeaderSidebar";
 
 const Header: FC<Record<string, never>> = function () {
 
-
-    const router = useRouter();
+    const path = usePathname();
 
     return (
         <header className="sticky top-0 z-20">
@@ -61,12 +59,12 @@ const Header: FC<Record<string, never>> = function () {
                 <Navbar.Collapse>
                     <Navbar.Link
                         href="/"
-                        active={window.location.pathname === "/"}
+                        active={path === "/"}
                     >
                         Home
                     </Navbar.Link>
                     <Navbar.Link href="/planosDeTrabalho"
-                        active={window.location.pathname === "/planosDeTrabalho"}
+                        active={path === "/planosDeTrabalho"}
                     >
                         Planos de Trabalho
                     </Navbar.Link>

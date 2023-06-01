@@ -1,18 +1,18 @@
 "use client";
-import { Card } from "@/components/flowbite-components";
-import imageMock from "@/images/bannerUFPA.png"
-import planosMock from "@/mock/PlanoTrabalho.json"
-import { PlanoModel } from "@/model/response/PlanoModel";
 import PlanoTrabalhoModal from "@/app/(dashboard)/planosDeTrabalho/PlanoTrabalhoModal";
+import { Card } from "@/components/flowbite-components";
+import imageMock from "@/images/bannerUFPA.png";
+import planosMock from "@/mock/PlanoTrabalho.json";
+import { PlanoTrabalhoModel } from "@/model/response/PlanoModel";
 import { Suspense, useState } from "react";
 
-const planos: PlanoModel[] = JSON.parse(JSON.stringify(planosMock));
+const planos: PlanoTrabalhoModel[] = JSON.parse(JSON.stringify(planosMock));
 export default function PlanosDeTrabalho() {
 
-    const [planoTrabalho, setPlanoTrabalho] = useState<PlanoModel>();
+    const [planoTrabalho, setPlanoTrabalho] = useState<PlanoTrabalhoModel>();
     const [open, setOpen] = useState<boolean>(false);
 
-    function openModal(planoTrabalho: PlanoModel) {
+    function openModal(planoTrabalho: PlanoTrabalhoModel) {
 
         setPlanoTrabalho(planoTrabalho);
         setOpen(!open);
