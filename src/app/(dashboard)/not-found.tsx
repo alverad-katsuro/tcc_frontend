@@ -1,8 +1,8 @@
 "use client";
-import '@/style/globals.css'
-import Image from "next/image"
-import errorSVG from "../../images/404.svg"
-import { Button } from 'flowbite-react'
+import { Button } from '@/components/flowbite-components';
+import '@/style/globals.css';
+import Image from "next/image";
+import errorSVG from "../../images/404.svg";
 
 export default function NotFound() {
     return (

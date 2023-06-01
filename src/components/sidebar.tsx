@@ -1,5 +1,5 @@
+import { Sidebar as FlowbiteSidebar } from "@/components/flowbite-components";
 import classNames from "classnames";
-import { Sidebar as FlowbiteSidebar } from "flowbite-react";
 import type { FC, PropsWithChildren } from "react";
 import { useSidebarContext } from "../context/SidebarContext";
 

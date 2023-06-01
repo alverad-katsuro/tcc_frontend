@@ -1,18 +1,14 @@
 'use client';
 
+import { Button } from "@/components/flowbite-components";
 import { useSidebarContext } from "@/context/SidebarContext";
-import { Button } from "flowbite-react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { BiBuoy } from "react-icons/bi";
 import {
-  HiArrowSmRight,
   HiChartPie,
-  HiInbox,
-  HiShoppingBag,
-  HiTable,
-  HiUser,
-  HiViewBoards,
+  HiViewBoards
 } from "react-icons/hi";
+import { MdOutlineWork } from "react-icons/md";
 import Sidebar from "./sidebar";
 export default function SidebarStyled(): JSX.Element {
 
@@ -29,29 +25,14 @@ export default function SidebarStyled(): JSX.Element {
             <Sidebar.Item href="/" icon={HiChartPie}>
               Dashboard
             </Sidebar.Item>
-            <Sidebar.Item href="#" icon={HiViewBoards}>
-              Kanban
+            <Sidebar.Item href="/quadros" icon={HiViewBoards}>
+              Quadros Kanban
             </Sidebar.Item>
-            <Sidebar.Item href="#" icon={HiInbox}>
-              Inbox
-            </Sidebar.Item>
-            <Sidebar.Item href="/paciente/cadastrar" icon={HiUser}>
-              Cadastrar Paciente
-            </Sidebar.Item>
-            <Sidebar.Item href="#" icon={HiShoppingBag}>
-              Products
-            </Sidebar.Item>
-            <Sidebar.Item href="#" icon={HiArrowSmRight}>
-              Sign In
-            </Sidebar.Item>
-            <Sidebar.Item href="#" icon={HiTable}>
-              Sign Up
+            <Sidebar.Item href="/planosDeTrabalho" icon={MdOutlineWork} className="as">
+              Planos de Trabalho
             </Sidebar.Item>
           </Sidebar.ItemGroup>
           <Sidebar.ItemGroup>
-            <Sidebar.Item href="#" icon={HiChartPie}>
-              Upgrade to Pro
-            </Sidebar.Item>
             <Sidebar.Item href="#" icon={HiViewBoards}>
               Documentation
             </Sidebar.Item>

@@ -1,5 +1,5 @@
 "use client";
-import { Spinner } from "flowbite-react";
+import { Spinner } from "@/components/flowbite-components";
 
 export default function Loading() {
 

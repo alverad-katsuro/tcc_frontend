@@ -1,5 +1,7 @@
+import { Button, Card, Modal } from "@/components/flowbite-components";
 import { PlanoModel } from "@/model/response/PlanoModel";
-import { Modal, Button } from "flowbite-react";
+import imageMock from "@/images/bannerUFPA.png"
+
 
 export interface PlanoTrabalhoModalProps {
     onClose: (open: boolean) => void;
@@ -19,17 +21,25 @@ export default function PlanoTrabalhoModal(props: PlanoTrabalhoModalProps) {
             onClose={onClose}
             show={props.open}
         >
-            <Modal.Header>
-                {props.planoTrabalho?.titulo}
-            </Modal.Header>
             <Modal.Body>
-                <div className="space-y-6">
-                    <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                        {props.planoTrabalho?.areaTrabalho}
-                    </p>
-                    <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                        {props.planoTrabalho?.descricao}
-                    </p>
+
+                <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                    <a href="#">
+                        <img className="rounded-t-lg w-full" src={imageMock.src} alt="" />
+                    </a>
+                    <div className="p-5">
+                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                            {props.planoTrabalho?.titulo}
+                        </h5>
+                        <div className="space-y-6">
+                            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                {props.planoTrabalho?.areaTrabalho}
+                            </p>
+                            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                {props.planoTrabalho?.descricao}
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </Modal.Body>
             <Modal.Footer className="place-content-center">

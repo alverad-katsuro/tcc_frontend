@@ -1,9 +1,9 @@
 "use client";
-import { Card } from "flowbite-react";
+import { Card } from "@/components/flowbite-components";
 import imageMock from "@/images/bannerUFPA.png"
 import planosMock from "@/mock/PlanoTrabalho.json"
 import { PlanoModel } from "@/model/response/PlanoModel";
-import PlanoTrabalhoModal from "./PlanoTrabalhoModal";
+import PlanoTrabalhoModal from "@/app/(dashboard)/planosDeTrabalho/PlanoTrabalhoModal";
 import { Suspense, useState } from "react";
 
 const planos: PlanoModel[] = JSON.parse(JSON.stringify(planosMock));

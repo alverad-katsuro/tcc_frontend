@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "titulo": "Executive Secretary"
+    },
+    {
+        "id": 2,
+        "titulo": "Human Resources Manager"
+    },
+    {
+        "id": 3,
+        "titulo": "Assistant Professor"
+    },
+    {
+        "id": 4,
+        "titulo": "Assistant Media Planner"
+    },
+    {
+        "id": 5,
+        "titulo": "Developer I"
+    },
+    {
+        "id": 6,
+        "titulo": "Accounting Assistant II"
+    },
+    {
+        "id": 7,
+        "titulo": "Marketing Assistant"
+    },
+    {
+        "id": 8,
+        "titulo": "Internal Auditor"
+    },
+    {
+        "id": 9,
+        "titulo": "Environmental Specialist"
+    },
+    {
+        "id": 10,
+        "titulo": "Tax Accountant"
+    },
+    {
+        "id": 11,
+        "titulo": "Internal Auditor"
+    },
+    {
+        "id": 12,
+        "titulo": "Assistant Media Planner"
+    },
+    {
+        "id": 13,
+        "titulo": "Biostatistician II"
+    },
+    {
+        "id": 14,
+        "titulo": "Quality Engineer"
+    },
+    {
+        "id": 15,
+        "titulo": "Electrical Engineer"
+    },
+    {
+        "id": 16,
+        "titulo": "Assistant Professor"
+    },
+    {
+        "id": 17,
+        "titulo": "Quality Control Specialist"
+    },
+    {
+        "id": 18,
+        "titulo": "Marketing Manager"
+    },
+    {
+        "id": 19,
+        "titulo": "Recruiter"
+    },
+    {
+        "id": 20,
+        "titulo": "Speech Pathologist"
+    },
+    {
+        "id": 21,
+        "titulo": "Dental Hygienist"
+    },
+    {
+        "id": 22,
+        "titulo": "Help Desk Operator"
+    },
+    {
+        "id": 23,
+        "titulo": "Web Developer III"
+    },
+    {
+        "id": 24,
+        "titulo": "Help Desk Technician"
+    },
+    {
+        "id": 25,
+        "titulo": "Help Desk Technician"
+    },
+    {
+        "id": 26,
+        "titulo": "Help Desk Technician"
+    },
+    {
+        "id": 27,
+        "titulo": "Quality Engineer"
+    },
+    {
+        "id": 28,
+        "titulo": "Staff Accountant II"
+    },
+    {
+        "id": 29,
+        "titulo": "Physical Therapy Assistant"
+    },
+    {
+        "id": 30,
+        "titulo": "Sales Representative"
+    }
+]

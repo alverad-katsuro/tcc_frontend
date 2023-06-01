@@ -1,7 +1,7 @@
 "use client";
 
+import { Flowbite } from "@/components/flowbite-components";
 import { flowbiteTheme as theme } from "@/style/theme";
-import { Flowbite } from "flowbite-react";
 import { FC, PropsWithChildren } from "react";
 
 const FlowbiteContext: FC<PropsWithChildren> = function ({ children }) {
