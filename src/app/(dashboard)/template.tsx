@@ -12,20 +12,18 @@ export default function Template({
 }) {
 
     return (
-        <>
-            <SidebarProvider>
-                <Header />
-                <div className="flex h-full overflow-hidden bg-white dark:bg-gray-900">
-                    <div className="order-1 flex">
-                        <SidebarStyled />
-                    </div>
-                    <div className="order-2 w-full flex-1 overflow-auto p-4">
-                        <Suspense fallback={<Loading />}>
-                            {children}
-                        </Suspense>
-                    </div>
+        <SidebarProvider>
+            <Header />
+            <div className="flex h-full overflow-hidden bg-white dark:bg-gray-900">
+                <div className="order-1 flex">
+                    <SidebarStyled />
                 </div>
-            </SidebarProvider>
-        </>
+                <div className="order-2 w-full flex-1 overflow-auto p-4">
+                    <Suspense fallback={<Loading />}>
+                        {children}
+                    </Suspense>
+                </div>
+            </div>
+        </SidebarProvider>
     )
 }
