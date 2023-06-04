@@ -1,4 +1,4 @@
-import KanbanLocao from "../../planosDeTrabalho/[id]";
+import KanbanLocao from "./kanbanlocao";
 
 
 export default function Quadro({ params }: { params: { id: number } }) {

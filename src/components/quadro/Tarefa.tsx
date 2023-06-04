@@ -2,6 +2,7 @@ import { Todo, TodosStatus, TodosView, WeekDay, WeekDayTodos } from '@/model/qua
 import React from 'react'
 import { Droppable } from 'react-beautiful-dnd'
 import Item from './Item'
+import Coluna from './Coluna'
 
 interface Props {
   view: TodosView
@@ -23,31 +24,32 @@ const Tarefa: React.FC<Props> = ({
   completedTodos,
   setCompletedTodos
 }) => (
-    <div className='grid grid-cols-1 w-full gap-6 mt-4 lg:grid-cols-3'>
-      <Droppable droppableId={TodosStatus.BacklogTodos}>
-        {
-          (droppableProvided, droppableSnapshot) => (
-            <div className='bg-gray-400 px-5 py-3 rounded-md'
-              ref={droppableProvided.innerRef}
-              {...droppableProvided.droppableProps}
-            >
-              <span className='text-white text-2xl font-semibold'>
-                Backlog
-              </span>
-              {backlogTodos?.map((todo, index) =>
-                <Item
-                  hasDoneIcon={false}
-                  index={index}
-                  key={todo?.id}
-                  todo={todo}
-                  todos={backlogTodos}
-                  setTodos={setBacklogTodos} />
-              )}
-              {droppableProvided.placeholder}
-            </div>
-          )}
-      </Droppable>
-      <Droppable droppableId={TodosStatus.ActiveTodos}>
+  <div className='grid grid-cols-1 w-full gap-6 mt-4 lg:grid-cols-3'>
+    <Droppable droppableId={TodosStatus.BacklogTodos}>
+      {
+        (droppableProvided, droppableSnapshot) => (
+          <div className='bg-gray-400 px-5 py-3 rounded-md'
+            ref={droppableProvided.innerRef}
+            {...droppableProvided.droppableProps}
+          >
+            <span className='text-white text-2xl font-semibold'>
+              Backlog
+            </span>
+            {backlogTodos?.map((todo, index) =>
+              <Item
+                hasDoneIcon={false}
+                index={index}
+                key={todo?.id}
+                todo={todo}
+                todos={backlogTodos}
+                setTodos={setBacklogTodos} />
+            )}
+            {droppableProvided.placeholder}
+          </div>
+        )}
+    </Droppable>
+    <Coluna droppableId={TodosStatus.ActiveTodos} nome='Active' setTodos={setActiveTodos} todos={activeTodos} />
+    {/* <Droppable droppableId={TodosStatus.ActiveTodos}>
         {
           (droppableProvided, droppableSnapshot) => (
             <div className={`bg-blue-400 px-5 py-3 rounded-md ${droppableSnapshot.isDraggingOver ? 'opacity-80' : ''}`}
@@ -61,41 +63,41 @@ const Tarefa: React.FC<Props> = ({
                 <Item
                   hasDoneIcon={false}
                   index={index}
-                  key={todo?.id}
+
                   todo={todo}
-                  todos={activeTodos}
-                  setTodos={setActiveTodos}
+
+                  setTodos={}
                 />
               )}
               {droppableProvided.placeholder}
             </div>
           )}
-      </Droppable>
-      <Droppable droppableId={TodosStatus.CompletedTodos}>
-        {
-          (droppableProvided, droppableSnapshot) => (
-            <div className='bg-red-400 px-5 py-3 rounded-md'
-              ref={droppableProvided.innerRef}
-              {...droppableProvided.droppableProps}
-            >
-              <span className='text-white text-2xl font-semibold'>
-                Completed
-              </span>
-              {completedTodos?.map((todo, index) =>
-                <Item
-                  hasDoneIcon={false}
-                  index={index}
-                  key={todo.id}
-                  todo={todo}
-                  todos={completedTodos}
-                  setTodos={setCompletedTodos}
-                />
-              )}
-              {droppableProvided.placeholder}
-            </div>
-          )}
-      </Droppable>
-    </div>
+      </Droppable> */}
+    <Droppable droppableId={TodosStatus.CompletedTodos}>
+      {
+        (droppableProvided, droppableSnapshot) => (
+          <div className='bg-red-400 px-5 py-3 rounded-md'
+            ref={droppableProvided.innerRef}
+            {...droppableProvided.droppableProps}
+          >
+            <span className='text-white text-2xl font-semibold'>
+              Completed
+            </span>
+            {completedTodos?.map((todo, index) =>
+              <Item
+                hasDoneIcon={false}
+                index={index}
+                key={todo.id}
+                todo={todo}
+                todos={completedTodos}
+                setTodos={setCompletedTodos}
+              />
+            )}
+            {droppableProvided.placeholder}
+          </div>
+        )}
+    </Droppable>
+  </div>
 
 )
 

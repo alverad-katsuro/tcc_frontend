@@ -43,15 +43,15 @@ const Item: React.FC<Props> = ({ hasDoneIcon = true, index, todo, todos, setTodo
   }
 
   const handleDone = () => {
-    //setTodos(todos.map((item) => {
-    //  if (item.id == todo.id) {
-    //    item.isDone = !item.isDone
-    //    return item
-    //  }
-    //  return item
-    //}))
+    setTodos(todos.map((item) => {
+     if (item.id == todo.id) {
+       item.isDone = !item.isDone
+       return item
+     }
+     return item
+    }))
     // or
-    setTodos(todos.map((item) => item.id === todo.id ? { ...item, isDone: !item.isDone } : item))
+    //setTodos(todos.map((item) => item.id === todo.id ? { ...item, isDone: !item.isDone } : item))
   }
 
   return (
