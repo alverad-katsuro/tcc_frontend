@@ -20,7 +20,6 @@ export const OPTIONS: AuthOptions = {
     callbacks: {
         async redirect({ url, baseUrl }) {
             // Allows relative callback URLs
-            console.log(url, baseUrl)
             if (url.match("/login")) {
                 return baseUrl
             } else if (new URL(url).origin === baseUrl) {

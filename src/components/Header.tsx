@@ -10,7 +10,6 @@ const Header: FC<Record<string, never>> = function () {
 
     const { data: session } = useSession();
 
-    console.log(session)
     const path = usePathname();
 
     return (

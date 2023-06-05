@@ -1,6 +1,6 @@
 import { Button, Modal } from "@/components/flowbite-components";
 import imageMock from "@/images/bannerUFPA.png";
-import { PlanoTrabalhoModel } from "@/model/response/PlanoModel";
+import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 
 
 export interface PlanoTrabalhoModalProps {

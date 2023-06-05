@@ -1,6 +1,5 @@
 'use client';
 
-import RequireAuth from "@/util/RequireAuth";
 import Iframe from "react-iframe";
 
 
