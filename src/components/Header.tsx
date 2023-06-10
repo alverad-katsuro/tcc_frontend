@@ -1,14 +1,13 @@
 'use client';
 import { Avatar, DarkThemeToggle, Dropdown, Navbar } from "@/components/flowbite-components";
-import { signOut, useSession } from "next-auth/react";
+import { useAuthContext } from "@/context/AuthenticateContext";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
 import { FC } from "react";
 import HeaderSidebar from "./HeaderSidebar";
+import HeaderAvatar from "./HeaderAvatar";
 
 const Header: FC<Record<string, never>> = function () {
-
-    const { data: session } = useSession();
 
     const path = usePathname();
 
@@ -30,38 +29,7 @@ const Header: FC<Record<string, never>> = function () {
                 </Navbar.Brand>
 
                 <div className="flex md:order-2">
-                    {session ?
-                        <Dropdown
-                            arrowIcon={false}
-                            inline={true}
-                            label={<Avatar alt="User settings" img={session?.user?.image ?? ""} rounded={true} />}
-                        >
-                            <Dropdown.Header>
-                                <span className="block text-sm">
-                                    {session?.user?.name}
-                                </span>
-                                <span className="block truncate text-sm font-medium">
-                                    {session?.user?.email}
-                                </span>
-                            </Dropdown.Header>
-                            <Dropdown.Item>
-                                Dashboard
-                            </Dropdown.Item>
-                            <Dropdown.Item>
-                                Settings
-                            </Dropdown.Item>
-                            <Dropdown.Item>
-                                Earnings
-                            </Dropdown.Item>
-                            <Dropdown.Divider />
-                            <Dropdown.Item onClick={() => signOut()}>
-                                Sign out
-                            </Dropdown.Item>
-                        </Dropdown>
-                        : <Link href="/login">
-                            <Avatar alt="User settings" rounded={true} />
-                        </Link>
-                    }
+                    <HeaderAvatar />
                     <DarkThemeToggle className="mx-2 lg:ml-6" />
                     <Navbar.Toggle />
                 </div>

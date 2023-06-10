@@ -1,18 +1,18 @@
-import { useSession } from "next-auth/react";
+import { useAuthContext } from "@/context/AuthenticateContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default async function RequireAuth() {
 
-    const { data: session } = useSession();
+    const { isAuthenticate, userDetails } = useAuthContext();
 
     const router = useRouter();
 
     useEffect(() => {
-        if (typeof session != null) {
+        if (isAuthenticate()) {
             router.push("/login")
         }
-    }, [useSession, useRouter])
+    }, [isAuthenticate, useRouter])
 
-    return session;
+    return userDetails;
 }

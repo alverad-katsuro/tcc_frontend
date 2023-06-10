@@ -2,14 +2,14 @@
 
 import { loginAuth } from "@/api/api";
 import { UserLogin } from "@/model/UserLogin";
+import { GITHUB_AUTH_URL, GOOGLE_AUTH_URL } from "@/oauth";
 import { Button, Label, TextInput } from "flowbite-react";
 import { useFormik } from "formik";
-import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import { AiFillGithub } from "react-icons/ai";
+import { FcGoogle } from "react-icons/fc";
 import { object, string } from "yup";
-import { FcGoogle } from "react-icons/fc"
 export default function login() {
 
     const router = useRouter();
@@ -44,11 +44,11 @@ export default function login() {
                     Bem vindo de Volta
                 </h2>
                 <div className="grid grid-cols-2">
-                    <Button onClick={() => signIn("github")} className="rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2" color={"dark"}>
+                    <Button href={GITHUB_AUTH_URL} className="rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2" color={"dark"}>
                         <AiFillGithub className="w-4 h-4 mr-2 -ml-1" />
                         Log in with Github
                     </Button>
-                    <Button onClick={() => signIn("google")} className="rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2" color={"dark"}>
+                    <Button href={GOOGLE_AUTH_URL} className="rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2" color={"dark"}>
                         <FcGoogle className="w-4 h-4 mr-2 -ml-1" />
                         Log in with Google
                     </Button>
