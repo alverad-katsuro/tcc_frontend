@@ -4,10 +4,10 @@ import Link from "next/link"
 
 export default function HeaderAvatar() {
 
-    const { isAuthenticate, userDetails, deslogar } = useAuthContext();
+    const { isLogado, userDetails, deslogar } = useAuthContext();
 
     return (
-        isAuthenticate() ?
+        isLogado ?
             < Dropdown
                 arrowIcon={false}
                 inline={true}

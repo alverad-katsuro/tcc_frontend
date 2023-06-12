@@ -41,7 +41,11 @@ const BoardSectionList = () => {
   const [activeTaskId, setActiveTaskId] = useState<null | string>(null);
 
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8
+      }
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -146,7 +150,7 @@ const BoardSectionList = () => {
 
   return (
     <div>
-      {/* <DescricaoModal open={open} setOpen={setOpen} task={taskModal}/> */}
+      <DescricaoModal open={open} setOpen={setOpen} task={taskModal}/>
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}
@@ -161,11 +165,12 @@ const BoardSectionList = () => {
                 id={boardSectionKey}
                 title={boardSectionKey}
                 tasks={boardSections[boardSectionKey]}
+                onClick={openModal}
               />
             </div>
           ))}
           <DragOverlay dropAnimation={dropAnimation}>
-            {task ? <TaskItem task={task} /> : null}
+            {task ? <TaskItem task={task} onClick={openModal} /> : null}
           </DragOverlay>
         </div>
       </DndContext>

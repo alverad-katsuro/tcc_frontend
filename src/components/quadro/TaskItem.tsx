@@ -1,16 +1,19 @@
 import { Task } from "@/model/quadro";
-import { Avatar, Badge, Button, Progress } from "flowbite-react";
+import { Avatar, Badge, Progress } from "flowbite-react";
 
 type TaskItemProps = {
   task: Task;
+  onClick: (task: Task) => void;
 };
 
-const TaskItem = ({ task }: TaskItemProps) => {
+const TaskItem = ({ task, onClick }: TaskItemProps) => {
   const color = ["red", "yellow", "green"][Math.floor(task.progress % 3)];
 
   return (
 
-    <div className="grid gap-4 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <div className="h-full">
+
+    <div onClick={() => onClick(task)} className="grid gap-4 max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
       <div className="flex gap-4">
         <Badge color="red" className="w-1/6 text-sm block" />
         <Badge color="red" className="w-1/6 h-20 block" />
@@ -24,6 +27,7 @@ const TaskItem = ({ task }: TaskItemProps) => {
         </div>
         <Avatar rounded className="place-self-end" />
       </div>
+    </div>
     </div>
 
   );

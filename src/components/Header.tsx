@@ -1,11 +1,9 @@
 'use client';
-import { Avatar, DarkThemeToggle, Dropdown, Navbar } from "@/components/flowbite-components";
-import { useAuthContext } from "@/context/AuthenticateContext";
-import Link from "next/link";
+import { DarkThemeToggle, Navbar } from "@/components/flowbite-components";
 import { usePathname } from 'next/navigation';
 import { FC } from "react";
-import HeaderSidebar from "./HeaderSidebar";
 import HeaderAvatar from "./HeaderAvatar";
+import HeaderSidebar from "./HeaderSidebar";
 
 const Header: FC<Record<string, never>> = function () {
 

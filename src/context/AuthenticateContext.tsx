@@ -11,7 +11,6 @@ interface AuthContextProps {
 	userDetails: UserDetails;
 	setUserDetails: (user: UserDetails) => void;
 	deslogar: () => void;
-	isAuthenticate: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextProps>(undefined!);
@@ -25,17 +24,12 @@ export function AuthProvider({
 
 	const [isLogado, setIsLogado] = useState<boolean>(false);
 
-	function isAuthenticate(): boolean {
-		"use client";
-		let cookie = getCookie("Token")?.toString();
-		return cookie != undefined ? true : false;
-	}
-
 	function deslogar() {
 		deleteCookie("Token");
 		if (!hasCookie("Token")) {
 			setIsLogado(false);
 			router.push("/");
+			router.refresh();
 		}
 	}
 
@@ -54,8 +48,7 @@ export function AuthProvider({
 				setUserDetails: setUserDetails,
 				userDetails: userDetails,
 				deslogar: deslogar,
-				isAuthenticate: isAuthenticate,
-			}), [isAuthenticate, setUserDetails, deslogar])}
+			}), [setUserDetails, deslogar])}
 		>
 			{children}
 		</AuthContext.Provider>

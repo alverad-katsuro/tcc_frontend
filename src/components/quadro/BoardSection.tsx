@@ -11,31 +11,38 @@ type BoardSectionProps = {
   id: string;
   title: string;
   tasks: Task[];
+  onClick: (task: Task) => void;
 };
 
-const BoardSection = ({ id, title, tasks }: BoardSectionProps) => {
+const BoardSection = ({ id, title, tasks, onClick }: BoardSectionProps) => {
   const { setNodeRef } = useDroppable({
     id,
   });
 
   return (
-    <div className='space-y-4'>
-      <h1 className="text-3xl text-center font-bold tracking-tight text-gray-900 dark:text-white">{title}</h1>
+    <div className=''>
+      <h1 className="block text-3xl text-center font-bold tracking-tight text-gray-900 dark:text-white p-4">{title}</h1>
+
+      <div className='block h-full overflow-auto'>
       <SortableContext
         id={id}
         items={tasks}
         strategy={verticalListSortingStrategy}
       >
-        <div ref={setNodeRef} className='gap-4 grid'>
-          {tasks.map((task) => (
-            <div key={task.id}>
-              <SortableTaskItem id={task.id}>
-                <TaskItem task={task} />
-              </SortableTaskItem>
-            </div>
-          ))}
+        <div className='h-screen'>
+
+          <div ref={setNodeRef} className='grid gap-4 overflow-auto'>
+            {tasks.map((task) => (
+              <div key={task.id}>
+                <SortableTaskItem id={task.id}>
+                  <TaskItem task={task} onClick={onClick} />
+                </SortableTaskItem>
+              </div>
+            ))}
+          </div>
         </div>
       </SortableContext>
+    </div>
     </div>
   );
 };
