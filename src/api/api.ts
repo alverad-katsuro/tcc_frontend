@@ -2,18 +2,8 @@
 import { TokenAuth } from '@/model/TokenAuth';
 import { UserLogin } from '@/model/UserLogin';
 import { PlanoTrabalhoModel } from '@/model/response/PlanoTrabalhoModel';
-import axios, { Axios } from 'axios';
-import { getCookie } from 'cookies-next';
 import { VariantType, enqueueSnackbar } from 'notistack';
-
-const apiAddress: string = "http://10.85.200.77:16000/"
-
-const apiAxios: Axios = axios.create({ baseURL: apiAddress });
-
-function validToken(): string | undefined {
-    return getCookie("Token", { path: "/" })?.toString();
-}
-
+import apiAxios from './apiOptions';
 
 export async function loginAuth(data: UserLogin): Promise<TokenAuth> {
     const resp = (await apiAxios.post<TokenAuth>("/auth/login", data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, withCredentials: true }));
@@ -52,21 +42,10 @@ async function atualizarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<string
 // END
 
 
-
-
-
 function notification(mensagem: string, variant: VariantType): void {
     // variant could be success, error, warning, info, or default
     enqueueSnackbar(mensagem, { variant });
 };
-
-apiAxios.interceptors.request.use(config => {
-    const token = validToken();
-    if (token !== undefined) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-}, (error) => Promise.reject(error))
 
 apiAxios.interceptors.response.use(response => response, (error) => {
     switch (error.code) {

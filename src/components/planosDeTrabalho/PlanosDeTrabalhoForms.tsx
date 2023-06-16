@@ -1,11 +1,11 @@
 import { salvarPlanoTrabalho } from "@/api/api";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import { RecursoMaterialModel } from "@/model/response/RecursoMaterialModel";
-import { notification } from "@/util/Notification";
+import { notification } from "@/utils/Notification";
 import { Button, Label, TextInput, Textarea } from "flowbite-react";
 import { useFormik } from "formik";
-import { array, number, object, string } from "yup";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import { array, number, object, string } from "yup";
 import RecursosMateriaisForm from "./RecursosMateriaisForm";
 
 export interface PlanosDeTrabalhoFormsProps {
@@ -106,7 +106,7 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
             </div>
             <div className="col-span-full grid gap-4">
                 <div className="grid grid-cols-2">
-                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white self-center">Editais Processo</h5>
+                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white self-center">Recursos Materiais</h5>
 
                     <Button className="place-self-end w-fit self-center">
                         <AiOutlinePlusCircle className="text-2xl " onClick={novoRecursoMaterial} />

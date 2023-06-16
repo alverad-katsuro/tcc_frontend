@@ -3,7 +3,7 @@ import PlanoTrabalhoModal from "@/app/(dashboard)/planosDeTrabalho/PlanoTrabalho
 import { Card } from "@/components/flowbite-components";
 import imageMock from "@/images/bannerUFPA.png";
 import planosMock from "@/mock/PlanoTrabalho.json";
-import { PlanoTrabalhoModel } from "@/model/response/PlanoModel";
+import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import { Suspense, useState } from "react";
 
 const planos: PlanoTrabalhoModel[] = JSON.parse(JSON.stringify(planosMock));
