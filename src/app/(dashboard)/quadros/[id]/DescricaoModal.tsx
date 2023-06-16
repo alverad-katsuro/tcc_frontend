@@ -22,6 +22,15 @@ export default function DescricaoModal({ task, setOpen, open }: DescricaoModalPr
                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         {task?.title}
                     </h5>
+                    <div className="flex space-x-4">
+                        <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                            Alfredo Gabriel
+                        </h5>
+                        <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                            Alfredo Gabriel
+                        </h5>
+                        
+                    </div>
                     <div className="flex-col flex sm:flex-row ">
                         <div className="flex-auto">
                             <div className="p-5 space-y-6">
