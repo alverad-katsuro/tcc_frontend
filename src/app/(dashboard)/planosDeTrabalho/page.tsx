@@ -1,59 +1,32 @@
-"use client";
-import PlanoTrabalhoModal from "@/app/(dashboard)/planosDeTrabalho/PlanoTrabalhoModal";
-import { Card } from "@/components/flowbite-components";
-import imageMock from "@/images/bannerUFPA.png";
-import planosMock from "@/mock/PlanoTrabalho.json";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
-import { Suspense, useState } from "react";
+import PlanoTrabalhoLista from "./PlanoTrabalhoLista";
+import { recuperarToken } from "@/service/AuthToken";
+import { apiAddress } from "@/api/apiOptions";
+import { PageInterface } from "@/interface/PageInterface";
 
-const planos: PlanoTrabalhoModel[] = JSON.parse(JSON.stringify(planosMock));
-export default function PlanosDeTrabalho() {
 
-    const [planoTrabalho, setPlanoTrabalho] = useState<PlanoTrabalhoModel>();
-    const [open, setOpen] = useState<boolean>(false);
+async function consultarPlanos(): Promise<PageInterface<PlanoTrabalhoModel>> {
+    const resp: Promise<PageInterface<PlanoTrabalhoModel>> = fetch(apiAddress + "/planoTrabalho", {
+        method: 'GET', cache: "no-cache", headers: {
+            "Authorization": recuperarToken()!
+        }
+    }).then(r => r.json());
+    return resp;
 
-    function openModal(planoTrabalho: PlanoTrabalhoModel) {
+}
 
-        setPlanoTrabalho(planoTrabalho);
-        setOpen(!open);
-    }
 
+export default async function PlanosDeTrabalho() {
+
+    const planos: PageInterface<PlanoTrabalhoModel> = await consultarPlanos();
     return (
 
         <main className="flex flex-col items-center justify-between p-16 overflow-auto">
-            <Suspense>
-                <PlanoTrabalhoModal planoTrabalho={planoTrabalho} open={open} onClose={setOpen} />
-            </Suspense>
-
-            <h1 className="mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">Planos de Trabalho</h1>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
-
-                {planos.map((e) =>
-                    <Card imgSrc={imageMock.src} key={e.id} onClick={() => openModal(e)}>
-                        <div className="overflow-auto max-h-64 gap-4 gap flex flex-col">
-                            <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                <strong>Título:</strong> {e.titulo}
-                            </h5>
-
-                            <p className="font-normal text-gray-800 dark:text-white">
-                                {e.areaTrabalho}
-                            </p>
-                            <p className="font-normal text-gray-700 dark:text-gray-400">
-                                {e.descricao}
-                            </p>
-
-                        </div>
-
-                    </Card>
-
-                )}
-
-
-            </div>
+            <PlanoTrabalhoLista planosTrabalhos={planos.content}/>
 
         </main>
 
-
     )
+
+
 }

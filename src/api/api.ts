@@ -1,9 +1,9 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import { TokenAuth } from '@/model/TokenAuth';
 import { UserLogin } from '@/model/UserLogin';
 import { PlanoTrabalhoModel } from '@/model/response/PlanoTrabalhoModel';
 import { VariantType, enqueueSnackbar } from 'notistack';
 import apiAxios from './apiOptions';
+import { AxiosResponse } from 'axios';
 
 export async function loginAuth(data: UserLogin): Promise<TokenAuth> {
     const resp = (await apiAxios.post<TokenAuth>("/auth/login", data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, withCredentials: true }));
@@ -25,13 +25,14 @@ export async function consultaPlanoTrabalho(id: number): Promise<PlanoTrabalhoMo
 }
 
 
-export async function salvarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<string> {
+export function salvarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<string> | Promise<AxiosResponse<string, any> > {
     return plano.id != undefined && plano.id > 0 ? atualizarPlanoTrabalho(plano) : criarPlanoTrabalho(plano);
 }
 
-async function criarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<string> {
+async function criarPlanoTrabalho(plano: PlanoTrabalhoModel) {
+    plano.id = undefined;
     const resp = (await apiAxios.post<string>("/planoTrabalho", plano));
-    return resp.data;
+    return resp;
 }
 
 async function atualizarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<string> {

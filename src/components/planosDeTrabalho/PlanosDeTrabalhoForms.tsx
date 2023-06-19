@@ -7,6 +7,7 @@ import { useFormik } from "formik";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { array, number, object, string } from "yup";
 import RecursosMateriaisForm from "./RecursosMateriaisForm";
+import TinyCustom from "../TinyCustom";
 
 export interface PlanosDeTrabalhoFormsProps {
     plano: PlanoTrabalhoModel;
@@ -31,7 +32,12 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
         validationSchema: validationSchema,
         onSubmit: (values, { resetForm }) => {
             salvarPlanoTrabalho(values).then((suc) => {
-                notification(suc, 'success');
+                if (typeof suc === 'string') {
+                    notification(suc, 'success');
+                } else {
+                    console.log(suc.headers.location)
+                    //window.location.href = suc.headers.
+                }
             }).catch((error) => console.log(error));
         }
     })
@@ -42,6 +48,10 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
 
     function removeRecursoMaterial(index: number) {
         formik.setFieldValue("recursoMateriais", formik.values.recursoMateriais.filter((e, k) => k !== index)).catch((e) => { notification(e, 'warning') });
+    }
+
+    function setTexto(texto: string) {
+        formik.setFieldValue("descricao", texto).catch(e => console.log(e))
     }
 
     return (
@@ -90,19 +100,11 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
                 <div className="mb-2 block">
                     <Label
                         htmlFor="descricao"
-                        value="Data em que o processo estará disponivel para visualização"
+                        value="Descrição"
                         color={formik.errors.descricao ? "failure" : undefined}
                     />
                 </div>
-                <Textarea
-                    id="descricao"
-                    rows={10}
-                    required
-                    onChange={formik.handleChange}
-                    helperText={formik.errors.descricao}
-                    defaultValue={formik.values.descricao}
-                    color={formik.errors.descricao ? "failure" : undefined}
-                />
+                <TinyCustom setTexto={setTexto} texto={formik.values.descricao}/>
             </div>
             <div className="col-span-full grid gap-4">
                 <div className="grid grid-cols-2">

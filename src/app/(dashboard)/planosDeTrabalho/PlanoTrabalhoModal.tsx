@@ -9,17 +9,16 @@ export interface PlanoTrabalhoModalProps {
     planoTrabalho?: PlanoTrabalhoModel;
 }
 
-export default function PlanoTrabalhoModal(props: PlanoTrabalhoModalProps) {
+export default function PlanoTrabalhoModal({onClose, open, planoTrabalho}: PlanoTrabalhoModalProps) {
 
-    function onClose() {
-        props.onClose(!props.open);
-    }
+
 
     return (
         <Modal
+            size="xl"
             dismissible
-            onClose={onClose}
-            show={props.open}
+            onClose={() => onClose(!open)}
+            show={open}
         >
             <Modal.Body>
 
@@ -29,15 +28,15 @@ export default function PlanoTrabalhoModal(props: PlanoTrabalhoModalProps) {
                     </a>
                     <div className="p-5">
                         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            {props.planoTrabalho?.titulo}
+                            {planoTrabalho?.titulo}
                         </h5>
                         <div className="space-y-6">
                             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                {props.planoTrabalho?.areaTrabalho}
+                                {planoTrabalho?.areaTrabalho}
                             </p>
-                            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                {props.planoTrabalho?.descricao}
-                            </p>
+                            {planoTrabalho !== undefined ?
+                                <div dangerouslySetInnerHTML={{ __html: planoTrabalho.descricao }} className='text-base leading-relaxed text-gray-500 dark:text-gray-400overflow-auto max-h-64' /> : <></>
+                            }
                         </div>
                     </div>
                 </div>

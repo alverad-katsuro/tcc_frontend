@@ -8,7 +8,7 @@ import { PropsWithChildren, createContext, useContext, useEffect, useMemo, useSt
 
 interface AuthContextProps {
 	isLogado: boolean;
-	userDetails: UserDetails;
+	userDetails?: UserDetails;
 	setUserDetails: (user: UserDetails) => void;
 	deslogar: () => void;
 }
@@ -18,9 +18,7 @@ const AuthContext = createContext<AuthContextProps>(undefined!);
 export function AuthProvider({
 	children,
 }: PropsWithChildren<Record<string, unknown>>) {
-	const [userDetails, setUserDetails] = useState<UserDetails>({});
-
-	const router = useRouter();
+	const [userDetails, setUserDetails] = useState<UserDetails| undefined>();
 
 	const [isLogado, setIsLogado] = useState<boolean>(false);
 
@@ -28,8 +26,7 @@ export function AuthProvider({
 		deleteCookie("Token");
 		if (!hasCookie("Token")) {
 			setIsLogado(false);
-			router.push("/");
-			router.refresh();
+			window.location.href = "/";
 		}
 	}
 

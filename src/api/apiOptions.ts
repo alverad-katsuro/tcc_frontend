@@ -1,8 +1,6 @@
 import axios, { Axios } from 'axios';
 import { getCookie } from 'cookies-next';
 
-console.log(process.env.NEXT_PUBLIC_API_URL)
-
 if (process.env.NEXT_PUBLIC_API_URL === undefined) {
     throw new Error("URL DA API NÃO INFORMADA.");
 }

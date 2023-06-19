@@ -1,5 +1,6 @@
 import { AuthProvider } from '@/context/AuthenticateContext';
 import FlowbiteContext from '@/context/FlowbiteContext';
+import SnackbarProvider from '@/context/SnackbarProvider';
 
 export const metadata = {
   title: 'Create Next App',
@@ -12,7 +13,9 @@ function RootLayout({ children }: { children: React.ReactNode; }) {
     <html lang="pt-BR">
       <body className='flex h-screen w-full flex-col overflow-hidden'>
         <AuthProvider>
-          <FlowbiteContext>{children}</FlowbiteContext>
+          <SnackbarProvider>
+            <FlowbiteContext>{children}</FlowbiteContext>
+          </SnackbarProvider>
         </AuthProvider>
       </body>
     </html>
