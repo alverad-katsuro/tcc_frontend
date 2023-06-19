@@ -2,7 +2,7 @@ export type StatusAtividade = 'ATIVIDADES';
 
 export type AtividadeModel = {
   id: string;
-  title: string;
+  titulo?: string;
   checked: boolean;
 };
 

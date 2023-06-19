@@ -1,10 +1,8 @@
-import { findBoardSectionContainer } from '@/model/atividades/board';
 import { AtividadeModel, BoardSections } from "@/model/atividades/index";
 import { getTaskById } from '@/model/atividades/tasks';
 import {
   DndContext,
   DragEndEvent,
-  DragOverEvent,
   DragOverlay,
   DragStartEvent,
   DropAnimation,
@@ -13,7 +11,7 @@ import {
   closestCorners,
   defaultDropAnimation,
   useSensor,
-  useSensors,
+  useSensors
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { Button } from 'flowbite-react';
@@ -23,25 +21,22 @@ import BoardSection from './BoardSection';
 
 
 const AtividadesSelectionList = () => {
-  const tasks: AtividadeModel[] = [
+
+  const [atividades, setAtividades] = useState<AtividadeModel[]>([
     {
       id: "1",
       checked: false,
-      title: "asdasdsad"
+      titulo: "asdasdsad"
     },
     {
       id: "2",
       checked: true,
-      title: "111212121212"
+      titulo: "111212121212"
     }
 
-  ];
-  const initialBoardSections: BoardSections = {
-    'Atividades': tasks
-  };
+  ]);
 
-  const [boardSections, setBoardSections] =
-    useState<BoardSections>(initialBoardSections);
+  const [id, setId] = useState<number>(atividades.length + 1);
 
   const [activeTaskId, setActiveTaskId] = useState<null | string>(null);
 
@@ -60,90 +55,23 @@ const AtividadesSelectionList = () => {
     setActiveTaskId(active.id as string);
   };
 
-  const handleDragOver = ({ active, over }: DragOverEvent) => {
-    // Find the containers
-    const activeContainer = findBoardSectionContainer(
-      boardSections,
-      active.id as string
-    );
-    const overContainer = findBoardSectionContainer(
-      boardSections,
-      over?.id as string
-    );
-
-    if (
-      !activeContainer ||
-      !overContainer ||
-      activeContainer === overContainer
-    ) {
-      return;
-    }
-
-    setBoardSections((boardSection) => {
-      const activeItems = boardSection[activeContainer];
-      const overItems = boardSection[overContainer];
-
-      // Find the indexes for the items
-      const activeIndex = activeItems.findIndex(
-        (item) => item.id === active.id
-      );
-      const overIndex = overItems.findIndex((item) => item.id !== over?.id);
-
-      return {
-        ...boardSection,
-        [activeContainer]: [
-          ...boardSection[activeContainer].filter(
-            (item) => item.id !== active.id
-          ),
-        ],
-        [overContainer]: [
-          ...boardSection[overContainer].slice(0, overIndex),
-          boardSections[activeContainer][activeIndex],
-          ...boardSection[overContainer].slice(
-            overIndex,
-            boardSection[overContainer].length
-          ),
-        ],
-      };
-    });
-  };
-
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
-    const activeContainer = findBoardSectionContainer(
-      boardSections,
-      active.id as string
-    );
-    const overContainer = findBoardSectionContainer(
-      boardSections,
-      over?.id as string
-    );
 
-    if (
-      !activeContainer ||
-      !overContainer ||
-      activeContainer !== overContainer
-    ) {
-      return;
-    }
-
-    const activeIndex = boardSections[activeContainer].findIndex(
+    const activeIndex = atividades.findIndex(
       (task) => task.id === active.id
     );
-    const overIndex = boardSections[overContainer].findIndex(
+    const overIndex = atividades.findIndex(
       (task) => task.id === over?.id
     );
 
     if (activeIndex !== overIndex) {
-      setBoardSections((boardSection) => ({
-        ...boardSection,
-        [overContainer]: arrayMove(
-          boardSection[overContainer],
+      setAtividades((atividades) =>
+        arrayMove(
+          atividades,
           activeIndex,
-          overIndex
-        ),
-      }));
+          overIndex)
+      )
     }
-
     setActiveTaskId(null);
   };
 
@@ -151,14 +79,24 @@ const AtividadesSelectionList = () => {
     ...defaultDropAnimation,
   };
 
-  const task = activeTaskId ? getTaskById(tasks, activeTaskId) : null;
+  const task = activeTaskId ? getTaskById(atividades, activeTaskId) : null;
 
   function adicionarAtividade() {
+    const ativi: AtividadeModel = {
+      id: String(id),
+      checked: false,
+      titulo: "asdasdsad"
+    }
+    setId(id => id + 1);
+    setAtividades(atividades => {
+      atividades.push(ativi);
+      return atividades;
+    });
 
   }
 
   function removerAtividade(id: string) {
-    boardSections["Atividades"].filter(atividade => atividade.id !== id);
+    setAtividades(atividades => atividades.filter(atividade => atividade.id !== id))
   }
 
   return (
@@ -167,17 +105,14 @@ const AtividadesSelectionList = () => {
         sensors={sensors}
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
         <div className='flex flex-col gap-4' >
-            <div key={"Atividades"}>
-              <BoardSection
-                id={"Atividades"}
-                atividades={boardSections["Atividades"]}
-                remover={removerAtividade}
-              />
-            </div>
+          <BoardSection
+            id={"Atividades"}
+            atividades={atividades}
+            remover={removerAtividade}
+          />
           <Button className='w-fit' onClick={adicionarAtividade}>Adicionar um item</Button>
           <DragOverlay dropAnimation={dropAnimation}>
             {task ? <AtividadeItem atividade={task} remover={removerAtividade} /> : null}
