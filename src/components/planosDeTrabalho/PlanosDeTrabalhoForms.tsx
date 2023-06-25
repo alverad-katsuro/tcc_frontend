@@ -1,13 +1,13 @@
 import { salvarPlanoTrabalho } from "@/api/api";
+import { Button, Label, TextInput } from "@/components/flowbite-components";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import { RecursoMaterialModel } from "@/model/response/RecursoMaterialModel";
 import { notification } from "@/utils/Notification";
-import { Button, Label, TextInput, Textarea } from "flowbite-react";
 import { useFormik } from "formik";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { array, number, object, string } from "yup";
+import TinyCustomForm from "../TinyCustomForm";
 import RecursosMateriaisForm from "./RecursosMateriaisForm";
-import TinyCustom from "../TinyCustom";
 
 export interface PlanosDeTrabalhoFormsProps {
     plano: PlanoTrabalhoModel;
@@ -104,7 +104,7 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
                         color={formik.errors.descricao ? "failure" : undefined}
                     />
                 </div>
-                <TinyCustom setTexto={setTexto} texto={formik.values.descricao}/>
+                <TinyCustomForm descricao={formik.values?.descricao} onSave={setTexto} />
             </div>
             <div className="col-span-full grid gap-4">
                 <div className="grid grid-cols-2">

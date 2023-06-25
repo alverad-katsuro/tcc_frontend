@@ -4,15 +4,15 @@ import TinyCustom from './TinyCustom';
 
 
 export interface TinyCustomProps {
-    onSave: (texto: any) => string;
+    onSave: (texto: any) => void;
+    descricao?: string;
 }
 
-export default function TinyCustomForm({ onSave }: TinyCustomProps) {
-
+export default function TinyCustomForm({ onSave, descricao }: TinyCustomProps) {
 
     const [editar, setEditar] = useState<boolean>(false);
 
-    const [texto, setTexto] = useState<string>("");
+    const [texto, setTexto] = useState<string>(descricao ?? "");
 
     function salvar() {
         setEditar(e => !e)

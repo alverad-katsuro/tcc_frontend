@@ -1,4 +1,5 @@
 import TinyCustom from "@/components/TinyCustom";
+import TinyCustomForm from "@/components/TinyCustomForm";
 import { Button, Modal } from "@/components/flowbite-components";
 import DataRangeCustom from "@/components/quadro/DataRangeCustom";
 import AtividadesSelectionList from "@/components/quadro/modal/AtividadesSelectionList";
@@ -53,7 +54,7 @@ export default function DescricaoModal({ task, setOpen, open }: DescricaoModalPr
                                         </div>
                                     </div>
                                     <div>
-                                        <TinyCustom onSave={save} />
+                                        <TinyCustomForm onSave={save} />
                                     </div>
                                     <div>
                                         <h5 className="font-bold tracking-tight text-gray-900 dark:text-white my-4">
