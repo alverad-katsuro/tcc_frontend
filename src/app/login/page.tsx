@@ -2,7 +2,7 @@
 
 import { loginAuth } from "@/api/api";
 import { UserLogin } from "@/model/UserLogin";
-import { GITHUB_AUTH_URL, GOOGLE_AUTH_URL } from "@/oauth";
+import { GITHUB_AUTH_URL, GOOGLE_AUTH_URL, KEYCLOAK_AUTH_URL } from "@/service/oauth";
 import { Button, Label, TextInput } from "flowbite-react";
 import { useFormik } from "formik";
 import Image from "next/image";
@@ -49,6 +49,10 @@ export default function login() {
                         Log in with Github
                     </Button>
                     <Button href={GOOGLE_AUTH_URL} className="rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2" color={"dark"}>
+                        <FcGoogle className="w-4 h-4 mr-2 -ml-1" />
+                        Log in with Google
+                    </Button>
+                    <Button href={KEYCLOAK_AUTH_URL} className="rounded-lg text-xl px-5 py-2.5 text-center inline-flex items-center mr-2 mb-2" color={"dark"}>
                         <FcGoogle className="w-4 h-4 mr-2 -ml-1" />
                         Log in with Google
                     </Button>
