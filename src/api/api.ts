@@ -24,19 +24,23 @@ export async function consultaPlanoTrabalho(id: number): Promise<PlanoTrabalhoMo
     return resp.data;
 }
 
-
-export function salvarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<string> | Promise<AxiosResponse<string, any> > {
+export function salvarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: string, response: AxiosResponse<string, any> }> {
     return plano.id != undefined && plano.id > 0 ? atualizarPlanoTrabalho(plano) : criarPlanoTrabalho(plano);
 }
 
-async function criarPlanoTrabalho(plano: PlanoTrabalhoModel) {
+async function criarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: string, response: AxiosResponse<string, any> }> {
     plano.id = undefined;
     const resp = (await apiAxios.post<string>("/planoTrabalho", plano));
-    return resp;
+    return { data: resp.data, response: resp };
 }
 
-async function atualizarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<string> {
+async function atualizarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: string, response: AxiosResponse<string, any> }> {
     const resp = (await apiAxios.put<string>("/planoTrabalho", plano));
+    return { data: resp.data, response: resp };
+}
+
+export async function deletarPlanoTrabalho(id: number) {
+    const resp = (await apiAxios.delete(`/planoTrabalho/${id}`));
     return resp.data;
 }
 

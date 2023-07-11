@@ -6,11 +6,12 @@ import TinyCustom from './TinyCustom';
 export interface TinyCustomProps {
     onSave: (texto: any) => void;
     descricao?: string;
+    isEditavel?: boolean;
 }
 
-export default function TinyCustomForm({ onSave, descricao }: TinyCustomProps) {
+export default function TinyCustomForm({ onSave, descricao, isEditavel = false }: TinyCustomProps) {
 
-    const [editar, setEditar] = useState<boolean>(false);
+    const [editar, setEditar] = useState<boolean>(isEditavel);
 
     const [texto, setTexto] = useState<string>(descricao ?? "");
 

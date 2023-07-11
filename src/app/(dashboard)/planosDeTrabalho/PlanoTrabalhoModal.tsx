@@ -1,6 +1,8 @@
 import { Button, Modal } from "@/components/flowbite-components";
 import imageMock from "@/images/bannerUFPA.png";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 
 export interface PlanoTrabalhoModalProps {
@@ -9,9 +11,9 @@ export interface PlanoTrabalhoModalProps {
     planoTrabalho?: PlanoTrabalhoModel;
 }
 
-export default function PlanoTrabalhoModal({onClose, open, planoTrabalho}: PlanoTrabalhoModalProps) {
+export default function PlanoTrabalhoModal({ onClose, open, planoTrabalho }: PlanoTrabalhoModalProps) {
 
-
+    const asPath = usePathname()
 
     return (
         <Modal
@@ -23,9 +25,9 @@ export default function PlanoTrabalhoModal({onClose, open, planoTrabalho}: Plano
             <Modal.Body>
 
                 <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                    <a href="#">
+                    <Link href={`${asPath}/${planoTrabalho?.id}`}>
                         <img className="rounded-t-lg w-full" src={imageMock.src} alt="" />
-                    </a>
+                    </Link>
                     <div className="p-5">
                         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                             {planoTrabalho?.titulo}

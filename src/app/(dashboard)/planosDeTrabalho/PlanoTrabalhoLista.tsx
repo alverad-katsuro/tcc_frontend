@@ -1,9 +1,10 @@
 "use client";
 import PlanoTrabalhoModal from "@/app/(dashboard)/planosDeTrabalho/PlanoTrabalhoModal";
 
-import { Card } from "@/components/flowbite-components";
+import { Button, Card } from "@/components/flowbite-components";
 import imageMock from "@/images/bannerUFPA.png";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
+import Link from "next/link";
 import { Suspense, useState } from "react";
 
 export interface PlanoTrabalhoListaProps {

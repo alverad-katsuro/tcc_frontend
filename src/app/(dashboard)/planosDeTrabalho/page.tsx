@@ -1,8 +1,8 @@
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import PlanoTrabalhoLista from "./PlanoTrabalhoLista";
-import { recuperarToken } from "@/service/AuthToken";
 import { apiAddress } from "@/api/apiOptions";
 import { PageInterface } from "@/interface/PageInterface";
+import { recuperarToken } from "@/service/auth";
 
 
 async function consultarPlanos(): Promise<PageInterface<PlanoTrabalhoModel>> {

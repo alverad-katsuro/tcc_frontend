@@ -1,8 +1,9 @@
 'use client';
 
 import { Button } from "@/components/flowbite-components";
+import { useAuthContext } from "@/context/AuthenticateContext";
 import { useSidebarContext } from "@/context/SidebarContext";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import { AiFillPlusCircle, AiFillMinusCircle, AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineSearch } from "react-icons/ai";
 import { BiBuoy } from "react-icons/bi";
 import {
   HiChartPie,
@@ -13,6 +14,8 @@ import Sidebar from "./sidebar";
 export default function SidebarStyled(): JSX.Element {
 
   const { isCollapsed, setCollapsed } = useSidebarContext();
+
+  const { userDetails } = useAuthContext();
 
   function toggle() {
     setCollapsed(!isCollapsed);
@@ -28,9 +31,23 @@ export default function SidebarStyled(): JSX.Element {
             <Sidebar.Item href="/quadros" icon={HiViewBoards}>
               Quadros Kanban
             </Sidebar.Item>
-            <Sidebar.Item href="/planosDeTrabalho" icon={MdOutlineWork} className="as">
-              Planos de Trabalho
-            </Sidebar.Item>
+            {userDetails?.scope.includes("ROLE_ADMIN") ?
+              <Sidebar.Collapse icon={MdOutlineWork} label="Planos de Trabalho">
+                <Sidebar.Item href="/planosDeTrabalho/novo" icon={AiFillPlusCircle} >
+                  Novo
+                </Sidebar.Item>
+                <Sidebar.Item href="/planosDeTrabalho" icon={AiOutlineSearch}>
+                  Visualizar
+                </Sidebar.Item>
+                <Sidebar.Item href="/planosDeTrabalho/remover" icon={AiFillMinusCircle} >
+                  Remover
+                </Sidebar.Item>
+              </Sidebar.Collapse> :
+              <Sidebar.Item href="/planosDeTrabalho" icon={MdOutlineWork}>
+                Planos de Trabalho
+              </Sidebar.Item>
+
+            }
           </Sidebar.ItemGroup>
           <Sidebar.ItemGroup>
             <Sidebar.Item href="#" icon={HiViewBoards}>

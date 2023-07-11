@@ -1,13 +1,17 @@
-import { salvarPlanoTrabalho } from "@/api/api";
+"use client";
+
+import { salvarPlanoTrabalho, deletarPlanoTrabalho } from "@/api/api";
 import { Button, Label, TextInput } from "@/components/flowbite-components";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import { RecursoMaterialModel } from "@/model/response/RecursoMaterialModel";
-import { notification } from "@/utils/Notification";
 import { useFormik } from "formik";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { array, number, object, string } from "yup";
 import TinyCustomForm from "../TinyCustomForm";
+import { VariantType, enqueueSnackbar } from "notistack";
 import RecursosMateriaisForm from "./RecursosMateriaisForm";
+import { AxiosResponse } from "axios";
+import Link from "next/link";
 
 export interface PlanosDeTrabalhoFormsProps {
     plano: PlanoTrabalhoModel;
@@ -31,16 +35,21 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
         enableReinitialize: true,
         validationSchema: validationSchema,
         onSubmit: (values, { resetForm }) => {
-            salvarPlanoTrabalho(values).then((suc) => {
-                if (typeof suc === 'string') {
-                    notification(suc, 'success');
-                } else {
-                    console.log(suc.headers.location)
-                    //window.location.href = suc.headers.
-                }
+            salvarPlanoTrabalho(values).then(({data, response}) => {
+                notification(data, 'success');
+                window.location.href = `/planosDeTrabalho/${(response.headers.location as string).split("/").pop()}`
             }).catch((error) => console.log(error));
         }
     })
+
+    function verificarString(response: string | AxiosResponse<string, any>): response is string {
+        return typeof response === 'string';
+    }
+
+    function notification(mensagem: string, variant: VariantType): void {
+        // variant could be success, error, warning, info, or default
+        enqueueSnackbar(mensagem, { variant });
+    };
 
     function novoRecursoMaterial() {
         formik.setFieldValue(`recursoMateriais.[${formik.values.recursoMateriais.length}].descricao`, "").catch((e) => { notification(e, 'warning') });
@@ -52,6 +61,15 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
 
     function setTexto(texto: string) {
         formik.setFieldValue("descricao", texto).catch(e => console.log(e))
+    }
+
+    function deletePlano() {
+        if (props.plano.id) {
+            deletarPlanoTrabalho(props.plano.id).then(() => {
+                notification('Deletado com sucesso', 'success');
+                window.location.href = "/planosDeTrabalho"
+            }).catch((error) => console.log(error));
+        }
     }
 
     return (
@@ -104,14 +122,14 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
                         color={formik.errors.descricao ? "failure" : undefined}
                     />
                 </div>
-                <TinyCustomForm descricao={formik.values?.descricao} onSave={setTexto} />
+                <TinyCustomForm descricao={formik.values?.descricao} onSave={setTexto} isEditavel={props.plano.id ? false : true} />
             </div>
             <div className="col-span-full grid gap-4">
                 <div className="grid grid-cols-2">
                     <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white self-center">Recursos Materiais</h5>
 
-                    <Button className="place-self-end w-fit self-center">
-                        <AiOutlinePlusCircle className="text-2xl " onClick={novoRecursoMaterial} />
+                    <Button className="place-self-end w-fit self-center" onClick={novoRecursoMaterial} >
+                        <AiOutlinePlusCircle className="text-2xl " />
                     </Button>
                 </div>
                 <div className="col-span-full grid gap-5">
@@ -123,7 +141,14 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
                 </div>
             </div>
 
-            <Button className="w-fit justify-self-center" type="submit">Salvar</Button>
+            <div className="flex gap-4 place-self-center">
+                <Button className="w-fit justify-self-center" type="submit">Salvar</Button>
+                {props.plano.id ?
+                    <Button className="w-fit justify-self-center" color={'red'} onClick={deletePlano}>Deletar Plano de Trabalho</Button>
+                    : <></>}
+
+            </div>
+
         </form>
     )
 

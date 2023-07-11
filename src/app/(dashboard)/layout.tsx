@@ -13,7 +13,7 @@ function RootLayout({ children }: { children: React.ReactNode; }) {
     <html lang="pt-BR">
       <body className='flex h-screen w-full flex-col overflow-hidden'>
         <AuthProvider>
-          <SnackbarProvider>
+          <SnackbarProvider maxSnack={5}>
             <FlowbiteContext>{children}</FlowbiteContext>
           </SnackbarProvider>
         </AuthProvider>
