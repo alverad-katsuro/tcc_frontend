@@ -1,26 +1,37 @@
+"use client";
 import { Button, Modal } from "@/components/flowbite-components";
 import imageMock from "@/images/bannerUFPA.png";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { MouseEventHandler, useCallback, useEffect, useRef, useState } from "react";
 
 
 export interface PlanoTrabalhoModalProps {
-    onClose: (open: boolean) => void;
-    open: boolean;
-    planoTrabalho?: PlanoTrabalhoModel;
+    onClose?: (open: boolean) => void;
+    open?: boolean;
+    planoTrabalho: PlanoTrabalhoModel;
 }
 
-export default function PlanoTrabalhoModal({ onClose, open, planoTrabalho }: PlanoTrabalhoModalProps) {
+export default function PlanoTrabalhoModal({ planoTrabalho }: PlanoTrabalhoModalProps) {
 
     const asPath = usePathname()
+
+    const [show, setShow] = useState<boolean>(true);
+
+    const router = useRouter()
+
+    const onDismiss = useCallback(() => {
+        setShow(e => !e)
+        router.back()
+    }, [router])
 
     return (
         <Modal
             size="xl"
+            show={show}
+            onClose={onDismiss}
             dismissible
-            onClose={() => onClose(!open)}
-            show={open}
         >
             <Modal.Body>
 
