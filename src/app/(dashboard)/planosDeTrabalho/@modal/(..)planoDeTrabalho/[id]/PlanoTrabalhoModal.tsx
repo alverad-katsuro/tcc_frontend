@@ -36,7 +36,10 @@ export default function PlanoTrabalhoModal({ planoTrabalho }: PlanoTrabalhoModal
                 <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                     <Link href={`/planoDeTrabalho/${planoTrabalho?.id}`} className="relative">
                         <img className="rounded-t-lg w-full" src={imageMock.src} alt="" />
-                        <Button className="absolute top-0 right-0 bg-blue-500 text-white rounded hover:bg-blue-800 w-fit" onClick={() => window.location.reload()}><BsArrowUpRightSquare size={20} /></Button>
+                        <div className="absolute top-0 right-0">
+                            <Button className="bg-white dark:bg-gray-800 w-fit m-2" onClick={() => window.location.reload()}><BsArrowUpRightSquare size={20} className="text-gray-900 dark:text-white"/></Button>
+
+                        </div>
                     </Link>
                     <div className="p-5">
                         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

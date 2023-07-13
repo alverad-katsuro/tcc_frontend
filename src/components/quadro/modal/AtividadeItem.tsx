@@ -42,10 +42,10 @@ const AtividadeItem = ({ atividade, remover }: AtividadeItemProps) => {
   }
 
   return (
-    <div onClick={() => setEditavel(e => !e)} className="flex items-center gap-2 p-3 bg-white border border-gray-200 shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+    <div className="flex items-center gap-2 p-3 bg-white border border-gray-200 shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
       <div className="flex-auto flex items-center gap-2 p-3">
         <Checkbox id={atividade.id} />
-        <p className=" text-gray-900 dark:text-white self-center text-center">
+        <p className=" text-gray-900 dark:text-white self-center text-center" onClick={() => setEditavel(e => !e)}>
           {atividade.titulo}
         </p>
       </div>
