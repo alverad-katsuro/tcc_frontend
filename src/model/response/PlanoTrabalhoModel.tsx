@@ -1,7 +1,7 @@
 import { RecursoMaterialModel } from "./RecursoMaterialModel";
 
 export interface PlanoTrabalhoModel {
-    id: number;
+    id?: number;
     titulo: string;
     areaTrabalho: string;
     descricao: string;

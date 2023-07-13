@@ -28,7 +28,6 @@ const Header: FC<Record<string, never>> = function () {
 
                 <div className="flex md:order-2">
                     <HeaderAvatar />
-                    <DarkThemeToggle className="mx-2 lg:ml-6" />
                     <Navbar.Toggle />
                 </div>
                 <Navbar.Collapse>
