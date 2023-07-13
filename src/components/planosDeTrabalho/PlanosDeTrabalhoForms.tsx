@@ -35,9 +35,9 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
         enableReinitialize: true,
         validationSchema: validationSchema,
         onSubmit: (values, { resetForm }) => {
-            salvarPlanoTrabalho(values).then(({data, response}) => {
+            salvarPlanoTrabalho(values).then(({ data, response }) => {
                 notification(data, 'success');
-                window.location.href = `/planosDeTrabalho/${(response.headers.location as string).split("/").pop()}`
+                window.location.href = `/planoDeTrabalho/${(response.headers.location as string).split("/").pop()}`
             }).catch((error) => console.log(error));
         }
     })

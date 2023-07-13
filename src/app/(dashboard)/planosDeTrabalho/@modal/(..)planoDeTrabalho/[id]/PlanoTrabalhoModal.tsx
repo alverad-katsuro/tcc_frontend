@@ -3,9 +3,9 @@ import { Button, Modal } from "@/components/flowbite-components";
 import imageMock from "@/images/bannerUFPA.png";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { MouseEventHandler, useCallback, useEffect, useRef, useState } from "react";
-
+import { useRouter } from "next/navigation";
+import { useCallback, useState } from "react";
+import { BsArrowUpRightSquare } from "react-icons/bs";
 
 export interface PlanoTrabalhoModalProps {
     onClose?: (open: boolean) => void;
@@ -15,11 +15,9 @@ export interface PlanoTrabalhoModalProps {
 
 export default function PlanoTrabalhoModal({ planoTrabalho }: PlanoTrabalhoModalProps) {
 
-    const asPath = usePathname()
-
     const [show, setShow] = useState<boolean>(true);
 
-    const router = useRouter()
+    const router = useRouter();
 
     const onDismiss = useCallback(() => {
         setShow(e => !e)
@@ -36,8 +34,9 @@ export default function PlanoTrabalhoModal({ planoTrabalho }: PlanoTrabalhoModal
             <Modal.Body>
 
                 <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                    <Link href={`${asPath}/${planoTrabalho?.id}`}>
+                    <Link href={`/planoDeTrabalho/${planoTrabalho?.id}`} className="relative">
                         <img className="rounded-t-lg w-full" src={imageMock.src} alt="" />
+                        <Button className="absolute top-0 right-0 bg-blue-500 text-white rounded hover:bg-blue-800 w-fit" onClick={() => window.location.reload()}><BsArrowUpRightSquare size={20} /></Button>
                     </Link>
                     <div className="p-5">
                         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
