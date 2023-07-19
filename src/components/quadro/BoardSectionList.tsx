@@ -156,8 +156,8 @@ function BoardSectionList({ tarefasIniciais }: Props) {
     setTarefas((tarefas) => {
       tarefas.unshift({
         id: String(tarefas.length + 1),
-        titulo: "sad saddsa",
-        descricao: "In hac habitasse platea dictumst.",
+        titulo: "Sem Titulo",
+        descricao: "",
         status: ColunaKanban.TODO
       })
       return (tarefas)

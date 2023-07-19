@@ -4,6 +4,7 @@ import DataRangeCustom from "@/components/quadro/DataRangeCustom";
 import AtividadesSelectionList from "@/components/quadro/modal/AtividadesSelectionList";
 import { TarefaDocument } from "@/model/quadro";
 import { useRef } from "react";
+import TituloTarefa from "./TituloTarefa";
 
 
 export interface DescricaoModalProps {
@@ -34,9 +35,7 @@ export default function DescricaoModal({ task, setOpen, open }: DescricaoModalPr
                 <Modal.Body>
                     <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5">
 
-                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                            {task?.titulo}
-                        </h5>
+                        <TituloTarefa titulo={task?.titulo} />
                         <div className="flex-col flex sm:flex-row ">
                             <div className="flex-auto">
                                 <div className="p-5 space-y-6">

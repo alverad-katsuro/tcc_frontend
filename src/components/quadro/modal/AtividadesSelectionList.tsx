@@ -1,4 +1,4 @@
-import { AtividadeModel, BoardSections } from "@/model/atividades/index";
+import { AtividadeModel } from "@/model/atividades/index";
 import { getTaskById } from '@/model/atividades/tasks';
 import {
   DndContext,
