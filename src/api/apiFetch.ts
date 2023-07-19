@@ -19,6 +19,6 @@ export async function consultarTarefas(quadro: number): Promise<TarefaDocument[]
         method: 'GET', cache: "no-cache", headers: {
             "Authorization": recuperarToken()!
         }
-    }).then(r => r.json());
+    }).then(r => r.status === 200 ? r.json() : []);
     return resp;
 }
