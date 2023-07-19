@@ -1,5 +1,7 @@
+"use client";
+import DescricaoModal from '@/app/(dashboard)/quadros/[id]/DescricaoModal';
 import { findBoardSectionContainer, initializeBoard } from '@/model/quadro/board';
-import { BoardSections, Task } from "@/model/quadro/index";
+import { BoardSections, ColunaKanban, TarefaDocument } from "@/model/quadro/index";
 import { getTaskById } from '@/model/quadro/tasks';
 import {
   DndContext,
@@ -17,23 +19,24 @@ import {
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useState } from 'react';
-import { INITIAL_TASKS } from '../../data';
 import BoardSection from './BoardSection';
 import TaskItem from './TaskItem';
-import DescricaoModal from '@/app/(dashboard)/quadros/[id]/DescricaoModal';
+import { Button } from 'flowbite-react';
 
-
-const BoardSectionList = () => {
-  const tasks = INITIAL_TASKS;
-  const initialBoardSections = initializeBoard(INITIAL_TASKS);
+export interface Props {
+  tarefasIniciais: TarefaDocument[];
+}
+function BoardSectionList({ tarefasIniciais }: Props) {
+  const [tarefas, setTarefas] = useState<TarefaDocument[]>(tarefasIniciais);
+  const initialBoardSections = initializeBoard(tarefas);
   const [boardSections, setBoardSections] =
     useState<BoardSections>(initialBoardSections);
 
   const [open, setOpen] = useState<boolean>(false);
 
-  const [taskModal, setTaskModal] = useState<Task | undefined>();
+  const [taskModal, setTaskModal] = useState<TarefaDocument | undefined>();
 
-  function openModal(task: Task) {
+  function openModal(task: TarefaDocument) {
     setOpen(!open);
     setTaskModal(task);
   }
@@ -146,36 +149,62 @@ const BoardSectionList = () => {
     ...defaultDropAnimation,
   };
 
-  const task = activeTaskId ? getTaskById(tasks, activeTaskId) : null;
+  console.log(activeTaskId)
+  const task = activeTaskId ? getTaskById(tarefas, activeTaskId) : null;
+  console.log(task)
+  function addTask() {
+    setTarefas((tarefas) => {
+      tarefas.unshift({
+        id: String(tarefas.length + 1),
+        titulo: "sad saddsa",
+        descricao: "In hac habitasse platea dictumst.",
+        status: ColunaKanban.TODO
+      })
+      return (tarefas)
+    });
+    console.log(tarefas);
+    setBoardSections((boardSection) => {
+    const newTodoTasks = [
+      tarefas[0],
+      ...boardSection[ColunaKanban.TODO] // Copiar as tarefas existentes da coluna "TODO"
+    ];
 
-  return (
-    <div>
-      <DescricaoModal open={open} setOpen={setOpen} task={taskModal}/>
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCorners}
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
-      >
-        <div className='grid grid-cols-3 gap-4' >
-          {Object.keys(boardSections).map((boardSectionKey) => (
-            <div key={boardSectionKey}>
-              <BoardSection
-                id={boardSectionKey}
-                title={boardSectionKey}
-                tasks={boardSections[boardSectionKey]}
-                onClick={openModal}
-              />
-            </div>
-          ))}
-          <DragOverlay dropAnimation={dropAnimation}>
-            {task ? <TaskItem task={task} onClick={openModal} /> : null}
-          </DragOverlay>
-        </div>
-      </DndContext>
-    </div>
-  );
+    return {
+      ...boardSection,
+      [ColunaKanban.TODO]: newTodoTasks
+    };
+  });
+}
+
+return (
+  <div>
+    <DescricaoModal open={open} setOpen={setOpen} task={taskModal} />
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCorners}
+      onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
+      onDragEnd={handleDragEnd}
+    >
+      <div className='grid grid-cols-3 gap-4' >
+        {Object.keys(boardSections).map((boardSectionKey) => (
+          <div key={boardSectionKey}>
+            <BoardSection
+              id={boardSectionKey}
+              title={boardSectionKey as ColunaKanban}
+              tasks={boardSections[boardSectionKey]}
+              onClick={openModal}
+              addTask={addTask}
+            />
+          </div>
+        ))}
+        <DragOverlay dropAnimation={dropAnimation}>
+          {task ? <TaskItem task={task} onClick={openModal} /> : null}
+        </DragOverlay>
+      </div>
+    </DndContext>
+  </div>
+);
 };
 
 export default BoardSectionList;

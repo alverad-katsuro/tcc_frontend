@@ -10,15 +10,13 @@ export const metadata = {
 
 function RootLayout({ children }: { children: React.ReactNode; }) {
   return (
-    <html lang="pt-BR">
-      <body className='flex h-screen w-full flex-col overflow-hidden'>
+      <div className='flex h-screen w-full flex-col overflow-hidden'>
         <AuthProvider>
           <SnackbarProvider maxSnack={5}>
             <FlowbiteContext>{children}</FlowbiteContext>
           </SnackbarProvider>
         </AuthProvider>
-      </body>
-    </html>
+    </div>
   );
 };
 export default RootLayout;

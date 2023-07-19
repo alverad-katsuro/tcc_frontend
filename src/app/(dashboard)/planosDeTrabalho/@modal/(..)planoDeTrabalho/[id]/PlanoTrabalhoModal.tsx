@@ -8,8 +8,6 @@ import { useCallback, useState } from "react";
 import { BsArrowUpRightSquare } from "react-icons/bs";
 
 export interface PlanoTrabalhoModalProps {
-    onClose?: (open: boolean) => void;
-    open?: boolean;
     planoTrabalho: PlanoTrabalhoModel;
 }
 

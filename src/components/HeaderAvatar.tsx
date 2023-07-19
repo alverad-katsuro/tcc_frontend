@@ -1,5 +1,6 @@
 import { Dropdown, Avatar } from "@/components/flowbite-components"
 import { useAuthContext } from "@/context/AuthenticateContext";
+import { KEYCLOAK_AUTH_URL } from "@/service/oauth";
 import Link from "next/link"
 
 export default function HeaderAvatar() {
@@ -36,7 +37,7 @@ export default function HeaderAvatar() {
                     Sign out
                 </Dropdown.Item>
             </Dropdown >
-            : <Link href="/login">
+            : <Link href={KEYCLOAK_AUTH_URL}>
                 <Avatar alt="User settings" rounded={true} />
             </Link>
     )

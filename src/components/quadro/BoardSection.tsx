@@ -1,4 +1,4 @@
-import { Task } from '@/model/quadro';
+import { ColunaKanban, TarefaDocument } from '@/model/quadro';
 import { useDroppable } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -6,43 +6,46 @@ import {
 } from '@dnd-kit/sortable';
 import SortableTaskItem from './SortableTaskItem';
 import TaskItem from './TaskItem';
+import BoardTitulo from './BoardTitulo';
 
 type BoardSectionProps = {
   id: string;
-  title: string;
-  tasks: Task[];
-  onClick: (task: Task) => void;
+  title: ColunaKanban;
+  tasks: TarefaDocument[];
+  onClick: (task: TarefaDocument) => void;
+  addTask: () => void;
 };
 
-const BoardSection = ({ id, title, tasks, onClick }: BoardSectionProps) => {
+const BoardSection = ({ id, title, tasks, onClick, addTask }: BoardSectionProps) => {
   const { setNodeRef } = useDroppable({
     id,
   });
 
   return (
-    <div className=''>
-      <h1 className="block text-3xl text-center font-bold tracking-tight text-gray-900 dark:text-white p-4">{title}</h1>
+    <div className="grid gap-4 p-6 mx-auto w-full bg-white border border-gray-200 rounded-lg shadow  dark:bg-gray-800 dark:border-gray-700">
+
+      <BoardTitulo titulo={title} addTask={addTask} />
 
       <div className='block h-full overflow-auto'>
-      <SortableContext
-        id={id}
-        items={tasks}
-        strategy={verticalListSortingStrategy}
-      >
-        <div className='h-screen'>
+        <SortableContext
+          id={id}
+          items={tasks}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className='h-screen'>
 
-          <div ref={setNodeRef} className='grid gap-4 overflow-auto'>
-            {tasks.map((task) => (
-              <div key={task.id}>
-                <SortableTaskItem id={task.id}>
-                  <TaskItem task={task} onClick={onClick} />
-                </SortableTaskItem>
-              </div>
-            ))}
+            <div ref={setNodeRef} className='grid gap-4 overflow-auto'>
+              {tasks.map((task) => (
+                <div key={task.id}>
+                  <SortableTaskItem id={task.id}>
+                    <TaskItem task={task} onClick={onClick} />
+                  </SortableTaskItem>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </SortableContext>
-    </div>
+        </SortableContext>
+      </div>
     </div>
   );
 };

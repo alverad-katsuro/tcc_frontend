@@ -1,16 +1,16 @@
-import { BoardSections, Status, Task } from ".";
+import { BoardSections, ColunaKanban, TarefaDocument } from ".";
 import { BOARD_SECTIONS } from "./BoardSections";
 import { getTasksByStatus } from "./tasks";
 
-export const initializeBoard = (tasks: Task[]) => {
+export const initializeBoard = (tasks: TarefaDocument[]) => {
   const boardSections: BoardSections = {};
 
-  Object.keys(BOARD_SECTIONS).forEach((boardSectionKey) => {
+  Object.keys(ColunaKanban).forEach((boardSectionKey) => {
     boardSections[boardSectionKey] = getTasksByStatus(
       tasks,
-      boardSectionKey as Status
-    );
-  });
+      ColunaKanban[boardSectionKey as keyof typeof ColunaKanban]
+      );
+    });
 
   return boardSections;
 };

@@ -3,19 +3,19 @@ import { Button, Modal } from "@/components/flowbite-components";
 import DataRangeCustom from "@/components/quadro/DataRangeCustom";
 import AtividadesSelectionList from "@/components/quadro/modal/AtividadesSelectionList";
 import { TarefaDocument } from "@/model/quadro";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 
 export interface DescricaoModalProps {
     task?: TarefaDocument;
-    open: boolean;
-    setOpen: (open: boolean) => void;
 }
 
 
-export default function DescricaoModal({ task, setOpen, open }: DescricaoModalProps) {
+export default function DescricaoTarefa({ task }: DescricaoModalProps) {
 
     const rootRef = useRef<HTMLDivElement>(null);
+
+    const [show, setShow] = useState<boolean>(true);
 
     function save(e: any) {
         console.log(e);
@@ -28,8 +28,8 @@ export default function DescricaoModal({ task, setOpen, open }: DescricaoModalPr
             <Modal
                 root={rootRef.current ?? undefined}
                 dismissible
-                show={open}
-                onClose={() => setOpen(!open)}
+                show={show}
+                onClose={() => setShow(e => !e)}
             >
                 <Modal.Body>
                     <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5">

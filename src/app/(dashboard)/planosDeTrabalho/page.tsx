@@ -22,6 +22,7 @@ export default async function PlanosDeTrabalho() {
     return (
 
         <main className="flex flex-col items-center justify-between p-16 overflow-auto">
+            
             <PlanoTrabalhoLista planosTrabalhos={planos.content}/>
 
         </main>
