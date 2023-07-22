@@ -39,9 +39,9 @@ export default function SidebarStyled(): JSX.Element {
                 <Sidebar.Item href="/planosDeTrabalho" icon={AiOutlineSearch}>
                   Visualizar
                 </Sidebar.Item>
-                <Sidebar.Item href="/planosDeTrabalho/remover" icon={AiFillMinusCircle} >
+                {/* <Sidebar.Item href="/planosDeTrabalho/remover" icon={AiFillMinusCircle} >
                   Remover
-                </Sidebar.Item>
+                </Sidebar.Item> */}
               </Sidebar.Collapse> :
               <Sidebar.Item href="/planosDeTrabalho" icon={MdOutlineWork}>
                 Planos de Trabalho

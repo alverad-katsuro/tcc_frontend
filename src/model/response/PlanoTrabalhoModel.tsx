@@ -1,3 +1,4 @@
+import { ObjetivoModel } from "./ObjetivoModel";
 import { RecursoMaterialModel } from "./RecursoMaterialModel";
 
 export interface PlanoTrabalhoModel {
@@ -6,4 +7,6 @@ export interface PlanoTrabalhoModel {
     areaTrabalho: string;
     descricao: string;
     recursoMateriais: RecursoMaterialModel[];
+    objetivos: ObjetivoModel[];
+
 }

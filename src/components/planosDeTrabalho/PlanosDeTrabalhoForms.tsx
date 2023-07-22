@@ -23,7 +23,6 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
         descricao: string().required("Campo obrigatório."),
         recursoMateriais: array().of(object<RecursoMaterialModel>(
             {
-                id: number().required("Campo obrigatório."),
                 descricao: string().required("Campo obrigatório.")
             }
         )).min(1, "No minimo 1 recurso material.").required("Campo obrigatório.")
@@ -52,6 +51,7 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
 
     function novoRecursoMaterial() {
         formik.setFieldValue(`recursoMateriais.[${formik.values.recursoMateriais.length}].descricao`, "").catch((e) => { notification(e, 'warning') });
+        formik.setFieldValue(`recursoMateriais.[${formik.values.recursoMateriais.length}].id`, 0).catch((e) => { notification(e, 'warning') });
     }
 
     function removeRecursoMaterial(index: number) {
@@ -141,7 +141,7 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
             </div>
 
             <div className="flex gap-4 place-self-center">
-                <Button className="w-fit justify-self-center" type="submit">Salvar</Button>
+                <Button className="w-fit justify-self-center" type="submit" onClick={() => console.log(formik.errors)}>Salvar</Button>
                 {props.plano.id ?
                     <Button className="w-fit justify-self-center" color={'red'} onClick={deletePlano}>Deletar Plano de Trabalho</Button>
                     : <></>}
