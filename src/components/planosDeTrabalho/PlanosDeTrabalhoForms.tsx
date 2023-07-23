@@ -1,21 +1,25 @@
 "use client";
 
 import { deletarPlanoTrabalho, salvarPlanoTrabalho } from "@/api/api";
-import { Button, Label, TextInput } from "@/components/flowbite-components";
+import { Button, Label, Table, TextInput } from "@/components/flowbite-components";
+import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
+import { ObjetivoModel } from "@/model/response/ObjetivoModel";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import { RecursoMaterialModel } from "@/model/response/RecursoMaterialModel";
-import { AxiosResponse } from "axios";
 import { useFormik } from "formik";
 import { VariantType, enqueueSnackbar } from "notistack";
+import { useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
-import { array, number, object, string } from "yup";
+import { array, object, string } from "yup";
 import TinyCustomForm from "../TinyCustomForm";
+import ObjetivoForm from "./ObjetivoForm";
 import RecursosMateriaisForm from "./RecursosMateriaisForm";
 
 export interface PlanosDeTrabalhoFormsProps {
     plano: PlanoTrabalhoModel;
+    pesquisadores: UsuarioNovoPlanoProjection[];
 }
-export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps) {
+export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDeTrabalhoFormsProps) {
 
     const validationSchema = object<PlanoTrabalhoModel>({
         titulo: string().required("Campo obrigatório."),
@@ -25,24 +29,27 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
             {
                 descricao: string().required("Campo obrigatório.")
             }
-        )).min(1, "No minimo 1 recurso material.").required("Campo obrigatório.")
+        )).min(1, "No minimo 1 recurso material.").required("Campo obrigatório."),
+        objetivos: array().of(object<ObjetivoModel>(
+            {
+                descricao: string().required("Campo obrigatório.")
+            }
+        )).min(1, "No minimo 1 objetivo.").required("Campo obrigatório.")
     })
 
+    const [pesquisadoresState, setPesquisadoresState] = useState<UsuarioNovoPlanoProjection[]>(pesquisadores);
+
     const formik = useFormik({
-        initialValues: props.plano,
+        initialValues: plano,
         enableReinitialize: true,
         validationSchema: validationSchema,
         onSubmit: (values, { resetForm }) => {
             salvarPlanoTrabalho(values).then(({ data, response }) => {
                 notification(data, 'success');
                 window.location.href = `/planoDeTrabalho/${(response.headers.location as string).split("/").pop()}`
-            }).catch((error) => console.log(error));
+            });
         }
     })
-
-    function verificarString(response: string | AxiosResponse<string, any>): response is string {
-        return typeof response === 'string';
-    }
 
     function notification(mensagem: string, variant: VariantType): void {
         // variant could be success, error, warning, info, or default
@@ -51,11 +58,18 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
 
     function novoRecursoMaterial() {
         formik.setFieldValue(`recursoMateriais.[${formik.values.recursoMateriais.length}].descricao`, "").catch((e) => { notification(e, 'warning') });
-        formik.setFieldValue(`recursoMateriais.[${formik.values.recursoMateriais.length}].id`, 0).catch((e) => { notification(e, 'warning') });
     }
 
     function removeRecursoMaterial(index: number) {
         formik.setFieldValue("recursoMateriais", formik.values.recursoMateriais.filter((e, k) => k !== index)).catch((e) => { notification(e, 'warning') });
+    }
+
+    function novoObjetivo() {
+        formik.setFieldValue(`objetivos.[${formik.values.objetivos.length}].descricao`, "").catch((e) => { notification(e, 'warning') });
+    }
+
+    function removeObjetivo(index: number) {
+        formik.setFieldValue("objetivos", formik.values.objetivos.filter((e, k) => k !== index)).catch((e) => { notification(e, 'warning') });
     }
 
     function setTexto(texto: string) {
@@ -63,12 +77,17 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
     }
 
     function deletePlano() {
-        if (props.plano.id) {
-            deletarPlanoTrabalho(props.plano.id).then(() => {
+        if (plano.id) {
+            deletarPlanoTrabalho(plano.id).then(() => {
                 notification('Deletado com sucesso', 'success');
                 window.location.href = "/planosDeTrabalho"
             }).catch((error) => console.log(error));
         }
+    }
+
+    function adicionarRemoverPesquisador(pesquisador: UsuarioNovoPlanoProjection) {
+        pesquisador.participante = !pesquisador.participante;
+        formik.setFieldValue("pesquisadores", pesquisadoresState.filter(e => e.participante)).catch((e) => { notification(e, 'warning') });
     }
 
     return (
@@ -121,17 +140,78 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
                         color={formik.errors.descricao ? "failure" : undefined}
                     />
                 </div>
-                <TinyCustomForm descricao={formik.values?.descricao} onSave={setTexto} isEditavel={props.plano.id ? false : true} />
+                <TinyCustomForm descricao={formik.values?.descricao} onSave={setTexto} isEditavel={plano.id ? false : true} />
+            </div>
+            <div className="col-span-full grid gap-4">
+                <div className="grid grid-cols-2">
+                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white self-center">Objetivos</h5>
+                    <Button className="place-self-end w-fit self-center" onClick={novoObjetivo} >
+                        <AiOutlinePlusCircle className="text-2xl " />
+                    </Button>
+                </div>
+                <div className="col-span-full grid gap-5">
+
+                    {typeof formik.errors.objetivos === 'string' ? <p className="text-red-500">{formik.errors.objetivos.toString()}</p> : <></>}
+
+                    {formik.values.objetivos.map((e, i) =>
+                        <ObjetivoForm formik={formik} index={i} key={i} removeItem={removeObjetivo} />
+                    )}
+
+                </div>
+            </div>
+            <div className="flex flex-col gap-4">
+                <div className="grid grid-cols-2">
+                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white self-center">Recursos Humanos</h5>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex-auto  max-h-60">
+                        <Table hoverable>
+                            <Table.Head>
+                                <Table.HeadCell>
+                                    Pesquisadores Disponiveis
+                                </Table.HeadCell>
+                            </Table.Head>
+                            <Table.Body className="divide-y">
+                                {pesquisadoresState.filter(e => !e.participante).map((e) =>
+                                    <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={e.id} onClick={() => adicionarRemoverPesquisador(e)}>
+                                        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                            {e.nome}
+                                        </Table.Cell>
+                                    </Table.Row>
+                                )}
+                            </Table.Body>
+                        </Table>
+                    </div>
+                    <div className="flex-auto max-h-60">
+                        <Table hoverable>
+                            <Table.Head>
+                                <Table.HeadCell>
+                                    Pesquisadores no projeto
+                                </Table.HeadCell>
+                            </Table.Head>
+                            <Table.Body className="divide-y">
+                                {pesquisadoresState.filter(e => e.participante).map((e) =>
+                                    <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={e.id} onClick={() => adicionarRemoverPesquisador(e)}>
+                                        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                            {e.nome}
+                                        </Table.Cell>
+                                    </Table.Row>
+                                )}
+                            </Table.Body>
+                        </Table>
+                    </div>
+                </div>
             </div>
             <div className="col-span-full grid gap-4">
                 <div className="grid grid-cols-2">
                     <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white self-center">Recursos Materiais</h5>
-
                     <Button className="place-self-end w-fit self-center" onClick={novoRecursoMaterial} >
                         <AiOutlinePlusCircle className="text-2xl " />
                     </Button>
                 </div>
                 <div className="col-span-full grid gap-5">
+
+                    {typeof formik.errors.recursoMateriais === 'string' ? <p className="text-red-500">{formik.errors.recursoMateriais.toString()}</p> : <></>}
 
                     {formik.values.recursoMateriais.map((e, i) =>
                         <RecursosMateriaisForm formik={formik} index={i} key={i} removeItem={removeRecursoMaterial} />
@@ -141,8 +221,8 @@ export default function PlanosDeTrabalhoForms(props: PlanosDeTrabalhoFormsProps)
             </div>
 
             <div className="flex gap-4 place-self-center">
-                <Button className="w-fit justify-self-center" type="submit" onClick={() => console.log(formik.errors)}>Salvar</Button>
-                {props.plano.id ?
+                <Button className="w-fit justify-self-center" type="submit">Salvar</Button>
+                {plano.id ?
                     <Button className="w-fit justify-self-center" color={'red'} onClick={deletePlano}>Deletar Plano de Trabalho</Button>
                     : <></>}
 

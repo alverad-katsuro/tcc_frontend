@@ -1,5 +1,5 @@
 'use client';
-import { DarkThemeToggle, Navbar } from "@/components/flowbite-components";
+import { Navbar } from "@/components/flowbite-components";
 import { usePathname } from 'next/navigation';
 import { FC } from "react";
 import HeaderAvatar from "./HeaderAvatar";
@@ -37,8 +37,8 @@ const Header: FC<Record<string, never>> = function () {
                     >
                         Home
                     </Navbar.Link>
-                    <Navbar.Link href="/planosDeTrabalho"
-                        active={path === "/planosDeTrabalho"}
+                    <Navbar.Link href="/planoDeTrabalho"
+                        active={path === "/planoDeTrabalho"}
                     >
                         Planos de Trabalho
                     </Navbar.Link>
