@@ -1,6 +1,7 @@
 import { Label, TextInput } from "@/components/flowbite-components";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import RecursosMateriaisSimple from "./RecursosMateriaisSimple";
+import ObjetivoSimple from "./ObjetivoSimple";
 
 export interface PlanosDeTrabalhoFormsProps {
     plano: PlanoTrabalhoModel;
@@ -47,6 +48,18 @@ export default function PlanoDeTrabalhoSimple({ plano }: PlanosDeTrabalhoFormsPr
                     />
                 </div>
                 <div dangerouslySetInnerHTML={{ __html: plano.descricao }} className=' text-gray-900 dark:text-white my-4 flex-auto overflow-auto max-h-64' />
+            </div>
+            <div className="col-span-full grid gap-4">
+                <div className="grid grid-cols-2">
+                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white self-center">Objetivos</h5>
+                </div>
+                <div className="col-span-full grid gap-5">
+
+                    {plano.objetivos.map((e, i) =>
+                        <ObjetivoSimple objetivo={e} key={e.id} />
+                    )}
+
+                </div>
             </div>
             <div className="col-span-full grid gap-4">
                 <div className="grid grid-cols-2">

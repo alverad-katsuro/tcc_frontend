@@ -67,7 +67,6 @@ apiAxios.interceptors.response.use(response => response, (error) => {
             break;
 
         default:
-            //notification(`Error: ${error.response.data.message}`, "error")
             return Promise.reject(error);
         //break;
     }

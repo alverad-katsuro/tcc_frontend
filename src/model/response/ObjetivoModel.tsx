@@ -1,4 +1,4 @@
 export interface ObjetivoModel {
-    id: number;
+    id?: number;
     descricao: string;
 }

@@ -1,3 +1,4 @@
+import { UsuarioNovoPlanoProjection } from "../planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { ObjetivoModel } from "./ObjetivoModel";
 import { RecursoMaterialModel } from "./RecursoMaterialModel";
 
@@ -8,5 +9,7 @@ export interface PlanoTrabalhoModel {
     descricao: string;
     recursoMateriais: RecursoMaterialModel[];
     objetivos: ObjetivoModel[];
+
+    pesquisadores?: UsuarioNovoPlanoProjection[]
 
 }

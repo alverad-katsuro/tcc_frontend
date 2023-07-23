@@ -3,7 +3,7 @@
 import { Button } from "@/components/flowbite-components";
 import { useAuthContext } from "@/context/AuthenticateContext";
 import { useSidebarContext } from "@/context/SidebarContext";
-import { AiFillPlusCircle, AiFillMinusCircle, AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineSearch } from "react-icons/ai";
+import { AiFillPlusCircle, AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineSearch } from "react-icons/ai";
 import { BiBuoy } from "react-icons/bi";
 import {
   HiChartPie,
@@ -33,17 +33,17 @@ export default function SidebarStyled(): JSX.Element {
             </Sidebar.Item>
             {userDetails?.scope.includes("ROLE_ADMIN") ?
               <Sidebar.Collapse icon={MdOutlineWork} label="Planos de Trabalho">
-                <Sidebar.Item href="/planosDeTrabalho/novo" icon={AiFillPlusCircle} >
+                <Sidebar.Item href="/planoDeTrabalho/novo" icon={AiFillPlusCircle} >
                   Novo
                 </Sidebar.Item>
-                <Sidebar.Item href="/planosDeTrabalho" icon={AiOutlineSearch}>
+                <Sidebar.Item href="/planoDeTrabalho" icon={AiOutlineSearch}>
                   Visualizar
                 </Sidebar.Item>
                 {/* <Sidebar.Item href="/planosDeTrabalho/remover" icon={AiFillMinusCircle} >
                   Remover
                 </Sidebar.Item> */}
               </Sidebar.Collapse> :
-              <Sidebar.Item href="/planosDeTrabalho" icon={MdOutlineWork}>
+              <Sidebar.Item href="/planoDeTrabalho" icon={MdOutlineWork}>
                 Planos de Trabalho
               </Sidebar.Item>
 
