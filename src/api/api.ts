@@ -19,11 +19,6 @@ export async function loginAuth(data: UserLogin): Promise<TokenAuth> {
 
 // Plano de Trabalho
 
-export async function consultaPlanoTrabalho(id: number): Promise<PlanoTrabalhoModel> {
-    const resp = (await apiAxios.get<PlanoTrabalhoModel>(`/planoTrabalho/${id}`));
-    return resp.data;
-}
-
 export function salvarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: string, response: AxiosResponse<string, any> }> {
     return plano.id != undefined && plano.id > 0 ? atualizarPlanoTrabalho(plano) : criarPlanoTrabalho(plano);
 }

@@ -1,10 +1,12 @@
-import { Label, TextInput } from "@/components/flowbite-components";
+import { Label, Table, TextInput } from "@/components/flowbite-components";
+import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
-import RecursosMateriaisSimple from "./RecursosMateriaisSimple";
 import ObjetivoSimple from "./ObjetivoSimple";
+import RecursosMateriaisSimple from "./RecursosMateriaisSimple";
 
 export interface PlanosDeTrabalhoFormsProps {
     plano: PlanoTrabalhoModel;
+    pesquisadores: UsuarioNovoPlanoProjection[];
 }
 export default function PlanoDeTrabalhoSimple({ plano }: PlanosDeTrabalhoFormsProps) {
 
@@ -59,6 +61,31 @@ export default function PlanoDeTrabalhoSimple({ plano }: PlanosDeTrabalhoFormsPr
                         <ObjetivoSimple objetivo={e} key={e.id} />
                     )}
 
+                </div>
+            </div>
+            <div className="flex flex-col gap-4">
+                <div className="grid grid-cols-2">
+                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white self-center">Recursos Humanos</h5>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <div className="flex-auto  max-h-60">
+                        <Table hoverable>
+                            <Table.Head>
+                                <Table.HeadCell>
+                                    Pesquisadores Disponiveis
+                                </Table.HeadCell>
+                            </Table.Head>
+                            <Table.Body className="divide-y">
+                                {plano.pesquisadores?.map((e) =>
+                                    <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={e.id}>
+                                        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                            {e.nome}
+                                        </Table.Cell>
+                                    </Table.Row>
+                                )}
+                            </Table.Body>
+                        </Table>
+                    </div>
                 </div>
             </div>
             <div className="col-span-full grid gap-4">

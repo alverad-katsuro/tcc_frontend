@@ -10,6 +10,6 @@ export interface PlanoTrabalhoModel {
     recursoMateriais: RecursoMaterialModel[];
     objetivos: ObjetivoModel[];
 
-    pesquisadores?: UsuarioNovoPlanoProjection[]
+    pesquisadores?: UsuarioNovoPlanoProjection[];
 
 }
