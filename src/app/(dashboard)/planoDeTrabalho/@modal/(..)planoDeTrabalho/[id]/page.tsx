@@ -1,5 +1,4 @@
-"use client";
-import { consultaPlanoTrabalho } from "@/api/api";
+import { consultaPlanoTrabalho } from "@/api/apiFetch";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import PlanoTrabalhoModal from "./PlanoTrabalhoModal";
 

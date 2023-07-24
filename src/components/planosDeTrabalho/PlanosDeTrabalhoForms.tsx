@@ -1,7 +1,7 @@
 "use client";
 
 import { deletarPlanoTrabalho, salvarPlanoTrabalho } from "@/api/api";
-import { Button, Label, Table, TextInput } from "@/components/flowbite-components";
+import { Button, Checkbox, Label, Table, TextInput } from "@/components/flowbite-components";
 import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { ObjetivoModel } from "@/model/response/ObjetivoModel";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
@@ -168,32 +168,26 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDe
                         <Table hoverable>
                             <Table.Head>
                                 <Table.HeadCell>
-                                    Pesquisadores Disponiveis
+                                    Participante
+                                </Table.HeadCell>
+                                <Table.HeadCell>
+                                    Nome
+                                </Table.HeadCell>
+                                <Table.HeadCell>
+                                    Carga Horaria
                                 </Table.HeadCell>
                             </Table.Head>
                             <Table.Body className="divide-y">
-                                {pesquisadoresState.filter(e => !e.participante).map((e) =>
-                                    <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={e.id} onClick={() => adicionarRemoverPesquisador(e)}>
+                                {pesquisadoresState.map((e) =>
+                                    <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={e.id}>
+                                        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                                            <Checkbox defaultValue={String(e.participante)} onClick={() => adicionarRemoverPesquisador(e)} />
+                                        </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                             {e.nome}
                                         </Table.Cell>
-                                    </Table.Row>
-                                )}
-                            </Table.Body>
-                        </Table>
-                    </div>
-                    <div className="flex-auto max-h-60">
-                        <Table hoverable>
-                            <Table.Head>
-                                <Table.HeadCell>
-                                    Pesquisadores no projeto
-                                </Table.HeadCell>
-                            </Table.Head>
-                            <Table.Body className="divide-y">
-                                {pesquisadoresState.filter(e => e.participante).map((e) =>
-                                    <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={e.id} onClick={() => adicionarRemoverPesquisador(e)}>
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                            {e.nome}
+                                            {e.cargaHoraria}
                                         </Table.Cell>
                                     </Table.Row>
                                 )}

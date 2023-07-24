@@ -26,7 +26,7 @@ export async function consultarTarefas(quadro: number): Promise<TarefaDocument[]
 }
 
 export async function consultarPesquisadores(planoId: number = 0): Promise<UsuarioNovoPlanoProjection[]> {
-    const resp: Promise<UsuarioNovoPlanoProjection[]> = fetch(apiAddress + `/usuario/estaNoPlanoTrabalho?planoTrabalhoId=${planoId}`, {
+    const resp: Promise<UsuarioNovoPlanoProjection[]> = fetch(apiAddress + `/usuarioPlanoTrabalho/estaNoPlanoTrabalho?planoTrabalhoId=${planoId}`, {
         method: 'GET', cache: "no-cache", headers: {
             "Authorization": recuperarToken()!
         }
