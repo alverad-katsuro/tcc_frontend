@@ -154,7 +154,7 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDe
                     {typeof formik.errors.objetivos === 'string' ? <p className="text-red-500">{formik.errors.objetivos.toString()}</p> : <></>}
 
                     {formik.values.objetivos.map((e, i) =>
-                        <ObjetivoForm formik={formik} index={i} key={i} removeItem={removeObjetivo} />
+                        <ObjetivoForm formik={formik} index={i} key={e.id} removeItem={removeObjetivo} />
                     )}
 
                 </div>
@@ -181,13 +181,13 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDe
                                 {pesquisadoresState.map((e) =>
                                     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={e.id}>
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                            <Checkbox defaultValue={String(e.participante)} onClick={() => adicionarRemoverPesquisador(e)} />
+                                            <Checkbox defaultChecked={e.participante} onClick={() => adicionarRemoverPesquisador(e)} />
                                         </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                             {e.nome}
                                         </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                            {e.cargaHoraria}
+                                            <TextInput disabled={!e.participante} type="number" min={0} defaultValue={e.cargaHoraria} onChange={ev => e.cargaHoraria = Number(ev.currentTarget.value)} />
                                         </Table.Cell>
                                     </Table.Row>
                                 )}
@@ -208,7 +208,7 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDe
                     {typeof formik.errors.recursoMateriais === 'string' ? <p className="text-red-500">{formik.errors.recursoMateriais.toString()}</p> : <></>}
 
                     {formik.values.recursoMateriais.map((e, i) =>
-                        <RecursosMateriaisForm formik={formik} index={i} key={i} removeItem={removeRecursoMaterial} />
+                        <RecursosMateriaisForm formik={formik} index={i} key={e.id} removeItem={removeRecursoMaterial} />
                     )}
 
                 </div>

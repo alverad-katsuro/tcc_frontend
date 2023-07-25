@@ -13,7 +13,6 @@ export interface PlanosDeTrabalhoFormsProps {
 export default function PlanoDeTrabalhoView({ plano, pesquisadores }: PlanosDeTrabalhoFormsProps) {
 
     const { userDetails } = useAuthContext();
-
     if (userDetails?.scope.includes("ROLE_ADMIN")) {
         return <PlanosDeTrabalhoForms plano={plano} pesquisadores={pesquisadores} />
     } else {

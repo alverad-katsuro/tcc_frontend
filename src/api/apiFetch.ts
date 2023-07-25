@@ -39,7 +39,7 @@ export async function consultaPlanoTrabalho(id: number): Promise<PlanoTrabalhoMo
         method: 'GET', cache: "no-cache", headers: {
             "Authorization": recuperarToken()!
         }
-    }).then(r => r.status === 200 ? r.json() : []);
+    }).then(r => r.status === 200 ? r.json() : undefined);
     return resp;
 }
 
