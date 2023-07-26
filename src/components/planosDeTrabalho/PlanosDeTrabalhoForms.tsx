@@ -44,7 +44,10 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDe
         enableReinitialize: true,
         validationSchema: validationSchema,
         onSubmit: (values, { resetForm }) => {
-            salvarPlanoTrabalho(values).then(({ data, response }) => {
+            salvarPlanoTrabalho({
+                ...values,
+                pesquisadores: pesquisadoresState.filter(e => e.participante) // manda somente os selecionados
+            }).then(({ data, response }) => {
                 notification(data, 'success');
                 window.location.href = `/planoDeTrabalho/${(response.headers.location as string).split("/").pop()}`
             });
@@ -87,7 +90,6 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDe
 
     function adicionarRemoverPesquisador(pesquisador: UsuarioNovoPlanoProjection) {
         pesquisador.participante = !pesquisador.participante;
-        formik.setFieldValue("pesquisadores", pesquisadoresState.filter(e => e.participante)).catch((e) => { notification(e, 'warning') });
     }
 
     return (
