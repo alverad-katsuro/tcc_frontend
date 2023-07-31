@@ -13,36 +13,31 @@ export default function PlanoTrabalhoLista({ planosTrabalhos }: PlanoTrabalhoLis
 
     return (
 
-        <>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
 
-            <h1 className="mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">Planos de Trabalho</h1>
+            {planosTrabalhos.map((e) =>
+                <Link href={`/planoDeTrabalho/${e.id}`} key={e.id} >
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+                    <Card imgSrc={imageMock.src} key={e.id}>
+                        <div className="overflow-auto max-h-64 gap-4 gap flex flex-col">
+                            <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                <strong>Título:</strong> {e.titulo}
+                            </h5>
 
-                {planosTrabalhos.map((e) =>
-                    <Link href={`/planoDeTrabalho/${e.id}`} key={e.id} >
+                            <p className="font-normal text-gray-800 dark:text-white">
+                                {e.areaTrabalho}
+                            </p>
+                            <div dangerouslySetInnerHTML={{ __html: e.descricao }} className='text-gray-700 dark:text-gray-400 overflow-auto max-h-64' />
 
-                        <Card imgSrc={imageMock.src} key={e.id}>
-                            <div className="overflow-auto max-h-64 gap-4 gap flex flex-col">
-                                <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                    <strong>Título:</strong> {e.titulo}
-                                </h5>
+                        </div>
 
-                                <p className="font-normal text-gray-800 dark:text-white">
-                                    {e.areaTrabalho}
-                                </p>
-                                <div dangerouslySetInnerHTML={{ __html: e.descricao }} className='text-gray-700 dark:text-gray-400 overflow-auto max-h-64' />
-
-                            </div>
-
-                        </Card>
-                    </Link>
-                )}
+                    </Card>
+                </Link>
+            )}
 
 
-            </div>
+        </div>
 
-        </>
 
 
     )

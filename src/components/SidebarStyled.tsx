@@ -5,6 +5,7 @@ import { useAuthContext } from "@/context/AuthenticateContext";
 import { useSidebarContext } from "@/context/SidebarContext";
 import { AiFillPlusCircle, AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineSearch } from "react-icons/ai";
 import { BiBuoy } from "react-icons/bi";
+import { BsFillPeopleFill } from "react-icons/bs";
 import {
   HiChartPie,
   HiViewBoards
@@ -39,14 +40,23 @@ export default function SidebarStyled(): JSX.Element {
                 <Sidebar.Item href="/planoDeTrabalho" icon={AiOutlineSearch}>
                   Visualizar
                 </Sidebar.Item>
-                {/* <Sidebar.Item href="/planosDeTrabalho/remover" icon={AiFillMinusCircle} >
-                  Remover
-                </Sidebar.Item> */}
               </Sidebar.Collapse> :
               <Sidebar.Item href="/planoDeTrabalho" icon={MdOutlineWork}>
                 Planos de Trabalho
               </Sidebar.Item>
-
+            }
+            {userDetails?.scope.includes("ROLE_ADMIN") ?
+              <Sidebar.Collapse icon={BsFillPeopleFill} label="Processo Seletivo">
+                <Sidebar.Item href="/processoSeletivo/novo" icon={AiFillPlusCircle} >
+                  Novo
+                </Sidebar.Item>
+                <Sidebar.Item href="/processoSeletivo" icon={AiOutlineSearch}>
+                  Visualizar
+                </Sidebar.Item>
+              </Sidebar.Collapse> :
+              <Sidebar.Item href="/processoSeletivo" icon={BsFillPeopleFill}>
+                Processo Seletivo
+              </Sidebar.Item>
             }
           </Sidebar.ItemGroup>
           <Sidebar.ItemGroup>

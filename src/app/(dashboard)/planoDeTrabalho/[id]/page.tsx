@@ -8,7 +8,7 @@ export default async function AtualizarPlanoTrabalho({ params }: { params: { id:
     const plano: PlanoTrabalhoModel = await consultaPlanoTrabalho(params.id);
 
     const pesquisadores: UsuarioNovoPlanoProjection[] = await consultarPesquisadores(params.id);
-    console.log(plano);
+
     return (
         <main className="flex flex-col items-center justify-between p-16 overflow-auto gap-4">
 

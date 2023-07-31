@@ -42,6 +42,11 @@ const Header: FC<Record<string, never>> = function () {
                     >
                         Planos de Trabalho
                     </Navbar.Link>
+                    <Navbar.Link href="/processoSeletivo"
+                        active={path === "/processoSeletivo"}
+                    >
+                        Processos Seletivos
+                    </Navbar.Link>
                 </Navbar.Collapse>
             </Navbar>
         </header>

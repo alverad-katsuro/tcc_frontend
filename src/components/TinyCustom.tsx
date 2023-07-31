@@ -5,9 +5,10 @@ import { useEffect, useRef, useState } from 'react';
 export interface TinyCustomProps {
     texto?: string;
     setTexto?: (texto: string) => void;
+    id?: string;
 }
 
-export default function TinyCustom({ texto, setTexto }: TinyCustomProps) {
+export default function TinyCustom({ texto, setTexto, id = "textArea" }: TinyCustomProps) {
 
     const editorRef = useRef<any>(null);
 
@@ -24,7 +25,7 @@ export default function TinyCustom({ texto, setTexto }: TinyCustomProps) {
 
         <>
             <Editor
-                id='textArea'
+                id={id}
                 onInit={(evt, editor) => editorRef.current = editor}
                 apiKey='62cqow4ni7it7aic3ti7otiey0heae9aupfz6y9vayv9tfqf'
                 value={texto}

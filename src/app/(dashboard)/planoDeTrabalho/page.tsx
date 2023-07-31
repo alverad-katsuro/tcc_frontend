@@ -19,10 +19,13 @@ async function consultarPlanos(): Promise<PageInterface<PlanoTrabalhoModel>> {
 export default async function PlanosDeTrabalho() {
 
     const planos: PageInterface<PlanoTrabalhoModel> = await consultarPlanos();
+
     return (
 
         <main className="flex flex-col items-center justify-between p-16 overflow-auto">
-            
+
+            <h1 className="mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">Planos de Trabalho</h1>
+
             <PlanoTrabalhoLista planosTrabalhos={planos.content}/>
 
         </main>

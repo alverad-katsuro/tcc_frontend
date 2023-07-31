@@ -7,9 +7,11 @@ export interface TinyCustomProps {
     onSave: (texto: any) => void;
     descricao?: string;
     isEditavel?: boolean;
+    label?: React.ReactNode;
+    id?: string;
 }
 
-export default function TinyCustomForm({ onSave, descricao, isEditavel = false }: TinyCustomProps) {
+export default function TinyCustomForm({ onSave, descricao, isEditavel = false, label, id }: TinyCustomProps) {
 
     const [editar, setEditar] = useState<boolean>(isEditavel);
 
@@ -26,9 +28,11 @@ export default function TinyCustomForm({ onSave, descricao, isEditavel = false }
             <div>
 
                 <div className='flex-col flex sm:flex-row'>
-                    <h5 className="font-bold tracking-tight text-gray-900 dark:text-white my-4 flex-auto">
-                        Descrição
-                    </h5>
+                    {label ? label :
+                        <h5 className="font-bold tracking-tight text-gray-900 dark:text-white my-4 flex-auto">
+                            Descrição
+                        </h5>
+                    }
 
                     <div className='self-center'>
                         <ToggleSwitch
@@ -40,7 +44,7 @@ export default function TinyCustomForm({ onSave, descricao, isEditavel = false }
                 </div>
                 {editar ?
                     <div className='flex flex-col gap-4'>
-                        <TinyCustom setTexto={setTexto} texto={texto} />
+                        <TinyCustom setTexto={setTexto} texto={texto} id={id} />
                         <Button className='self-end w-fit' color={'green'} onClick={salvar}>Salvar</Button>
                     </div>
                     :

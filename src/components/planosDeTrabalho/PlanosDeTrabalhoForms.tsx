@@ -83,7 +83,7 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDe
         if (plano.id) {
             deletarPlanoTrabalho(plano.id).then(() => {
                 notification('Deletado com sucesso', 'success');
-                window.location.href = "/planosDeTrabalho"
+                window.location.href = "/planoDeTrabalho"
             }).catch((error) => console.log(error));
         }
     }
