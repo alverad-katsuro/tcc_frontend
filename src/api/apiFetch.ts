@@ -63,3 +63,10 @@ export async function consultaPlanoTrabalhosProcessoSeletivo(): Promise<Processo
     }).then(r => r.status === 200 ? r.json() : undefined);
     return resp;
 }
+
+// END
+
+// UsuarioProcessoSeleteivo
+
+
+// END
