@@ -108,7 +108,8 @@ export default function ProcessoSeletivoSimple({ processoSeletivo }: ProcessoSel
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                             {new Date(e.inscricao).toLocaleString("pt-BR", {
                                                 day: '2-digit',
-                                                month: '2-digit'
+                                                month: '2-digit',
+                                                year: "numeric"
                                             })
                                             }
                                         </Table.Cell>

@@ -5,6 +5,7 @@ import { PlanoTrabalhoModel } from '@/model/response/PlanoTrabalhoModel';
 import { AxiosResponse } from 'axios';
 import { VariantType, enqueueSnackbar } from 'notistack';
 import apiAxios from './apiOptions';
+import { InscricaoRequest } from '@/components/processoSeletivo/InscricaoModal';
 
 export async function loginAuth(data: UserLogin): Promise<TokenAuth> {
     const resp = (await apiAxios.post<TokenAuth>("/auth/login", data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, withCredentials: true }));
@@ -64,6 +65,15 @@ export async function deletarProcessoSeletivo(id: number) {
 
 export async function baixarArquivo(url: string): Promise<Blob> {
     const resp = (await apiAxios.get<Blob>(url));
+    return resp.data;
+}
+
+// END
+
+// Se Inscrever
+
+export async function criarInscricao(data: InscricaoRequest): Promise<string> {
+    const resp = (await apiAxios.postForm<string>("/usuarioProcessoSeletivo", data));
     return resp.data;
 }
 
