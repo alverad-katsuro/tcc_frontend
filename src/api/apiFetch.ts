@@ -18,7 +18,16 @@ export async function consultarQuadrosPainel(): Promise<PageInterface<QuadroPain
 
 
 export async function consultarTarefas(quadro: number): Promise<TarefaDocument[]> {
-    const resp: Promise<TarefaDocument[]> = fetch(apiAddress + `/tarefas/${quadro}`, {
+    const resp: Promise<TarefaDocument[]> = fetch(apiAddress + `/tarefa/quadro/${quadro}`, {
+        method: 'GET', cache: "no-cache", headers: {
+            "Authorization": recuperarToken()!
+        }
+    }).then(r => r.status === 200 ? r.json() : []);
+    return resp;
+}
+
+export async function consultarTarefa(id: string): Promise<TarefaDocument> {
+    const resp: Promise<TarefaDocument> = fetch(apiAddress + `/tarefa/${id}`, {
         method: 'GET', cache: "no-cache", headers: {
             "Authorization": recuperarToken()!
         }

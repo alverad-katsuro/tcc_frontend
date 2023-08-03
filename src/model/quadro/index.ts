@@ -5,18 +5,26 @@ export enum ColunaKanban {
 };
 
 export type TarefaDocument = {
-  id: string;
+
+  id?: string;
+
   titulo: string;
+
   descricao: string;
-  status: ColunaKanban;
+
+  colunaKanban: ColunaKanban;
 
   inicio?: Date;
 
   fim?: Date;
 
-  planoTrabalho?: number;
+  quadroId?: number;
 
   posicaoKanban?: number;
+
+  pai?: TarefaDocument;
+
+  objetivoId?: number;
 
   concluida?: boolean;
 
@@ -26,7 +34,7 @@ export type TarefaDocument = {
 
   responsavel?: number;
 
-  //List<Integer> resultadosObtidos;
+  resultadosObtidos?: number[];
 
   atividades?: AtividadeDocument[];
 
@@ -40,7 +48,7 @@ interface AtividadeDocument {
 
 interface ImpedimentoDocument {
   impedimento: string;
-  concluida: boolean;
+  dataOcorrido: Date;
 }
 
 export type BoardSections = {

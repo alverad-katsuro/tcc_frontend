@@ -8,7 +8,7 @@ export const initializeBoard = (tasks: TarefaDocument[]) => {
   Object.keys(ColunaKanban).forEach((boardSectionKey) => {
     boardSections[boardSectionKey] = getTasksByStatus(
       tasks,
-      ColunaKanban[boardSectionKey as keyof typeof ColunaKanban]
+      boardSectionKey as ColunaKanban
       );
     });
 

@@ -22,11 +22,13 @@ import { useState } from 'react';
 import BoardSection from './BoardSection';
 import TaskItem from './TaskItem';
 import { Button } from 'flowbite-react';
+import { criarTarefa } from '@/api/api';
 
 export interface Props {
   tarefasIniciais: TarefaDocument[];
+  quadroId: number;
 }
-function BoardSectionList({ tarefasIniciais }: Props) {
+function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
   const [tarefas, setTarefas] = useState<TarefaDocument[]>(tarefasIniciais);
   const initialBoardSections = initializeBoard(tarefas);
   const [boardSections, setBoardSections] =
@@ -149,62 +151,68 @@ function BoardSectionList({ tarefasIniciais }: Props) {
     ...defaultDropAnimation,
   };
 
-  console.log(activeTaskId)
   const task = activeTaskId ? getTaskById(tarefas, activeTaskId) : null;
-  console.log(task)
-  function addTask() {
+
+  async function addTask() {
+    const tarefa: TarefaDocument = {
+      titulo: "Sem Titulo",
+      descricao: "",
+      colunaKanban: ColunaKanban.TODO,
+      quadroId: quadroId
+    };
+    tarefa.id = await criarTarefa(tarefa);
     setTarefas((tarefas) => {
-      tarefas.unshift({
-        id: String(tarefas.length + 1),
-        titulo: "Sem Titulo",
-        descricao: "",
-        status: ColunaKanban.TODO
-      })
+      tarefas.unshift(tarefa)
+      for (let index = 0; index < tarefas.length; index++) {
+        tarefas[index].posicaoKanban = index;
+      }
       return (tarefas)
     });
-    console.log(tarefas);
     setBoardSections((boardSection) => {
-    const newTodoTasks = [
-      tarefas[0],
-      ...boardSection[ColunaKanban.TODO] // Copiar as tarefas existentes da coluna "TODO"
-    ];
+      const newTodoTasks = [
+        tarefas[0],
+        ...boardSection[ColunaKanban.TODO] // Copiar as tarefas existentes da coluna "TODO"
+      ];
 
-    return {
-      ...boardSection,
-      [ColunaKanban.TODO]: newTodoTasks
-    };
-  });
-}
+      return {
+        ...boardSection,
+        [ColunaKanban.TODO]: newTodoTasks
+      };
+    });
+  }
 
-return (
-  <div>
-    <DescricaoModal open={open} setOpen={setOpen} task={taskModal} />
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCorners}
-      onDragStart={handleDragStart}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}
-    >
-      <div className='grid grid-cols-3 gap-4' >
-        {Object.keys(boardSections).map((boardSectionKey) => (
-          <div key={boardSectionKey}>
-            <BoardSection
-              id={boardSectionKey}
-              title={boardSectionKey as ColunaKanban}
-              tasks={boardSections[boardSectionKey]}
-              onClick={openModal}
-              addTask={addTask}
-            />
-          </div>
-        ))}
-        <DragOverlay dropAnimation={dropAnimation}>
-          {task ? <TaskItem task={task} onClick={openModal} /> : null}
-        </DragOverlay>
-      </div>
-    </DndContext>
-  </div>
-);
+  return (
+    <div className='block h-full'>
+      <Button onClick={() => console.log(boardSections)}>asdasd</Button>
+      <DescricaoModal open={open} setOpen={setOpen} task={taskModal} />
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+      >
+        <div className='flex flex-row gap-4 h-full' >
+          {Object.keys(boardSections).map((boardSectionKey) => (
+            <div className='bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full sm:w-full max-w-xs mx-auto'
+              key={boardSectionKey}
+            >
+              <BoardSection
+                id={boardSectionKey}
+                title={boardSectionKey as ColunaKanban}
+                tasks={boardSections[boardSectionKey]}
+                onClick={openModal}
+                addTask={addTask}
+              />
+            </div>
+          ))}
+          <DragOverlay dropAnimation={dropAnimation}>
+            {task ? <TaskItem task={task} onClick={openModal} /> : null}
+          </DragOverlay>
+        </div>
+      </DndContext>
+    </div>
+  );
 };
 
 export default BoardSectionList;

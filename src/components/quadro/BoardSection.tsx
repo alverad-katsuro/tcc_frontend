@@ -22,30 +22,25 @@ const BoardSection = ({ id, title, tasks, onClick, addTask }: BoardSectionProps)
   });
 
   return (
-    <div className="grid gap-4 p-6 mx-auto w-full bg-white border border-gray-200 rounded-lg shadow  dark:bg-gray-800 dark:border-gray-700">
+    <div className="flex flex-col gap-4 h-full w-screen max-w-xs">
 
       <BoardTitulo titulo={title} addTask={addTask} />
 
-      <div className='block h-full overflow-auto'>
-        <SortableContext
-          id={id}
-          items={tasks}
-          strategy={verticalListSortingStrategy}
-        >
-          <div className='h-screen'>
-
-            <div ref={setNodeRef} className='grid gap-4 overflow-auto'>
-              {tasks.map((task) => (
-                <div key={task.id}>
-                  <SortableTaskItem id={task.id}>
-                    <TaskItem task={task} onClick={onClick} />
-                  </SortableTaskItem>
-                </div>
-              ))}
+      <SortableContext
+        id={id}
+        items={tasks}
+        strategy={verticalListSortingStrategy}
+      >
+        <div ref={setNodeRef} className='flex flex-col gap-4 overflow-auto'>
+          {tasks.map((task) => (
+            <div key={task.id}>
+              <SortableTaskItem id={task.id}>
+                <TaskItem task={task} onClick={onClick} />
+              </SortableTaskItem>
             </div>
-          </div>
-        </SortableContext>
-      </div>
+          ))}
+        </div>
+      </SortableContext>
     </div>
   );
 };
