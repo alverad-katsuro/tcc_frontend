@@ -1,4 +1,4 @@
-import { ColunaKanban, TarefaDocument } from '@/model/quadro';
+import { ColunaKanban, TarefaDTO } from '@/model/quadro';
 import { useDroppable } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -11,8 +11,8 @@ import BoardTitulo from './BoardTitulo';
 type BoardSectionProps = {
   id: string;
   title: ColunaKanban;
-  tasks: TarefaDocument[];
-  onClick: (task: TarefaDocument) => void;
+  tasks: TarefaDTO[];
+  onClick: (task: TarefaDTO) => void;
   addTask: () => void;
 };
 

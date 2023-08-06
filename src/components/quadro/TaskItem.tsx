@@ -1,9 +1,9 @@
-import { TarefaDocument } from "@/model/quadro";
+import { TarefaDTO } from "@/model/quadro";
 import { Avatar, Badge, Progress } from "flowbite-react";
 
 type TaskItemProps = {
-  task: TarefaDocument;
-  onClick: (task: TarefaDocument) => void;
+  task: TarefaDTO;
+  onClick: (task: TarefaDTO) => void;
 };
 
 const TaskItem = ({ task, onClick }: TaskItemProps) => {

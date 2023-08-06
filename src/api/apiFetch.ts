@@ -1,7 +1,7 @@
 import { PageInterface } from "@/interface/PageInterface";
 import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { ProcessoSeletivoDTO, ProcessoSeletivoPlanoTrabalhoDTO } from "@/model/processoSeletivo/ProcessoSeletivoDTO";
-import { TarefaDocument } from "@/model/quadro";
+import { TarefaDTO } from "@/model/quadro";
 import { QuadroPainelDTO } from "@/model/quadro/dto/QuadroPainelDTO";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import { recuperarToken } from "@/service/auth";
@@ -17,8 +17,8 @@ export async function consultarQuadrosPainel(): Promise<PageInterface<QuadroPain
 }
 
 
-export async function consultarTarefas(quadro: number): Promise<TarefaDocument[]> {
-    const resp: Promise<TarefaDocument[]> = fetch(apiAddress + `/tarefa/quadro/${quadro}`, {
+export async function consultarTarefas(quadro: number): Promise<TarefaDTO[]> {
+    const resp: Promise<TarefaDTO[]> = fetch(apiAddress + `/tarefa/quadro/${quadro}`, {
         method: 'GET', cache: "no-cache", headers: {
             "Authorization": recuperarToken()!
         }
@@ -26,8 +26,8 @@ export async function consultarTarefas(quadro: number): Promise<TarefaDocument[]
     return resp;
 }
 
-export async function consultarTarefa(id: string): Promise<TarefaDocument> {
-    const resp: Promise<TarefaDocument> = fetch(apiAddress + `/tarefa/${id}`, {
+export async function consultarTarefa(id: string): Promise<TarefaDTO> {
+    const resp: Promise<TarefaDTO> = fetch(apiAddress + `/tarefa/${id}`, {
         method: 'GET', cache: "no-cache", headers: {
             "Authorization": recuperarToken()!
         }

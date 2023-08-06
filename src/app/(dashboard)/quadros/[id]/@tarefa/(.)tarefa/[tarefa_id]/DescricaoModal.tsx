@@ -2,12 +2,12 @@ import TinyCustomForm from "@/components/TinyCustomForm";
 import { Button, Modal } from "@/components/flowbite-components";
 import DataRangeCustom from "@/components/quadro/DataRangeCustom";
 import AtividadesSelectionList from "@/components/quadro/modal/AtividadesSelectionList";
-import { TarefaDocument } from "@/model/quadro";
+import { TarefaDTO } from "@/model/quadro";
 import { useRef, useState } from "react";
 
 
 export interface DescricaoModalProps {
-    task?: TarefaDocument;
+    task?: TarefaDTO;
 }
 
 

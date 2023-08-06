@@ -4,9 +4,9 @@ export enum ColunaKanban {
   DONE = 'DONE',
 };
 
-export type TarefaDocument = {
+export type TarefaDTO = {
 
-  id?: string;
+  id: string;
 
   titulo: string;
 
@@ -22,7 +22,7 @@ export type TarefaDocument = {
 
   posicaoKanban?: number;
 
-  pai?: TarefaDocument;
+  pai?: TarefaDTO;
 
   objetivoId?: number;
 
@@ -41,6 +41,40 @@ export type TarefaDocument = {
   impedimentos?: ImpedimentoDocument[];
 };
 
+export type TarefaBasicDTO = {
+
+  id: string;
+
+  titulo: string;
+
+  descricao: string;
+
+  colunaKanban: ColunaKanban;
+
+  inicio?: Date;
+
+  fim?: Date;
+
+  quadroId?: number;
+
+  posicaoKanban?: number;
+
+  etiquetas?: string[];
+
+  responsavel?: number;
+
+};
+
+export type TarefaIndexDTO = {
+
+  id: string;
+
+  colunaKanban: ColunaKanban;
+
+  posicaoKanban?: number;
+
+};
+
 interface AtividadeDocument {
   atividade: string;
   concluida: boolean;
@@ -52,5 +86,5 @@ interface ImpedimentoDocument {
 }
 
 export type BoardSections = {
-  [name: string]: TarefaDocument[];
+  [name: string]: TarefaDTO[];
 };

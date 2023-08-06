@@ -1,7 +1,8 @@
 "use client";
+import { criarTarefa } from '@/api/api';
 import DescricaoModal from '@/app/(dashboard)/quadros/[id]/DescricaoModal';
 import { findBoardSectionContainer, initializeBoard } from '@/model/quadro/board';
-import { BoardSections, ColunaKanban, TarefaDocument } from "@/model/quadro/index";
+import { BoardSections, ColunaKanban, TarefaDTO } from "@/model/quadro/index";
 import { getTaskById } from '@/model/quadro/tasks';
 import {
   DndContext,
@@ -21,24 +22,22 @@ import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import BoardSection from './BoardSection';
 import TaskItem from './TaskItem';
-import { Button } from 'flowbite-react';
-import { criarTarefa } from '@/api/api';
 
 export interface Props {
-  tarefasIniciais: TarefaDocument[];
+  tarefasIniciais: TarefaDTO[];
   quadroId: number;
 }
 function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
-  const [tarefas, setTarefas] = useState<TarefaDocument[]>(tarefasIniciais);
+  const [tarefas, setTarefas] = useState<TarefaDTO[]>(tarefasIniciais);
   const initialBoardSections = initializeBoard(tarefas);
   const [boardSections, setBoardSections] =
     useState<BoardSections>(initialBoardSections);
 
   const [open, setOpen] = useState<boolean>(false);
 
-  const [taskModal, setTaskModal] = useState<TarefaDocument | undefined>();
+  const [taskModal, setTaskModal] = useState<TarefaDTO | undefined>();
 
-  function openModal(task: TarefaDocument) {
+  function openModal(task: TarefaDTO) {
     setOpen(!open);
     setTaskModal(task);
   }
@@ -61,15 +60,21 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
   };
 
   const handleDragOver = ({ active, over }: DragOverEvent) => {
+    console.log(active, over)
     // Find the containers
     const activeContainer = findBoardSectionContainer(
       boardSections,
       active.id as string
     );
+    //const activeContainer = tarefas.find(tarefa => tarefa.id === active.id)?.colunaKanban;
+    console.log(activeContainer, "aa")
     const overContainer = findBoardSectionContainer(
       boardSections,
       over?.id as string
     );
+    //const overContainer = tarefas.find(tarefa => tarefa.id === over?.id)?.colunaKanban;
+
+    console.log(overContainer)
 
     if (
       !activeContainer ||
@@ -154,7 +159,7 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
   const task = activeTaskId ? getTaskById(tarefas, activeTaskId) : null;
 
   async function addTask() {
-    const tarefa: TarefaDocument = {
+    const tarefa: TarefaDTO = {
       titulo: "Sem Titulo",
       descricao: "",
       colunaKanban: ColunaKanban.TODO,
@@ -183,24 +188,23 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
 
   return (
     <div className='block h-full'>
-      <Button onClick={() => console.log(boardSections)}>asdasd</Button>
       <DescricaoModal open={open} setOpen={setOpen} task={taskModal} />
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
+        // onDragEnd={handleDragEnd}
       >
         <div className='flex flex-row gap-4 h-full' >
-          {Object.keys(boardSections).map((boardSectionKey) => (
+          {Object.keys(ColunaKanban).map((colunaKanban) => (
             <div className='bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full sm:w-full max-w-xs mx-auto'
-              key={boardSectionKey}
+              key={colunaKanban}
             >
               <BoardSection
-                id={boardSectionKey}
-                title={boardSectionKey as ColunaKanban}
-                tasks={boardSections[boardSectionKey]}
+                id={colunaKanban}
+                title={colunaKanban as ColunaKanban}
+                tasks={tarefas.filter(tarefa => tarefa.colunaKanban === colunaKanban)}
                 onClick={openModal}
                 addTask={addTask}
               />

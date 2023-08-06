@@ -6,7 +6,7 @@ import { AxiosResponse } from 'axios';
 import { VariantType, enqueueSnackbar } from 'notistack';
 import apiAxios from './apiOptions';
 import { InscricaoRequest } from '@/components/processoSeletivo/InscricaoModal';
-import { TarefaDocument } from '@/model/quadro';
+import { TarefaDTO } from '@/model/quadro';
 
 export async function loginAuth(data: UserLogin): Promise<TokenAuth> {
     const resp = (await apiAxios.post<TokenAuth>("/auth/login", data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, withCredentials: true }));
@@ -82,7 +82,7 @@ export async function criarInscricao(data: InscricaoRequest): Promise<string> {
 
 // Tarefas
 
-export async function criarTarefa(data: TarefaDocument): Promise<string> {
+export async function criarTarefa(data: TarefaDTO): Promise<string> {
     const resp = (await apiAxios.post<string>("/tarefa", data));
     return resp.data;
 }
