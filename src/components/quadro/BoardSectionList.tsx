@@ -22,6 +22,7 @@ import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import BoardSection from './BoardSection';
 import TaskItem from './TaskItem';
+import { TarefaCreateDTO } from '@/model/quadro/TarefaCreaeteDTO';
 
 export interface Props {
   tarefasIniciais: TarefaDTO[];
@@ -159,13 +160,17 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
   const task = activeTaskId ? getTaskById(tarefas, activeTaskId) : null;
 
   async function addTask() {
-    const tarefa: TarefaDTO = {
+    const tarefaCreate: TarefaCreateDTO = {
       titulo: "Sem Titulo",
       descricao: "",
       colunaKanban: ColunaKanban.TODO,
       quadroId: quadroId
     };
-    tarefa.id = await criarTarefa(tarefa);
+    const id = await criarTarefa(tarefaCreate);
+    const tarefa: TarefaDTO = {
+      ...tarefaCreate,
+      id: id,
+    }
     setTarefas((tarefas) => {
       tarefas.unshift(tarefa)
       for (let index = 0; index < tarefas.length; index++) {
