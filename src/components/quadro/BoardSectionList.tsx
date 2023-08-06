@@ -1,6 +1,8 @@
 "use client";
-import { criarTarefa } from '@/api/api';
+import { criarTarefa, updateIndexTarefa } from '@/api/api';
 import DescricaoModal from '@/app/(dashboard)/quadros/[id]/DescricaoModal';
+import { TarefaCreateDTO } from '@/model/quadro/TarefaCreaeteDTO';
+import { UpdateIndex } from '@/model/quadro/UpdateIndex';
 import { findBoardSectionContainer, initializeBoard } from '@/model/quadro/board';
 import { BoardSections, ColunaKanban, TarefaDTO } from "@/model/quadro/index";
 import { getTaskById } from '@/model/quadro/tasks';
@@ -22,17 +24,14 @@ import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import BoardSection from './BoardSection';
 import TaskItem from './TaskItem';
-import { TarefaCreateDTO } from '@/model/quadro/TarefaCreaeteDTO';
 
 export interface Props {
   tarefasIniciais: TarefaDTO[];
   quadroId: number;
 }
 function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
-  const [tarefas, setTarefas] = useState<TarefaDTO[]>(tarefasIniciais);
-  const initialBoardSections = initializeBoard(tarefas);
   const [boardSections, setBoardSections] =
-    useState<BoardSections>(initialBoardSections);
+    useState<BoardSections>(initializeBoard(tarefasIniciais));
 
   const [open, setOpen] = useState<boolean>(false);
 
@@ -61,17 +60,16 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
   };
 
   const handleDragOver = ({ active, over }: DragOverEvent) => {
+
     // Find the containers
     const activeContainer = findBoardSectionContainer(
       boardSections,
       active.id as string
     );
-    //const activeContainer = tarefas.find(tarefa => tarefa.id === active.id)?.colunaKanban;
     const overContainer = findBoardSectionContainer(
       boardSections,
       over?.id as string
     );
-    //const overContainer = tarefas.find(tarefa => tarefa.id === over?.id)?.colunaKanban;
 
     if (
       !activeContainer ||
@@ -89,93 +87,78 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
       const activeIndex = activeItems.findIndex(
         (item) => item.id === active.id
       );
+      boardSection[activeContainer][activeIndex].colunaKanban = overContainer as ColunaKanban;
       const overIndex = overItems.findIndex((item) => item.id !== over?.id);
+
+
+      const activeTask = [
+        ...boardSection[activeContainer].filter(
+          (item) => item.id !== active.id
+        ),
+      ];
+
+      const overTask = [
+        ...boardSection[overContainer].slice(0, overIndex),
+        boardSections[activeContainer][activeIndex],
+        ...boardSection[overContainer].slice(
+          overIndex,
+          boardSection[overContainer].length
+        ),
+      ]
+
+      updateIndex([...activeTask, ...overTask]);
 
       return {
         ...boardSection,
-        [activeContainer]: [
-          ...boardSection[activeContainer].filter(
-            (item) => item.id !== active.id
-          ),
-        ],
-        [overContainer]: [
-          ...boardSection[overContainer].slice(0, overIndex),
-          boardSections[activeContainer][activeIndex],
-          ...boardSection[overContainer].slice(
-            overIndex,
-            boardSection[overContainer].length
-          ),
-        ],
+        [activeContainer]: activeTask,
+        [overContainer]: overTask,
       };
     });
   };
 
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
-    // const activeContainer = findBoardSectionContainer(
-    //   boardSections,
-    //   active.id as string
-    // );
-    // const activeContainer2 = tarefas.find(tarefa => tarefa.id === active.id)?.colunaKanban;
 
-    console.log(active, over)
+    const activeContainer = findBoardSectionContainer(
+      boardSections,
+      active.id as string
+    );
+    const overContainer = findBoardSectionContainer(
+      boardSections,
+      over?.id as string
+    );
 
-    if (over?.id && ColunaKanban.hasOwnProperty(over.id)) {
-      setTarefas((tarefas) => {
-        const tarefa = tarefas.find(tarefa => tarefa.id === active.id);
-        if (tarefa) {
-          tarefa.colunaKanban = over.id as ColunaKanban;
-        }
-        return tarefas;
-      });
-    } else {
-      setTarefas((tarefas) => {
-        const tarefa = tarefas.find(tarefa => tarefa.id === active.id);
-        if (tarefa) {
-          tarefa.colunaKanban = over?.data?.current?.sortable.containerId as ColunaKanban;
-        }
-
-        console.log(tarefas);
-        console.log(arrayMove(tarefas, active?.data?.current?.sortable.index, over?.data?.current?.sortable.index));
-
-
-        return arrayMove(tarefas, active?.data?.current?.sortable.index, over?.data?.current?.sortable.index);
-      });
+    if (
+      !activeContainer ||
+      !overContainer ||
+      activeContainer !== overContainer
+    ) {
+      return;
     }
 
+    const activeIndex = boardSections[activeContainer].findIndex(
+      (task) => task.id === active.id
+    );
+    const overIndex = boardSections[overContainer].findIndex(
+      (task) => task.id === over?.id
+    );
 
+    if (activeIndex !== overIndex) {
+      setBoardSections((boardSection) => {
 
+        const overBoard = arrayMove(
+          boardSection[overContainer],
+          activeIndex,
+          overIndex
+        )
 
-    // const overContainer = findBoardSectionContainer(
-    //   boardSections,
-    //   over?.id as string
-    // );
-
-    // if (
-    //   !activeContainer ||
-    //   !overContainer ||
-    //   activeContainer !== overContainer
-    // ) {
-    //   return;
-    // }
-
-    // const activeIndex = boardSections[activeContainer].findIndex(
-    //   (task) => task.id === active.id
-    // );
-    // const overIndex = boardSections[overContainer].findIndex(
-    //   (task) => task.id === over?.id
-    // );
-
-    // if (activeIndex !== overIndex) {
-    //   setBoardSections((boardSection) => ({
-    //     ...boardSection,
-    //     [overContainer]: arrayMove(
-    //       boardSection[overContainer],
-    //       activeIndex,
-    //       overIndex
-    //     ),
-    //   }));
-    // }
-
+        updateIndex(overBoard);
+        
+        return ({
+          ...boardSection,
+          [overContainer]: overBoard,
+        })
+      });
+    }
 
     setActiveTaskId(null);
   };
@@ -184,39 +167,45 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
     ...defaultDropAnimation,
   };
 
-  const task = activeTaskId ? getTaskById(tarefas, activeTaskId) : null;
+  const task = activeTaskId ? getTaskById(boardSections, activeTaskId) : null;
 
   async function addTask() {
     const tarefaCreate: TarefaCreateDTO = {
       titulo: "Sem Titulo",
       descricao: "",
       colunaKanban: ColunaKanban.TODO,
-      quadroId: quadroId
+      quadroId: quadroId,
+      posicaoKanban: 0,
     };
     const id = await criarTarefa(tarefaCreate);
     const tarefa: TarefaDTO = {
       ...tarefaCreate,
       id: id,
-      posicaoKanban: 0
     }
-    setTarefas((tarefas) => {
-      tarefas.unshift(tarefa)
-      for (let index = 0; index < tarefas.length; index++) {
-        tarefas[index].posicaoKanban = index;
-      }
-      return (tarefas)
-    });
-    // setBoardSections((boardSection) => {
-    //   const newTodoTasks = [
-    //     tarefas[0],
-    //     ...boardSection[ColunaKanban.TODO] // Copiar as tarefas existentes da coluna "TODO"
-    //   ];
+    setBoardSections((boardSection) => {
+      const newTodoTasks = [
+        tarefa,
+        ...boardSection[ColunaKanban.TODO] // Copiar as tarefas existentes da coluna "TODO"
+      ];
 
-    //   return {
-    //     ...boardSection,
-    //     [ColunaKanban.TODO]: newTodoTasks
-    //   };
-    // });
+      updateIndex(newTodoTasks);
+
+      return {
+        ...boardSection,
+        [ColunaKanban.TODO]: newTodoTasks
+      };
+    });
+  }
+
+  function updateIndex(tarefas: TarefaDTO[]) {
+    const novosIndices: UpdateIndex[] = tarefas.map(({ id, colunaKanban }, i) => {
+      const updateIndex: UpdateIndex = {
+        id, posicaoKanban: i, colunaKanban
+      }
+      return updateIndex;
+    })
+    console.log(novosIndices)
+    updateIndexTarefa(novosIndices);
   }
 
   return (
@@ -230,14 +219,14 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
         onDragEnd={handleDragEnd}
       >
         <div className='flex flex-row gap-4 h-full' >
-          {Object.keys(ColunaKanban).map((colunaKanban) => (
+          {Object.keys(boardSections).map((boardSectionKey) => (
             <div className='bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full sm:w-full max-w-xs mx-auto'
-              key={colunaKanban}
+              key={boardSectionKey}
             >
               <BoardSection
-                id={colunaKanban}
-                title={colunaKanban as ColunaKanban}
-                tasks={tarefas.filter(tarefa => tarefa.colunaKanban === colunaKanban)}
+                id={boardSectionKey}
+                title={boardSectionKey as ColunaKanban}
+                tasks={boardSections[boardSectionKey]}
                 onClick={openModal}
                 addTask={addTask}
               />

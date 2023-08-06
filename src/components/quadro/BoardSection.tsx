@@ -30,6 +30,7 @@ const BoardSection = ({ id, title, tasks, onClick, addTask }: BoardSectionProps)
         id={id}
         items={tasks}
         strategy={verticalListSortingStrategy}
+        disabled={title === ColunaKanban.DONE}
       >
         <div ref={setNodeRef} className='flex flex-col gap-4 overflow-auto'>
           {tasks.map((task) => (

@@ -5,4 +5,6 @@ export interface TarefaCreateDTO {
     descricao: string;
     colunaKanban: ColunaKanban;
     quadroId: number;
+    posicaoKanban: number,
+
 };
