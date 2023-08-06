@@ -20,7 +20,7 @@ export type TarefaDTO = {
 
   quadroId?: number;
 
-  posicaoKanban?: number;
+  posicaoKanban: number;
 
   pai?: TarefaDTO;
 

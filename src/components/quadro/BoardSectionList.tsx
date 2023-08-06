@@ -61,21 +61,17 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
   };
 
   const handleDragOver = ({ active, over }: DragOverEvent) => {
-    console.log(active, over)
     // Find the containers
     const activeContainer = findBoardSectionContainer(
       boardSections,
       active.id as string
     );
     //const activeContainer = tarefas.find(tarefa => tarefa.id === active.id)?.colunaKanban;
-    console.log(activeContainer, "aa")
     const overContainer = findBoardSectionContainer(
       boardSections,
       over?.id as string
     );
     //const overContainer = tarefas.find(tarefa => tarefa.id === over?.id)?.colunaKanban;
-
-    console.log(overContainer)
 
     if (
       !activeContainer ||
@@ -115,40 +111,71 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
   };
 
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
-    const activeContainer = findBoardSectionContainer(
-      boardSections,
-      active.id as string
-    );
-    const overContainer = findBoardSectionContainer(
-      boardSections,
-      over?.id as string
-    );
+    // const activeContainer = findBoardSectionContainer(
+    //   boardSections,
+    //   active.id as string
+    // );
+    // const activeContainer2 = tarefas.find(tarefa => tarefa.id === active.id)?.colunaKanban;
 
-    if (
-      !activeContainer ||
-      !overContainer ||
-      activeContainer !== overContainer
-    ) {
-      return;
+    console.log(active, over)
+
+    if (over?.id && ColunaKanban.hasOwnProperty(over.id)) {
+      setTarefas((tarefas) => {
+        const tarefa = tarefas.find(tarefa => tarefa.id === active.id);
+        if (tarefa) {
+          tarefa.colunaKanban = over.id as ColunaKanban;
+        }
+        return tarefas;
+      });
+    } else {
+      setTarefas((tarefas) => {
+        const tarefa = tarefas.find(tarefa => tarefa.id === active.id);
+        if (tarefa) {
+          tarefa.colunaKanban = over?.data?.current?.sortable.containerId as ColunaKanban;
+        }
+
+        console.log(tarefas);
+        console.log(arrayMove(tarefas, active?.data?.current?.sortable.index, over?.data?.current?.sortable.index));
+
+
+        return arrayMove(tarefas, active?.data?.current?.sortable.index, over?.data?.current?.sortable.index);
+      });
     }
 
-    const activeIndex = boardSections[activeContainer].findIndex(
-      (task) => task.id === active.id
-    );
-    const overIndex = boardSections[overContainer].findIndex(
-      (task) => task.id === over?.id
-    );
 
-    if (activeIndex !== overIndex) {
-      setBoardSections((boardSection) => ({
-        ...boardSection,
-        [overContainer]: arrayMove(
-          boardSection[overContainer],
-          activeIndex,
-          overIndex
-        ),
-      }));
-    }
+
+
+    // const overContainer = findBoardSectionContainer(
+    //   boardSections,
+    //   over?.id as string
+    // );
+
+    // if (
+    //   !activeContainer ||
+    //   !overContainer ||
+    //   activeContainer !== overContainer
+    // ) {
+    //   return;
+    // }
+
+    // const activeIndex = boardSections[activeContainer].findIndex(
+    //   (task) => task.id === active.id
+    // );
+    // const overIndex = boardSections[overContainer].findIndex(
+    //   (task) => task.id === over?.id
+    // );
+
+    // if (activeIndex !== overIndex) {
+    //   setBoardSections((boardSection) => ({
+    //     ...boardSection,
+    //     [overContainer]: arrayMove(
+    //       boardSection[overContainer],
+    //       activeIndex,
+    //       overIndex
+    //     ),
+    //   }));
+    // }
+
 
     setActiveTaskId(null);
   };
@@ -170,6 +197,7 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
     const tarefa: TarefaDTO = {
       ...tarefaCreate,
       id: id,
+      posicaoKanban: 0
     }
     setTarefas((tarefas) => {
       tarefas.unshift(tarefa)
@@ -178,17 +206,17 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
       }
       return (tarefas)
     });
-    setBoardSections((boardSection) => {
-      const newTodoTasks = [
-        tarefas[0],
-        ...boardSection[ColunaKanban.TODO] // Copiar as tarefas existentes da coluna "TODO"
-      ];
+    // setBoardSections((boardSection) => {
+    //   const newTodoTasks = [
+    //     tarefas[0],
+    //     ...boardSection[ColunaKanban.TODO] // Copiar as tarefas existentes da coluna "TODO"
+    //   ];
 
-      return {
-        ...boardSection,
-        [ColunaKanban.TODO]: newTodoTasks
-      };
-    });
+    //   return {
+    //     ...boardSection,
+    //     [ColunaKanban.TODO]: newTodoTasks
+    //   };
+    // });
   }
 
   return (
@@ -199,7 +227,7 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
-        // onDragEnd={handleDragEnd}
+        onDragEnd={handleDragEnd}
       >
         <div className='flex flex-row gap-4 h-full' >
           {Object.keys(ColunaKanban).map((colunaKanban) => (
