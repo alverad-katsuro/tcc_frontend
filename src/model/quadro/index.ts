@@ -18,7 +18,7 @@ export type TarefaDTO = {
 
   fim?: Date;
 
-  quadroId?: number;
+  quadroId: number;
 
   posicaoKanban: number;
 
@@ -26,7 +26,7 @@ export type TarefaDTO = {
 
   objetivoId?: number;
 
-  concluida?: boolean;
+  concluida: boolean;
 
   cargaHoraria?: number;
 
@@ -86,5 +86,5 @@ interface ImpedimentoDocument {
 }
 
 export type BoardSections = {
-  [name: string]: TarefaDTO[];
+  [name: string]: TarefaBasicDTO[];
 };

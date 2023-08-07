@@ -6,9 +6,15 @@ import ProcessoSeletivoLista from "./ProcessoSeletivoLista";
 
 
 async function consultarProcessoSeletivo(): Promise<PageInterface<ProcessoSeletivoDTO> | undefined> {
+    const token = await recuperarToken();
+
+    if (token == undefined) {
+        return undefined;
+    }
+
     const resp: Promise<PageInterface<ProcessoSeletivoDTO>> = fetch(apiAddress + "/processoSeletivo", {
         method: 'GET', cache: "no-cache", headers: {
-            "Authorization": await recuperarToken()
+            "Authorization": token
         }
     }).then(r => r.json()).catch(e => undefined);
 

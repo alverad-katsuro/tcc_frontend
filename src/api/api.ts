@@ -6,6 +6,7 @@ import { PlanoTrabalhoModel } from '@/model/response/PlanoTrabalhoModel';
 import { AxiosResponse } from 'axios';
 import { VariantType, enqueueSnackbar } from 'notistack';
 import apiAxios from './apiOptions';
+import { TarefaDTO } from '@/model/quadro';
 
 
 // Plano de Trabalho
@@ -76,8 +77,18 @@ export async function criarInscricao(data: InscricaoRequest): Promise<string> {
 
 // Tarefas
 
+export async function consultarTarefa(id: string): Promise<TarefaDTO | undefined> {
+    const resp = (await apiAxios.get<TarefaDTO | undefined>(`/tarefa/${id}`));
+    return resp.data;
+}
+
 export async function criarTarefa(data: TarefaCreateDTO): Promise<string> {
     const resp = (await apiAxios.post<string>("/tarefa", data));
+    return resp.data;
+}
+
+export async function updateTarefa(data: TarefaDTO): Promise<string> {
+    const resp = (await apiAxios.put<string>("/tarefa", data));
     return resp.data;
 }
 

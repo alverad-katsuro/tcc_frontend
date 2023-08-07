@@ -1,6 +1,6 @@
 "use client";
 
-import { baixarArquivo, deletarProcessoSeletivo, salvarProcessoSeletivo } from "@/api/api";
+import { deletarProcessoSeletivo, salvarProcessoSeletivo } from "@/api/api";
 import { Button, Checkbox, Label, Select, Table, TextInput } from "@/components/flowbite-components";
 import { ProcessoSeletivoDTO, ProcessoSeletivoPlanoTrabalhoDTO } from "@/model/processoSeletivo/ProcessoSeletivoDTO";
 import { useFormik } from "formik";
@@ -9,7 +9,6 @@ import { VariantType, enqueueSnackbar } from "notistack";
 import { date, number, object, string } from "yup";
 import TinyCustomForm from "../TinyCustomForm";
 import { ProcessoSeletivoProps } from "./ProcessoSeletivoView";
-import { useEffect } from "react";
 
 export default function ProcessoSeletivoForms({ processoSeletivo, planosTrabalho }: ProcessoSeletivoProps) {
 
@@ -74,6 +73,7 @@ export default function ProcessoSeletivoForms({ processoSeletivo, planosTrabalho
                     defaultValue={formik.values?.planoTrabalho?.id}
                 >
                     <option>
+                        {planosTrabalho.length === 0 ? "Nenhum plano de trabalho cadastrado" : "Selecione um plano de trabalho"}
                     </option>
                     {planosTrabalho.map((e) => {
                         return (
@@ -168,9 +168,6 @@ export default function ProcessoSeletivoForms({ processoSeletivo, planosTrabalho
                     <div className="flex-auto  max-h-60">
                         <Table hoverable>
                             <Table.Head>
-                                <Table.HeadCell>
-                                    Nome
-                                </Table.HeadCell>
                                 <Table.HeadCell>
                                     Email
                                 </Table.HeadCell>

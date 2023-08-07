@@ -1,10 +1,10 @@
 "use client";
-import { criarTarefa, updateIndexTarefa } from '@/api/api';
+import { consultarTarefa, criarTarefa, updateIndexTarefa } from '@/api/api';
 import DescricaoModal from '@/app/(dashboard)/quadros/[id]/DescricaoModal';
 import { TarefaCreateDTO } from '@/model/quadro/TarefaCreaeteDTO';
 import { UpdateIndex } from '@/model/quadro/UpdateIndex';
 import { findBoardSectionContainer, initializeBoard } from '@/model/quadro/board';
-import { BoardSections, ColunaKanban, TarefaDTO } from "@/model/quadro/index";
+import { BoardSections, ColunaKanban, TarefaBasicDTO, TarefaDTO } from "@/model/quadro/index";
 import { getTaskById } from '@/model/quadro/tasks';
 import {
   DndContext,
@@ -26,7 +26,7 @@ import BoardSection from './BoardSection';
 import TaskItem from './TaskItem';
 
 export interface Props {
-  tarefasIniciais: TarefaDTO[];
+  tarefasIniciais: TarefaBasicDTO[];
   quadroId: number;
 }
 function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
@@ -37,9 +37,12 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
 
   const [taskModal, setTaskModal] = useState<TarefaDTO | undefined>();
 
-  function openModal(task: TarefaDTO) {
-    setOpen(!open);
-    setTaskModal(task);
+  async function openModal(taskId: string) {
+    const tarefa = await consultarTarefa(taskId);
+    if (tarefa != undefined) {
+      setOpen(!open);
+    }
+    setTaskModal(tarefa);
   }
 
   const [activeTaskId, setActiveTaskId] = useState<null | string>(null);
@@ -178,7 +181,7 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
       posicaoKanban: 0,
     };
     const id = await criarTarefa(tarefaCreate);
-    const tarefa: TarefaDTO = {
+    const tarefa: TarefaBasicDTO = {
       ...tarefaCreate,
       id: id,
     }
@@ -197,20 +200,22 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
     });
   }
 
-  function updateIndex(tarefas: TarefaDTO[]) {
+  function updateIndex(tarefas: TarefaBasicDTO[]) {
     const novosIndices: UpdateIndex[] = tarefas.map(({ id, colunaKanban }, i) => {
       const updateIndex: UpdateIndex = {
         id, posicaoKanban: i, colunaKanban
       }
       return updateIndex;
     })
-    console.log(novosIndices)
     updateIndexTarefa(novosIndices);
   }
 
   return (
     <div className='block h-full'>
-      <DescricaoModal open={open} setOpen={setOpen} task={taskModal} />
+      {taskModal !== undefined ?
+        <DescricaoModal open={open} setOpen={setOpen} task={taskModal} setTask={setTaskModal} setBoardSections={setBoardSections} />
+        : <></>
+      }
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}
@@ -220,7 +225,7 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
       >
         <div className='flex flex-row gap-4 h-full' >
           {Object.keys(boardSections).map((boardSectionKey) => (
-            <div className='bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full sm:w-full max-w-lg mx-auto'
+            <div className='bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full w-screen lg:w-full max-w-xs xl:max-w-lg mx-auto'
               key={boardSectionKey}
             >
               <BoardSection

@@ -1,6 +1,6 @@
-import { BoardSections, ColunaKanban, TarefaDTO } from ".";
+import { BoardSections, ColunaKanban, TarefaBasicDTO } from ".";
 
-export const getTasksByStatus = (tasks: TarefaDTO[], status: ColunaKanban) => {
+export const getTasksByStatus = (tasks: TarefaBasicDTO[], status: ColunaKanban) => {
 
   return tasks.filter((task) => {
     return task.colunaKanban === status

@@ -5,7 +5,7 @@ export async function recuperarToken() {
     const session = await getServerSession(authOptions);
 
     if (session == null || session.user == null || session.user.accessToken == null) {
-        return Promise.reject();
+        return undefined;
     }
 
     return `Bearer ${session.user.accessToken}`;

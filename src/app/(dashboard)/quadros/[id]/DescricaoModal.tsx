@@ -1,27 +1,80 @@
-import TinyCustomForm from "@/components/TinyCustomForm";
+import { updateTarefa } from "@/api/api";
+import TinyCustomFormm from "@/components/TinyCustomFormm";
 import { Button, Modal } from "@/components/flowbite-components";
-import DataRangeCustom from "@/components/quadro/DataRangeCustom";
+import DataRangeCustom, { numberArray } from "@/components/quadro/DataRangeCustom";
 import AtividadesSelectionList from "@/components/quadro/modal/AtividadesSelectionList";
-import { TarefaDTO } from "@/model/quadro";
-import { useRef } from "react";
+import { BoardSections, ColunaKanban, TarefaDTO } from "@/model/quadro";
+import { useSession } from "next-auth/react";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import useDebounce from "./Deb";
 import TituloTarefa from "./TituloTarefa";
+import { set } from "date-fns";
 
 
 export interface DescricaoModalProps {
     task?: TarefaDTO;
+    setTask: Dispatch<SetStateAction<TarefaDTO | undefined>>;
+    setBoardSections: Dispatch<SetStateAction<BoardSections>>;
+
     open: boolean;
     setOpen: (open: boolean) => void;
 }
 
 
-export default function DescricaoModal({ task, setOpen, open }: DescricaoModalProps) {
+export default function DescricaoModal({ task, setOpen, open, setTask, setBoardSections }: DescricaoModalProps) {
 
     const rootRef = useRef<HTMLDivElement>(null);
 
-    function save(e: any) {
-        console.log(e);
-        return "aaa";
+    const debouncedSearch = useDebounce(task, saveTask, 500)
+
+    const { data } = useSession();
+
+    function saveTask(task?: TarefaDTO) {
+        if (task != undefined) {
+            updateTarefa(task);
+        }
     }
+
+    useEffect(() => {
+        if (debouncedSearch) {
+            console.log(debouncedSearch)
+        }
+    }, [debouncedSearch])
+
+    function voltarParaInProgress() {
+        newSetTask(task => {
+            if (task != undefined) {
+                const newTask: TarefaDTO = { ...task, colunaKanban: "IN_PROGRESS" as ColunaKanban  }
+                return newTask;
+            }
+        })
+    }
+
+
+    const newSetTask = (updateFunction: SetStateAction<TarefaDTO | undefined>) => {
+        setTask((currentTask) => {
+            const updatedTask = typeof updateFunction === 'function' ? updateFunction(currentTask) : updateFunction;
+
+            if (updatedTask !== undefined) {
+                setBoardSections((secoesDoQuadro) => {
+                    const colunaDoQuadro = updatedTask.colunaKanban;
+                    const novaSecaoDoQuadro = secoesDoQuadro[colunaDoQuadro].map((tarefaNaSecao) => {
+                        if (tarefaNaSecao.id === updatedTask.id) {
+                            return { ...updatedTask };
+                        }
+                        return tarefaNaSecao;
+                    });
+
+                    return {
+                        ...secoesDoQuadro,
+                        [colunaDoQuadro]: novaSecaoDoQuadro,
+                    };
+                });
+            }
+            return updatedTask;
+        });
+    };
+
 
     return (
 
@@ -33,9 +86,9 @@ export default function DescricaoModal({ task, setOpen, open }: DescricaoModalPr
                 onClose={() => setOpen(!open)}
             >
                 <Modal.Body>
-                    <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5">
 
-                        <TituloTarefa titulo={task?.titulo} />
+                    <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5">
+                        <TituloTarefa tarefa={task} setTask={newSetTask} />
                         <div className="flex-col flex sm:flex-row ">
                             <div className="flex-auto">
                                 <div className="p-5 space-y-6">
@@ -45,14 +98,18 @@ export default function DescricaoModal({ task, setOpen, open }: DescricaoModalPr
                                         </h5>
 
                                         <div className="flex-col flex sm:flex-row">
-                                            <DataRangeCustom />
+                                            <DataRangeCustom setTask={newSetTask} tarefa={task} />
                                             <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white self-center text-center">
                                                 Esforço: 30 horas.
                                             </h5>
                                         </div>
                                     </div>
                                     <div>
-                                        <TinyCustomForm onSave={save} />
+                                        {task !== undefined ?
+                                            <TinyCustomFormm elementoState={[task, newSetTask]} id="task" elementField="descricao" />
+                                            : <></>
+
+                                        }
                                     </div>
                                     <div>
                                         <h5 className="font-bold tracking-tight text-gray-900 dark:text-white my-4">
@@ -68,6 +125,9 @@ export default function DescricaoModal({ task, setOpen, open }: DescricaoModalPr
                                 </h5>
                                 <Button color={'dark'} >Indicar Responsável</Button>
                                 <Button color={'dark'} >Ingressar na Tarefa</Button>
+                                {task?.colunaKanban === ColunaKanban.DONE && data?.user?.role?.includes("ROLE_ADMIN") ?
+                                    <Button color={'dark'} onClick={voltarParaInProgress}>Voltar uma etapa</Button> : <></>
+                                }
                             </div>
                         </div>
                     </div>

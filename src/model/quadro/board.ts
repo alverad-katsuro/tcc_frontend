@@ -1,7 +1,7 @@
-import { BoardSections, ColunaKanban, TarefaDTO } from ".";
+import { BoardSections, ColunaKanban, TarefaBasicDTO } from ".";
 import { getTasksByStatus } from "./tasks";
 
-export const initializeBoard = (tasks: TarefaDTO[]) => {
+export const initializeBoard = (tasks: TarefaBasicDTO[]) => {
   const boardSections: BoardSections = {};
 
   Object.keys(ColunaKanban).forEach((boardSectionKey) => {

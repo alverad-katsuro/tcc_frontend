@@ -1,9 +1,9 @@
-import { TarefaDTO } from "@/model/quadro";
+import { TarefaBasicDTO } from "@/model/quadro";
 import { Avatar, Badge, Progress } from "flowbite-react";
 
 type TaskItemProps = {
-  task: TarefaDTO;
-  onClick: (task: TarefaDTO) => void;
+  task: TarefaBasicDTO;
+  onClick: (task: string) => void;
 };
 
 const TaskItem = ({ task, onClick }: TaskItemProps) => {
@@ -20,7 +20,7 @@ const TaskItem = ({ task, onClick }: TaskItemProps) => {
 
     <div className="flex h-full mx-4">
 
-      <div onClick={() => onClick(task)} className="grid gap-4 p-6 mx-auto w-full bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+      <div onClick={() => onClick(task.id)} className="grid gap-4 p-6 mx-auto w-full bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
         <div className="flex gap-4">
           <Badge color="red" className="w-1/6 text-sm block" />
           <Badge color="red" className="w-1/6 h-20 block" />

@@ -13,9 +13,8 @@ const apiAxios: Axios = axios.create({ baseURL: apiAddress });
 apiAxios.interceptors.request.use(async function (config) {
     const session: any = await getSession();
 
-    console.log("SESSION:", session)
     if (session?.user?.accessToken) {
-        config.headers!.Authorization = `Bearer ${session.user?.accessToken}`
+        config.headers.Authorization = `Bearer ${session.user?.accessToken}`
     }
     return config;
 }, (error) => Promise.reject(error))
