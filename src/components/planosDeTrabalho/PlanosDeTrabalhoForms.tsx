@@ -156,7 +156,7 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDe
                     {typeof formik.errors.objetivos === 'string' ? <p className="text-red-500">{formik.errors.objetivos.toString()}</p> : <></>}
 
                     {formik.values.objetivos.map((e, i) =>
-                        <ObjetivoForm formik={formik} index={i} key={e.descricao} removeItem={removeObjetivo} />
+                        <ObjetivoForm formik={formik} index={i} key={i} removeItem={removeObjetivo} />
                     )}
 
                 </div>
@@ -210,7 +210,7 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDe
                     {typeof formik.errors.recursoMateriais === 'string' ? <p className="text-red-500">{formik.errors.recursoMateriais.toString()}</p> : <></>}
 
                     {formik.values.recursoMateriais.map((e, i) =>
-                        <RecursosMateriaisForm formik={formik} index={i} key={e.descricao} removeItem={removeRecursoMaterial} />
+                        <RecursosMateriaisForm formik={formik} index={i} key={i} removeItem={removeRecursoMaterial} />
                     )}
 
                 </div>

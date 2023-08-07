@@ -1,14 +1,13 @@
 import { updateTarefa } from "@/api/api";
 import TinyCustomFormm from "@/components/TinyCustomFormm";
 import { Button, Modal } from "@/components/flowbite-components";
-import DataRangeCustom, { numberArray } from "@/components/quadro/DataRangeCustom";
+import DataRangeCustom from "@/components/quadro/DataRangeCustom";
 import AtividadesSelectionList from "@/components/quadro/modal/AtividadesSelectionList";
 import { BoardSections, ColunaKanban, TarefaDTO } from "@/model/quadro";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import useDebounce from "./Deb";
 import TituloTarefa from "./TituloTarefa";
-import { set } from "date-fns";
 
 
 export interface DescricaoModalProps {
@@ -44,7 +43,7 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
     function voltarParaInProgress() {
         newSetTask(task => {
             if (task != undefined) {
-                const newTask: TarefaDTO = { ...task, colunaKanban: "IN_PROGRESS" as ColunaKanban  }
+                const newTask: TarefaDTO = { ...task, colunaKanban: "IN_PROGRESS" as ColunaKanban }
                 return newTask;
             }
         })
@@ -94,7 +93,8 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                                 <div className="p-5 space-y-6">
                                     <div className="flex space-x-4 items-center">
                                         <h5 className="flex-auto text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                            Alfredo Gabriel
+                                            {/* //FIXME mudar para o nome da requisição */}
+                                            {data?.user?.given_name}
                                         </h5>
 
                                         <div className="flex-col flex sm:flex-row">
