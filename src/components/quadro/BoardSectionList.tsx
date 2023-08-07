@@ -152,7 +152,7 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
         )
 
         updateIndex(overBoard);
-        
+
         return ({
           ...boardSection,
           [overContainer]: overBoard,
@@ -220,7 +220,7 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
       >
         <div className='flex flex-row gap-4 h-full' >
           {Object.keys(boardSections).map((boardSectionKey) => (
-            <div className='bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full sm:w-full max-w-xs mx-auto'
+            <div className='bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full sm:w-full max-w-lg mx-auto'
               key={boardSectionKey}
             >
               <BoardSection

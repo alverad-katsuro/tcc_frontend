@@ -22,7 +22,7 @@ const BoardSection = ({ id, title, tasks, onClick, addTask }: BoardSectionProps)
   });
 
   return (
-    <div className="flex flex-col gap-4 h-full w-screen max-w-xs">
+    <div className="flex flex-col gap-4 h-full w-screen max-w-lg">
 
       <BoardTitulo titulo={title} addTask={addTask} />
 

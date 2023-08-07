@@ -19,7 +19,7 @@ export default function ProcessoSeletivoLista({ processoSeletivoDTO }: PlanoTrab
                     <Link href={`/processoSeletivo/${e.id}`} key={e.id} >
 
                         <Card imgSrc={imageMock.src} key={e.id}>
-                            <div className="overflow-auto max-h-64 gap-4 gap flex flex-col">
+                            <div className="overflow-auto max-h-64 gap-4 gap flex flex-col w-full">
                                 <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                     <strong>Título:</strong> {e.planoTrabalho.titulo}
                                 </h5>
