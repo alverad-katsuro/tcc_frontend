@@ -1,11 +1,11 @@
 "use client";
-import { useAuthContext } from "@/context/AuthenticateContext";
 import { ProcessoSeletivoDTO, ProcessoSeletivoPlanoTrabalhoDTO } from "@/model/processoSeletivo/ProcessoSeletivoDTO";
+import { Button } from "flowbite-react";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+import InscricaoModal from "./InscricaoModal";
 import ProcessoSeletivoForms from "./ProcessoSeletivoForms";
 import ProcessoSeletivoSimple from "./ProcessoSeletivoSimple";
-import InscricaoModal from "./InscricaoModal";
-import { useState } from "react";
-import { Button } from "flowbite-react";
 
 export interface ProcessoSeletivoProps {
     processoSeletivo: ProcessoSeletivoDTO;
@@ -14,12 +14,11 @@ export interface ProcessoSeletivoProps {
 
 export default async function ProcessoSeletivoView({ planosTrabalho, processoSeletivo }: ProcessoSeletivoProps) {
 
-    const { userDetails } = useAuthContext();
+    const { data } = useSession();
 
     const [show, setShow] = useState<boolean>(false);
 
-
-    if (userDetails?.scope.includes("ROLE_ADMIN")) {
+    if (data?.user?.role?.includes("ROLE_ADMIN")) {
         return <ProcessoSeletivoForms planosTrabalho={planosTrabalho} processoSeletivo={processoSeletivo} />
     } else if (processoSeletivo.inscrito) {
         return <ProcessoSeletivoSimple planosTrabalho={planosTrabalho} processoSeletivo={processoSeletivo} />

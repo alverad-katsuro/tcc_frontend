@@ -1,8 +1,8 @@
 'use client';
 
 import { Button } from "@/components/flowbite-components";
-import { useAuthContext } from "@/context/AuthenticateContext";
 import { useSidebarContext } from "@/context/SidebarContext";
+import { useSession } from "next-auth/react";
 import { AiFillPlusCircle, AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineSearch } from "react-icons/ai";
 import { BiBuoy } from "react-icons/bi";
 import { BsFillPeopleFill } from "react-icons/bs";
@@ -16,7 +16,7 @@ export default function SidebarStyled(): JSX.Element {
 
   const { isCollapsed, setCollapsed } = useSidebarContext();
 
-  const { userDetails } = useAuthContext();
+  const { data } = useSession();
 
   function toggle() {
     setCollapsed(!isCollapsed);
@@ -32,7 +32,7 @@ export default function SidebarStyled(): JSX.Element {
             <Sidebar.Item href="/quadros" icon={HiViewBoards}>
               Quadros Kanban
             </Sidebar.Item>
-            {userDetails?.scope.includes("ROLE_ADMIN") ?
+            {data?.user?.role?.includes("ROLE_ADMIN") ?
               <Sidebar.Collapse icon={MdOutlineWork} label="Planos de Trabalho">
                 <Sidebar.Item href="/planoDeTrabalho/novo" icon={AiFillPlusCircle} >
                   Novo
@@ -45,7 +45,7 @@ export default function SidebarStyled(): JSX.Element {
                 Planos de Trabalho
               </Sidebar.Item>
             }
-            {userDetails?.scope.includes("ROLE_ADMIN") ?
+            {data?.user?.role?.includes("ROLE_ADMIN") ?
               <Sidebar.Collapse icon={BsFillPeopleFill} label="Processo Seletivo">
                 <Sidebar.Item href="/processoSeletivo/novo" icon={AiFillPlusCircle} >
                   Novo

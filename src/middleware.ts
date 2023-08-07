@@ -1,15 +1,17 @@
+import { getToken } from 'next-auth/jwt';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { UserDetails } from './model/UserDetails';
-import { decodeJWT } from './utils/DecodeJwt';
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
 
-    const token = request.cookies.get("Token");
+    const token = await getToken({ req: request, secret: process.env.JWT_SECRET });
 
-    let userDetails: UserDetails | undefined;
-    if (token !== undefined) {
-        userDetails = decodeJWT(token.value);
+    // if (!(request.nextUrl.pathname === '/auth/signin' || request.nextUrl.pathname === '/api/auth/callback/keycloak') && token === null) {
+    //     return NextResponse.redirect(new URL('/auth/signin', request.url));
+    // }
+
+    if (token != null && token.error != 'RefreshAccessTokenError') {
+        return NextResponse.next();
     }
 
     // if (request.nextUrl.pathname.startsWith('/planosDeTrabalho') && !userDetails?.scope?.includes("ADMIN")) {
@@ -24,5 +26,17 @@ export function middleware(request: NextRequest) {
     //     return NextResponse.rewrite(new URL('/', request.url))
     // }
 
+}
 
+export const config = {
+    matcher: [
+        /*
+         * Match all request paths except for the ones starting with:
+         * - api (API routes)
+         * - _next/static (static files)
+         * - _next/image (image optimization files)
+         * - favicon.ico (favicon file)
+         */
+        '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    ],
 }

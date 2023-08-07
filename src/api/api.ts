@@ -1,19 +1,11 @@
-import { TokenAuth } from '@/model/TokenAuth';
-import { UserLogin } from '@/model/UserLogin';
+import { InscricaoRequest } from '@/components/processoSeletivo/InscricaoModal';
 import { ProcessoSeletivoDTO } from '@/model/processoSeletivo/ProcessoSeletivoDTO';
+import { TarefaCreateDTO } from '@/model/quadro/TarefaCreaeteDTO';
+import { UpdateIndex } from '@/model/quadro/UpdateIndex';
 import { PlanoTrabalhoModel } from '@/model/response/PlanoTrabalhoModel';
 import { AxiosResponse } from 'axios';
 import { VariantType, enqueueSnackbar } from 'notistack';
 import apiAxios from './apiOptions';
-import { InscricaoRequest } from '@/components/processoSeletivo/InscricaoModal';
-import { TarefaDTO } from '@/model/quadro';
-import { TarefaCreateDTO } from '@/model/quadro/TarefaCreaeteDTO';
-import { UpdateIndex } from '@/model/quadro/UpdateIndex';
-
-export async function loginAuth(data: UserLogin): Promise<TokenAuth> {
-    const resp = (await apiAxios.post<TokenAuth>("/auth/login", data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, withCredentials: true }));
-    return resp.data;
-}
 
 
 // Plano de Trabalho

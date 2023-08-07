@@ -6,7 +6,7 @@ export interface ProcessoSeletivoDTO {
     inicio: string;
     requisitos: string;
     areaInteresse: string;
-    inscrito: true;
+    inscrito?: boolean;
     planoTrabalho: ProcessoSeletivoPlanoTrabalhoDTO;
     candidatos: UsuarioProcessoSeletivoDTO[];
 }

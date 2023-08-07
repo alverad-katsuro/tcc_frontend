@@ -1,26 +1,25 @@
-import { Dropdown, Avatar } from "@/components/flowbite-components"
-import { useAuthContext } from "@/context/AuthenticateContext";
-import { KEYCLOAK_AUTH_URL } from "@/service/oauth";
-import Link from "next/link"
+"use client";
+import { Avatar, Dropdown } from "@/components/flowbite-components";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function HeaderAvatar() {
 
-    const { isLogado, userDetails, deslogar } = useAuthContext();
+    const { data, status } = useSession();
 
     return (
-        isLogado ?
+        status === 'authenticated' ?
             < Dropdown
                 arrowIcon={false}
                 inline={true}
-                label={< Avatar alt="User settings" img={userDetails?.imagemUrl ?? ""
+                label={< Avatar alt="User settings" img={data?.user?.image ?? ""
                 } rounded={true} />}
             >
                 <Dropdown.Header>
                     <span className="block text-sm">
-                        {userDetails?.nome}
+                        {data?.user?.name}
                     </span>
                     <span className="block truncate text-sm font-medium">
-                        {userDetails?.email}
+                        {data?.user?.email}
                     </span>
                 </Dropdown.Header>
                 <Dropdown.Item>
@@ -33,12 +32,13 @@ export default function HeaderAvatar() {
                     Earnings
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item onClick={deslogar}>
+                <Dropdown.Item onClick={signOut}>
                     Sign out
                 </Dropdown.Item>
             </Dropdown >
-            : <Link href={KEYCLOAK_AUTH_URL}>
+            : <button onClick={() => signIn("keycloak")}>
                 <Avatar alt="User settings" rounded={true} />
-            </Link>
+            </button>
+
     )
 }
