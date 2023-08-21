@@ -32,7 +32,6 @@ export async function consultarPlanos(): Promise<PageInterface<PlanoTrabalhoMode
 
 }
 
-
 export async function consultarQuadrosPainel(): Promise<PageInterface<QuadroPainelDTO>> {
     const resp: Promise<PageInterface<QuadroPainelDTO>> = apiFetch(apiAddress + "/quadro/painel", {
         method: 'GET', cache: "no-cache"

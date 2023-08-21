@@ -14,4 +14,6 @@ export interface ProcessoSeletivoDTO {
 export interface ProcessoSeletivoPlanoTrabalhoDTO {
     id?: number;
     titulo: string;
+    capaUrl?: string;
+
 }

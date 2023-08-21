@@ -1,19 +1,10 @@
-import { apiAddress } from "@/api/apiOptions";
 import { PageInterface } from "@/interface/PageInterface";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
-import { recuperarToken } from "@/service/auth";
 import PlanoTrabalhoLista from "./PlanoTrabalhoLista";
+import { consultarPlanos } from "@/api/apiFetch";
 
 
-async function consultarPlanos(): Promise<PageInterface<PlanoTrabalhoModel> | undefined> {
-    const resp: Promise<PageInterface<PlanoTrabalhoModel>> = fetch(apiAddress + "/planoTrabalho", {
-        method: 'GET', cache: "no-cache", headers: {
-            "Authorization": await recuperarToken()
-        }
-    }).then(r => r.json()).catch(() => undefined);
-    return resp;
 
-}
 
 
 export default async function PlanosDeTrabalho() {

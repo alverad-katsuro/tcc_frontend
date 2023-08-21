@@ -18,7 +18,7 @@ export default function PlanoTrabalhoLista({ planosTrabalhos }: PlanoTrabalhoLis
             {planosTrabalhos.map((e) =>
                 <Link href={`/planoDeTrabalho/${e.id}`} key={e.id} >
 
-                    <Card imgSrc={imageMock.src} key={e.id}>
+                    <Card imgSrc={e.capaUrl} key={e.id} >
                         <div className="overflow-auto max-h-64 gap-4 gap flex flex-col">
                             <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                 <strong>Título:</strong> {e.titulo}
