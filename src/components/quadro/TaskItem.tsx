@@ -1,4 +1,6 @@
 import { TarefaBasicDTO } from "@/model/quadro";
+import { LinearProgress } from "@mui/material";
+import { data } from "autoprefixer";
 import { Avatar, Badge, Progress } from "flowbite-react";
 
 type TaskItemProps = {
@@ -8,12 +10,21 @@ type TaskItemProps = {
 
 const TaskItem = ({ task, onClick }: TaskItemProps) => {
 
-  const progresso = 20;
+  const progresso = calculaPrazo(task.fim, task.inicio);
 
   const color = ["red", "yellow", "green"][Math.floor(progresso % 3)];
 
-  function calculaPrazo() {
-
+  function calculaPrazo(dataFim?: string, dataIni?: string) {
+    if (!dataFim || !dataIni) {
+      return 0;
+    }
+    const dF: number = new Date(dataFim).getTime();
+    const dI: number = new Date(dataIni).getTime();
+    const dH: number = Date.now();
+    if (dI > dH) {
+      return 0;
+    }
+    return (1 - (dF - Date.now()) / (dF - dI)) * 100;
   }
 
   return (
@@ -30,6 +41,7 @@ const TaskItem = ({ task, onClick }: TaskItemProps) => {
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{task.titulo}</h5>
         <div className="grid grid-cols-4 items-center">
           <div className="col-span-3">
+
             <Progress progress={progresso} color={color} />
           </div>
           <Avatar rounded className="place-self-end" />

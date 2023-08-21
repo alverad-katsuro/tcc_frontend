@@ -27,21 +27,23 @@ export default function DataRangeCustom({ tarefa, setTask }: DataRangeCustomProp
     }, [setMode])
 
     function setDate(datas: numberArray[]) {
+        if (datas.length > 1) {
+            datas.shift();
+        }
         const primeiraData = datas[0];
         if (primeiraData.length === 2) {
             setTask(task => {
                 if (task !== undefined) {
-                    const newTask: TarefaDTO = { ...task, fim: new Date(primeiraData[0]), inicio: new Date(primeiraData[1]) }
+                    const newTask: TarefaDTO = { ...task, fim: new Date(primeiraData[1]), inicio: new Date(primeiraData[0]) }
                     return newTask;
                 }
             })
         }
     }
-    const initData: number[] = [];
+    const initData: numberArray[] = [];
 
     if (tarefa?.inicio != undefined && tarefa?.fim != undefined) {
-        initData.push(new Date(tarefa?.fim).getTime());
-        initData.push(new Date(tarefa?.inicio).getTime());
+        initData.push([new Date(tarefa?.inicio).getTime(), new Date(tarefa?.fim).getTime()]);
     }
 
 

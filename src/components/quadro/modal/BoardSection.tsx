@@ -27,7 +27,7 @@ const BoardSection = ({ id, atividades: atividade, remover }: BoardSectionProps)
       >
 
         <div ref={setNodeRef} className='flex flex-col gap-2 px-2'>
-          {atividade.map((task) => (
+          {atividade?.map((task) => (
             <div key={task.id}>
               <SortableTaskItem id={task.id}>
                 <AtividadeItem atividade={task} remover={remover} />

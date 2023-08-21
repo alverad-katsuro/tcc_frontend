@@ -16,9 +16,9 @@ export type TarefaDTO = {
 
   colunaKanban: ColunaKanban;
 
-  inicio?: Date;
+  inicio?: string;
 
-  fim?: Date;
+  fim?: string;
 
   quadroId: number;
 
@@ -53,9 +53,9 @@ export type TarefaBasicDTO = {
 
   colunaKanban: ColunaKanban;
 
-  inicio?: Date;
+  inicio?: string;
 
-  fim?: Date;
+  fim?: string;
 
   quadroId?: number;
 
