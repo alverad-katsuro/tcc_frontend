@@ -115,7 +115,9 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                                         <h5 className="font-bold tracking-tight text-gray-900 dark:text-white my-4">
                                             Atividades
                                         </h5>
-                                        <AtividadesSelectionList />
+                                        {task !== undefined ?
+                                        <AtividadesSelectionList setTask={newSetTask} tarefa={task} /> : <></>
+                                        }
                                     </div>
                                 </div>
                             </div>

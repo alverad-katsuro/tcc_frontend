@@ -7,6 +7,7 @@ import { AxiosResponse } from 'axios';
 import { VariantType, enqueueSnackbar } from 'notistack';
 import apiAxios from './apiOptions';
 import { TarefaDTO } from '@/model/quadro';
+import { AtividadeCreateDTO, AtividadeModel } from '@/model/atividades';
 
 
 // Plano de Trabalho
@@ -97,6 +98,17 @@ export async function updateIndexTarefa(data: UpdateIndex[]): Promise<string> {
     return resp.data;
 }
 
+export async function criarAtividade(tarefaId: string, data: AtividadeCreateDTO): Promise<string> {
+    const resp = (await apiAxios.post<string>(`/tarefa/${tarefaId}/atividade`, data));
+    return resp.data;
+}
+
+
+
+export async function updateIndexAtividade(data: AtividadeModel[]): Promise<string> {
+    const resp = (await apiAxios.put<string>(`/tarefa/atividade/index`, data));
+    return resp.data;
+}
 //
 
 function notification(mensagem: string, variant: VariantType): void {

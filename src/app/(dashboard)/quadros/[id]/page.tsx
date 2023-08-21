@@ -1,6 +1,6 @@
 import { consultarTarefas } from "@/api/apiFetch";
 import BoardSectionList from "@/components/quadro/BoardSectionList";
-import { TarefaBasicDTO, TarefaDTO } from "@/model/quadro";
+import { TarefaBasicDTO } from "@/model/quadro";
 
 export default async function Quadro({ params }: { params: { id: number } }) {
 

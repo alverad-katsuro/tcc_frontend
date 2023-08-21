@@ -1,3 +1,5 @@
+import { AtividadeModel } from "../atividades";
+
 export enum ColunaKanban {
   TODO = 'TODO',
   IN_PROGRESS = 'In Progress',
@@ -36,7 +38,7 @@ export type TarefaDTO = {
 
   resultadosObtidos?: number[];
 
-  atividades?: AtividadeDocument[];
+  atividades: AtividadeModel[];
 
   impedimentos?: ImpedimentoDocument[];
 };

@@ -1,5 +1,7 @@
-import { AtividadeModel } from "@/model/atividades/index";
+import { criarAtividade } from "@/api/api";
+import { AtividadeCreateDTO, AtividadeModel } from "@/model/atividades/index";
 import { getTaskById } from '@/model/atividades/tasks';
+import { TarefaDTO } from "@/model/quadro";
 import {
   DndContext,
   DragEndEvent,
@@ -15,28 +17,21 @@ import {
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { Button } from 'flowbite-react';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import AtividadeItem from './AtividadeItem';
 import BoardSection from './BoardSection';
 
 
-const AtividadesSelectionList = () => {
+export interface Props {
+  tarefa: TarefaDTO;
+  setTask: Dispatch<SetStateAction<TarefaDTO | undefined>>;
 
-  const [atividades, setAtividades] = useState<AtividadeModel[]>([
-    {
-      id: "1",
-      checked: false,
-      titulo: "asdasdsad"
-    },
-    {
-      id: "2",
-      checked: true,
-      titulo: "111212121212"
-    }
+}
 
-  ]);
+export default function AtividadesSelectionList({ tarefa, setTask }: Props) {
 
-  const [id, setId] = useState<number>(atividades.length + 1);
+  //const debouncedSearch = useDebounce(tarefa, saveTask, 500) acho q tbm n vai precisar
+
 
   const [activeTaskId, setActiveTaskId] = useState<null | string>(null);
 
@@ -57,20 +52,29 @@ const AtividadesSelectionList = () => {
 
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
 
-    const activeIndex = atividades.findIndex(
+    const activeIndex = tarefa.atividades.findIndex(
       (task) => task.id === active.id
     );
-    const overIndex = atividades.findIndex(
+    const overIndex = tarefa.atividades.findIndex(
       (task) => task.id === over?.id
     );
 
     if (activeIndex !== overIndex) {
-      setAtividades((atividades) =>
-        arrayMove(
-          atividades,
-          activeIndex,
-          overIndex)
-      )
+
+      setTask(task => {
+        if (task !== undefined) {
+          const overAtivides = arrayMove(
+            task.atividades,
+            activeIndex,
+            overIndex
+          )
+
+          //updateIndex(overAtivides);  //FIXME testar a necessidade disso
+
+          const newTask: TarefaDTO = { ...task, atividades: overAtivides }
+          return newTask;
+        }
+      })
     }
     setActiveTaskId(null);
   };
@@ -79,24 +83,56 @@ const AtividadesSelectionList = () => {
     ...defaultDropAnimation,
   };
 
-  const task = activeTaskId ? getTaskById(atividades, activeTaskId) : null;
+  const task = activeTaskId ? getTaskById(tarefa?.atividades, activeTaskId) : null;
 
-  function adicionarAtividade() {
-    const ativi: AtividadeModel = {
-      id: String(id),
+  async function adicionarAtividade() {
+    const novaAtividade: AtividadeCreateDTO = {
       checked: false,
-      titulo: "asdasdsad"
+      titulo: "Atividade Sem Titulo",
+      index: 0,
     }
-    setId(id => id + 1);
-    setAtividades(atividades => {
-      atividades.push(ativi);
-      return atividades;
-    });
+    const id: string = await criarAtividade(tarefa.id, novaAtividade);
+    const atividade: AtividadeModel = {
+      ...novaAtividade,
+      id: id
+    }
 
+    setTask(task => {
+      if (task !== undefined) {
+        const newTask: TarefaDTO = { ...task, atividades: [atividade, ...task.atividades] }
+        return newTask;
+      }
+    })
+
+    updateIndex(tarefa.atividades);
+  }
+
+  function updateIndex(atividades: AtividadeModel[]) {
+    const novosIndices: AtividadeModel[] = atividades.map((atividade, i) => {
+      const updateIndex: AtividadeModel = {
+        ...atividade,
+        index: i
+      }
+      return updateIndex;
+    })
+    setTask(task => {
+      if (task !== undefined) {
+        const newTask: TarefaDTO = { ...task, atividades: novosIndices }
+        return newTask;
+      }
+    })
+    //updateIndexAtividade(tarefa.id, novosIndices); //FIXME testar a necessidade disso
   }
 
   function removerAtividade(id: string) {
-    setAtividades(atividades => atividades.filter(atividade => atividade.id !== id))
+    setTask(task => {
+      if (task !== undefined) {
+        const newAtividades = task.atividades.filter(atividade => atividade.id !== id);
+        return { ...task, atividades: newAtividades };
+      }
+    })
+
+    //FIXME verificar se precisa fazer request to update
   }
 
   return (
@@ -110,7 +146,7 @@ const AtividadesSelectionList = () => {
         <div className='flex flex-col gap-4' >
           <BoardSection
             id={"Atividades"}
-            atividades={atividades}
+            atividades={tarefa.atividades}
             remover={removerAtividade}
           />
           <Button className='w-fit' onClick={adicionarAtividade}>Adicionar um item</Button>
@@ -122,5 +158,3 @@ const AtividadesSelectionList = () => {
     </div>
   );
 };
-
-export default AtividadesSelectionList;
