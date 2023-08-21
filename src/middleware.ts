@@ -20,7 +20,7 @@ export default withAuth(
     {
         callbacks: {
             authorized: ({ req, token }) => {
-                if (!(req.nextUrl.pathname === '/auth/signin' || req.nextUrl.pathname === '/api/auth/callback/keycloak') && (!token || token?.error === 'RefreshAccessTokenError')) {
+                if (!(req.nextUrl.pathname === '/auth/signin' || req.nextUrl.pathname === '/api/auth/callback/keycloak') && (token?.error === 'RefreshAccessTokenError')) {
                     return false;
                 }
                 return true;

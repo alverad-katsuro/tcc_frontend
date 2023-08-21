@@ -9,7 +9,7 @@ import { RecursoMaterialModel } from "@/model/response/RecursoMaterialModel";
 import { useFormik } from "formik";
 import Image from "next/image";
 import { VariantType, enqueueSnackbar } from "notistack";
-import { ChangeEvent } from "react";
+import { ChangeEvent, Suspense } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { array, mixed, object, string } from "yup";
 import TinyCustomForm from "../TinyCustomForm";
@@ -23,7 +23,12 @@ export interface PlanosDeTrabalhoFormsProps {
 export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDeTrabalhoFormsProps) {
 
     const validationSchema = object<PlanoTrabalhoModel>({
-        arquivo: mixed().required("Campo obrigatório."),
+        capaResourceId: string(),
+        arquivo: mixed().when('capaResourceId', {
+            is: (e: string) => e !== undefined,
+            then: (schema) => schema.required("Insira a imagem."),
+            otherwise: (schema) => schema.notRequired(),
+        }),
         titulo: string().required("Campo obrigatório."),
         areaTrabalho: string().required("Campo obrigatório."),
         descricao: string().required("Campo obrigatório."),
@@ -122,7 +127,9 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDe
         <form className="grid gap-4" onSubmit={(e) => { e.preventDefault(); formik.handleSubmit(); }}>
             <div className="col-span-full">
                 <div className="w-full">
-                    {formik.values.capaUrl !== undefined && <Image src={formik.values.capaUrl} width={100} height={100} alt="Banner do Plano de Trabalho" className="mx-auto w-full max-w-[30%]" />}
+                    {formik.values.capaUrl !== undefined &&
+                        <Image src={formik.values.capaUrl} loading="lazy" width={300} quality={100} height={300} alt="Banner do Plano de Trabalho" className="mx-auto w-full max-w-[30%] h-auto rounded-lg" />
+                    }
                 </div>
                 <div className="space-y-6">
                     <div className="relative z-0 w-full mb-6 group">
@@ -135,7 +142,6 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDe
                             />
                         </div>
                         <FileInput
-                            required
                             id="arquivo"
                             accept="image/*"
                             multiple

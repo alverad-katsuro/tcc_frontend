@@ -21,16 +21,20 @@ async function criarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: st
     const resp = (await apiAxios.postForm<string>("/planoTrabalho", {
         planoTrabalho: new Blob([JSON.stringify({ ...plano, arquivo: undefined })], {
             type: 'application/json'
-        }), arquivo: plano.arquivo
+        }),
+        arquivo: plano.arquivo
     }));
     return { data: resp.data, response: resp };
 }
 
 async function atualizarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: string, response: AxiosResponse<string, any> }> {
+    console.log(plano, "asdasdas");
+
     const resp = (await apiAxios.putForm<string>("/planoTrabalho", {
         planoTrabalho: new Blob([JSON.stringify({ ...plano, arquivo: undefined })], {
             type: 'application/json'
-        }), arquivo: plano.arquivo
+        }),
+        arquivo: plano.arquivo ?? undefined
     }));
     return { data: resp.data, response: resp }; //TODO fazer aqui tbm
 }
