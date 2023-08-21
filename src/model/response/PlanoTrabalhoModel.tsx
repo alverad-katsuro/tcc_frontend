@@ -4,6 +4,9 @@ import { RecursoMaterialModel } from "./RecursoMaterialModel";
 
 export interface PlanoTrabalhoModel {
     id?: number;
+    arquivo?: File;
+    capaResourceId?: string;
+    capaUrl?: string;
     titulo: string;
     areaTrabalho: string;
     descricao: string;

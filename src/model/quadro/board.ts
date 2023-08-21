@@ -17,7 +17,6 @@ export const initializeBoard = (tasks: TarefaBasicDTO[]) => {
       return posicaoA - posicaoB;
     });
   });
-
   return boardSections;
 };
 

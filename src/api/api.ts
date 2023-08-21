@@ -1,13 +1,13 @@
 import { InscricaoRequest } from '@/components/processoSeletivo/InscricaoModal';
+import { AtividadeCreateDTO, AtividadeModel } from '@/model/atividades';
 import { ProcessoSeletivoDTO } from '@/model/processoSeletivo/ProcessoSeletivoDTO';
+import { TarefaDTO } from '@/model/quadro';
 import { TarefaCreateDTO } from '@/model/quadro/TarefaCreaeteDTO';
 import { UpdateIndex } from '@/model/quadro/UpdateIndex';
 import { PlanoTrabalhoModel } from '@/model/response/PlanoTrabalhoModel';
 import { AxiosResponse } from 'axios';
 import { VariantType, enqueueSnackbar } from 'notistack';
 import apiAxios from './apiOptions';
-import { TarefaDTO } from '@/model/quadro';
-import { AtividadeCreateDTO, AtividadeModel } from '@/model/atividades';
 
 
 // Plano de Trabalho
@@ -18,13 +18,21 @@ export function salvarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: 
 
 async function criarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: string, response: AxiosResponse<string, any> }> {
     plano.id = undefined;
-    const resp = (await apiAxios.post<string>("/planoTrabalho", plano));
+    const resp = (await apiAxios.postForm<string>("/planoTrabalho", {
+        planoTrabalho: new Blob([JSON.stringify({ ...plano, arquivo: undefined })], {
+            type: 'application/json'
+        }), arquivo: plano.arquivo
+    }));
     return { data: resp.data, response: resp };
 }
 
 async function atualizarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: string, response: AxiosResponse<string, any> }> {
-    const resp = (await apiAxios.put<string>("/planoTrabalho", plano));
-    return { data: resp.data, response: resp };
+    const resp = (await apiAxios.putForm<string>("/planoTrabalho", {
+        planoTrabalho: new Blob([JSON.stringify({ ...plano, arquivo: undefined })], {
+            type: 'application/json'
+        }), arquivo: plano.arquivo
+    }));
+    return { data: resp.data, response: resp }; //TODO fazer aqui tbm
 }
 
 export async function deletarPlanoTrabalho(id: number) {

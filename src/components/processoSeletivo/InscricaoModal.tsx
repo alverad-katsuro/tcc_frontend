@@ -19,7 +19,7 @@ export interface InscricaoRequest {
 
 export default function InscricaoModal({ processoSeletivo, stateModal }: InscricaoModalProps) {
 
-    const [show, setShow] = stateModal ?? useState<boolean>(false);
+    const [show, setShow] = stateModal ?? useState<boolean>(false); //TODO aqui n build
 
     const router = useRouter();
 

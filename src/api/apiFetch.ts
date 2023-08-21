@@ -1,33 +1,28 @@
+import { authOptions } from "@/app/(dashboard)/api/auth/[...nextauth]/route";
 import { PageInterface } from "@/interface/PageInterface";
 import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { ProcessoSeletivoDTO, ProcessoSeletivoPlanoTrabalhoDTO } from "@/model/processoSeletivo/ProcessoSeletivoDTO";
 import { TarefaBasicDTO, TarefaDTO } from "@/model/quadro";
 import { QuadroPainelDTO } from "@/model/quadro/dto/QuadroPainelDTO";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
-import { recuperarToken } from "@/service/auth";
+import { getServerSession } from "next-auth";
 import { apiAddress } from "./apiOptions";
 
 
 
 
 
-const apiFetch: typeof fetch = async (url, params) => {
+async function apiFetch(url: string, params?: RequestInit): Promise<Response> {
 
-    const token = await recuperarToken();
+    const session = await getServerSession(authOptions);
+    const headers = new Headers(params?.headers ?? {});
 
-    const headers = new Headers(params?.headers);
-    if (token) {
-        headers.append("Authorization", token);
+    if (session?.user?.accessToken) {
+        headers.append('Authorization', `Bearer ${session.user.accessToken}`);
     }
-
-    const data = await fetch(url, {
-        ...params,
-        headers: headers
-    });
-
-    return data;
-
-}
+    const response = await fetch(url, { ...params, headers });
+    return response;
+};
 
 export async function consultarPlanos(): Promise<PageInterface<PlanoTrabalhoModel> | undefined> {
     const resp: Promise<PageInterface<PlanoTrabalhoModel>> = apiFetch(apiAddress + "/planoTrabalho", {
