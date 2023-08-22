@@ -1,3 +1,4 @@
+"use client";
 import { TarefaBasicDTO } from "@/model/quadro";
 import { LinearProgress } from "@mui/material";
 import { data } from "autoprefixer";
@@ -8,7 +9,7 @@ type TaskItemProps = {
   onClick: (task: string) => void;
 };
 
-const TaskItem = ({ task, onClick }: TaskItemProps) => {
+export default function TaskItem({ task, onClick }: TaskItemProps) {
 
   const progresso = calculaPrazo(task.fim, task.inicio);
 
@@ -24,7 +25,7 @@ const TaskItem = ({ task, onClick }: TaskItemProps) => {
     if (dI > dH) {
       return 0;
     }
-    return (1 - (dF - Date.now()) / (dF - dI)) * 100;
+    return ((1 - (dF - Date.now()) / (dF - dI)) * 100).toFixed(2);
   }
 
   return (
@@ -41,8 +42,7 @@ const TaskItem = ({ task, onClick }: TaskItemProps) => {
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{task.titulo}</h5>
         <div className="grid grid-cols-4 items-center">
           <div className="col-span-3">
-
-            <Progress progress={progresso} color={color} />
+            <Progress progress={progresso} className={`h-[10px] rounded-full ${color}`} />
           </div>
           <Avatar rounded className="place-self-end" />
         </div>
@@ -51,5 +51,3 @@ const TaskItem = ({ task, onClick }: TaskItemProps) => {
 
   );
 };
-
-export default TaskItem;
