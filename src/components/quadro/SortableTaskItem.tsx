@@ -1,11 +1,18 @@
 import React from 'react';
-import { useSortable } from '@dnd-kit/sortable';
+import { defaultAnimateLayoutChanges, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 type SortableTaskItemProps = {
   children: React.ReactNode;
   id: string;
 };
+
+function customAnimateLayoutChanges(args: any) {
+  if (args.isSorting || args.wasDragging) {
+    return defaultAnimateLayoutChanges(args);
+  }
+  return true;
+}
 
 const SortableTaskItem = ({ children, id }: SortableTaskItemProps) => {
   const {
@@ -15,7 +22,10 @@ const SortableTaskItem = ({ children, id }: SortableTaskItemProps) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id });
+  } = useSortable({
+    id,
+    animateLayoutChanges: customAnimateLayoutChanges
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),

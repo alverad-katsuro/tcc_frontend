@@ -1,4 +1,4 @@
-import { criarAtividade, updateIndexAtividade } from "@/api/api";
+import { criarAtividade, deleteAtividade, updateIndexAtividade } from "@/api/api";
 import { AtividadeCreateDTO, AtividadeModel } from "@/model/atividades/index";
 import { getTaskById } from "@/model/atividades/tasks";
 import {
@@ -7,14 +7,15 @@ import {
   DragOverlay,
   DragStartEvent,
   DropAnimation,
-  KeyboardSensor,
+  MeasuringStrategy,
   PointerSensor,
+  TouchSensor,
   closestCorners,
   defaultDropAnimation,
   useSensor,
   useSensors
 } from '@dnd-kit/core';
-import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import { arrayMove } from '@dnd-kit/sortable';
 import { Button } from 'flowbite-react';
 import { useState } from 'react';
 import AtividadeItem from './AtividadeItem';
@@ -27,7 +28,7 @@ export interface Props {
 
 }
 
-export default function AtividadesSelectionList({ tarefaId, atividadesIni }: Props) {//TODO tirar set Task e usar useState interno não posso fzr isso aqui n
+export default function AtividadesSelectionList({ tarefaId, atividadesIni }: Props) {
 
   const [atividades, setAtividades] = useState<AtividadeModel[]>(atividadesIni);
 
@@ -39,7 +40,13 @@ export default function AtividadesSelectionList({ tarefaId, atividadesIni }: Pro
         distance: 8
       }
     }),
-
+    useSensor(TouchSensor, {
+      // Press delay of 250ms, with tolerance of 5px of movement
+      activationConstraint: {
+        delay: 1250,
+        tolerance: 5,
+      },
+    })
   );
 
   const handleDragStart = ({ active }: DragStartEvent) => {
@@ -57,14 +64,14 @@ export default function AtividadesSelectionList({ tarefaId, atividadesIni }: Pro
 
     if (activeIndex !== overIndex) {
 
-      setAtividades(atividade => {
+      setAtividades(() => {
         const overAtivides = arrayMove(
           atividades,
           activeIndex,
           overIndex
         )
 
-        updateIndex(overAtivides);  //FIXME testar a necessidade disso
+        updateIndex(overAtivides);
 
         return overAtivides;
       })
@@ -110,18 +117,17 @@ export default function AtividadesSelectionList({ tarefaId, atividadesIni }: Pro
     })
     setAtividades(novosIndices)
 
-    updateIndexAtividade(novosIndices); //FIXME testar a necessidade disso
+    updateIndexAtividade(novosIndices);
   }
 
   function removerAtividade(id: string) {
-    alert(id)
-    setAtividades(atividade => {
-      const newAtividades = atividades.filter(atividade => atividade.id !== id);
-      return { ...atividade, atividades: newAtividades };
-    })
-    console.log(atividades)
 
-    //FIXME verificar se precisa fazer request to update
+    deleteAtividade(tarefaId, id)
+    setAtividades(atividades => {
+      const newAtividades = atividades.filter(atividade => atividade.id !== id);
+      return newAtividades;
+    })
+
   }
 
   return (
@@ -131,6 +137,11 @@ export default function AtividadesSelectionList({ tarefaId, atividadesIni }: Pro
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+        measuring={{
+          droppable: {
+            strategy: MeasuringStrategy.Always,
+          }
+        }}
       >
         <div className='flex flex-col gap-4' >
           <BoardSection

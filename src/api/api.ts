@@ -123,6 +123,11 @@ export async function atualizarAtividade(data: AtividadeCreateDTO): Promise<stri
     return resp.data;
 }
 
+export async function deleteAtividade(tarefaId: string, atividadeId: string): Promise<AxiosResponse<any, any>> {
+    const resp = (await apiAxios.delete(`/tarefa/${tarefaId}/atividade/${atividadeId}`));
+    return resp.data;
+}
+
 export async function updateIndexAtividade(data: AtividadeModel[]): Promise<string> {
     const resp = (await apiAxios.put<string>(`/tarefa/atividade/index`, data));
     return resp.data;
