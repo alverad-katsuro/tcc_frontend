@@ -1,4 +1,4 @@
-import { ColunaKanban, TarefaBasicDTO, TarefaDTO } from '@/model/quadro';
+import { ColunaKanban, TarefaBasicDTO } from '@/model/quadro';
 import { useDroppable } from '@dnd-kit/core';
 import {
   SortableContext,

@@ -92,6 +92,9 @@ export async function criarInscricao(data: InscricaoRequest): Promise<string> {
 
 export async function consultarTarefa(id: string): Promise<TarefaDTO | undefined> {
     const resp = (await apiAxios.get<TarefaDTO | undefined>(`/tarefa/${id}`));
+    if (resp.data && resp.data?.atividades === undefined) {
+        resp.data.atividades = []
+    }
     return resp.data;
 }
 
@@ -115,7 +118,10 @@ export async function criarAtividade(tarefaId: string, data: AtividadeCreateDTO)
     return resp.data;
 }
 
-
+export async function atualizarAtividade(data: AtividadeCreateDTO): Promise<string> {
+    const resp = (await apiAxios.put<string>(`/tarefa/atividade`, data));
+    return resp.data;
+}
 
 export async function updateIndexAtividade(data: AtividadeModel[]): Promise<string> {
     const resp = (await apiAxios.put<string>(`/tarefa/atividade/index`, data));

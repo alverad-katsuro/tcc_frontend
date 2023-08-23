@@ -11,7 +11,7 @@ import TituloTarefa from "./TituloTarefa";
 
 
 export interface DescricaoModalProps {
-    task?: TarefaDTO;
+    task: TarefaDTO;
     setTask: Dispatch<SetStateAction<TarefaDTO | undefined>>;
     setBoardSections: Dispatch<SetStateAction<BoardSections>>;
 
@@ -115,7 +115,7 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                                         <h5 className="font-bold tracking-tight text-gray-900 dark:text-white my-4">
                                             Atividades
                                         </h5>
-                                        {task && <AtividadesSelectionList setTask={newSetTask} tarefa={task} />}
+                                        {task !== undefined && <AtividadesSelectionList tarefaId={task.id} atividadesIni={task.atividades} />}
                                     </div>
                                 </div>
                             </div>

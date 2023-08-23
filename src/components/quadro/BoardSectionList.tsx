@@ -39,8 +39,13 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
 
   async function openModal(taskId: string) {
     const tarefa = await consultarTarefa(taskId);
-    if (tarefa != undefined) {
+    if (tarefa !== undefined) {
       setOpen(!open);
+      tarefa.atividades.sort((atividadeA, atividadeB) => {
+        const posicaoA = atividadeA.index ?? 0;
+        const posicaoB = atividadeB.index ?? 0;
+        return posicaoA - posicaoB;
+      });
     }
     setTaskModal(tarefa);
   }

@@ -11,8 +11,8 @@ export const initializeBoard = (tasks: TarefaBasicDTO[]) => {
     ).sort((taskA, taskB) => {
       // Compara as posições kanban das tarefas.
       // Verifica se os atributos posicaoKanban existem para evitar erros.
-      const posicaoA = taskA.posicaoKanban || 0;
-      const posicaoB = taskB.posicaoKanban || 0;
+      const posicaoA = taskA.posicaoKanban ?? 0;
+      const posicaoB = taskB.posicaoKanban ?? 0;
 
       return posicaoA - posicaoB;
     });
