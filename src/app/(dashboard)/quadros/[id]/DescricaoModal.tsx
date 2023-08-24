@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import useDebounce from "./Deb";
 import TituloTarefa from "./TituloTarefa";
+import MultipleSelectCheckmarks from "@/components/quadro/MultiSelect";
 
 
 export interface DescricaoModalProps {
@@ -83,6 +84,7 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                 dismissible
                 show={open}
                 onClose={() => setOpen(!open)}
+                size="5xl"
             >
                 <Modal.Body>
 
@@ -124,6 +126,7 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                                     Menu
                                 </h5>
                                 <Button color={'dark'} >Indicar Responsável</Button>
+                                <MultipleSelectCheckmarks />
                                 <Button color={'dark'} >Ingressar na Tarefa</Button>
                                 {task?.colunaKanban === ColunaKanban.DONE && data?.user?.role?.includes("ROLE_ADMIN") ?
                                     <Button color={'dark'} onClick={voltarParaInProgress}>Voltar uma etapa</Button> : <></>
