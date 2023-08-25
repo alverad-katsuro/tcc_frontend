@@ -1,5 +1,5 @@
-import { AuthProvider } from '@/context/AuthenticateContext';
 import FlowbiteContext from '@/context/FlowbiteContext';
+import SessionProvider from '@/context/SessionProvider';
 import SnackbarProvider from '@/context/SnackbarProvider';
 
 export const metadata = {
@@ -10,12 +10,12 @@ export const metadata = {
 
 function RootLayout({ children }: { children: React.ReactNode; }) {
   return (
-      <div className='flex h-screen w-full flex-col overflow-hidden'>
-        <AuthProvider>
-          <SnackbarProvider maxSnack={5}>
-            <FlowbiteContext>{children}</FlowbiteContext>
-          </SnackbarProvider>
-        </AuthProvider>
+    <div className='flex h-screen w-full flex-col overflow-hidden'>
+      <SessionProvider>
+        <SnackbarProvider maxSnack={5}>
+          <FlowbiteContext>{children}</FlowbiteContext>
+        </SnackbarProvider>
+      </SessionProvider>
     </div>
   );
 };

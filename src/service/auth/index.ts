@@ -1,9 +1,12 @@
-import { cookies } from "next/headers";
+import { authOptions } from "@/app/(dashboard)/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
 
-export function recuperarToken(): string | undefined{
-    const token = cookies().get("Token");
-    if (token == undefined) {
+export async function recuperarToken() {
+    const session = await getServerSession(authOptions);
+
+    if (session == null || session.user == null || session.user.accessToken == null) {
         return undefined;
     }
-    return `Bearer ${token.value}`;
+
+    return `Bearer ${session.user.accessToken}`;
 }

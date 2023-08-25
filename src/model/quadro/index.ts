@@ -1,12 +1,15 @@
+import { AtividadeModel } from "../atividades";
+import { UsuarioDTO } from "./UsuarioDTO";
+
 export enum ColunaKanban {
   TODO = 'TODO',
   IN_PROGRESS = 'In Progress',
   DONE = 'DONE',
 };
 
-export type TarefaDocument = {
+export type TarefaDTO = {
 
-  id?: string;
+  id: string;
 
   titulo: string;
 
@@ -14,31 +17,65 @@ export type TarefaDocument = {
 
   colunaKanban: ColunaKanban;
 
-  inicio?: Date;
+  inicio?: string;
 
-  fim?: Date;
+  fim?: string;
 
-  quadroId?: number;
+  quadroId: number;
 
-  posicaoKanban?: number;
+  posicaoKanban: number;
 
-  pai?: TarefaDocument;
+  pai?: TarefaDTO;
 
   objetivoId?: number;
 
-  concluida?: boolean;
+  concluida: boolean;
 
   cargaHoraria?: number;
 
   etiquetas?: string[];
 
-  responsavel?: number;
+  responsavel?: UsuarioDTO;
 
   resultadosObtidos?: number[];
 
-  atividades?: AtividadeDocument[];
+  atividades: AtividadeModel[];
 
   impedimentos?: ImpedimentoDocument[];
+};
+
+export type TarefaBasicDTO = {
+
+  id: string;
+
+  titulo: string;
+
+  descricao: string;
+
+  colunaKanban: ColunaKanban;
+
+  inicio?: string;
+
+  fim?: string;
+
+  quadroId?: number;
+
+  posicaoKanban?: number;
+
+  etiquetas?: string[];
+
+  responsavel?: UsuarioDTO;
+
+};
+
+export type TarefaIndexDTO = {
+
+  id: string;
+
+  colunaKanban: ColunaKanban;
+
+  posicaoKanban?: number;
+
 };
 
 interface AtividadeDocument {
@@ -52,5 +89,5 @@ interface ImpedimentoDocument {
 }
 
 export type BoardSections = {
-  [name: string]: TarefaDocument[];
+  [name: string]: TarefaBasicDTO[];
 };

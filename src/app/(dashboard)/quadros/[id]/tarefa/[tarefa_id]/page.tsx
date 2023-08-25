@@ -1,6 +1,6 @@
 "use client";
-import { consultaPlanoTrabalho } from "@/api/api";
-import DescricaoTarefa from "./DescricaoModal";
+
+import { consultaPlanoTrabalho } from "@/api/apiFetch";
 
 export default async function AtualizarTarefa({ params }: { params: { tarefa_id: number } }) {
 

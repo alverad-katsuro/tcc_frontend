@@ -1,27 +1,100 @@
-import TinyCustomForm from "@/components/TinyCustomForm";
+import { ingressarTarefa, updateTarefa } from "@/api/api";
+import TinyCustomFormm from "@/components/TinyCustomFormm";
 import { Button, Modal } from "@/components/flowbite-components";
 import DataRangeCustom from "@/components/quadro/DataRangeCustom";
+import MultipleSelectResponsavelCheckmarks from "@/components/quadro/MultipleSelectResponsavelCheckmarks";
 import AtividadesSelectionList from "@/components/quadro/modal/AtividadesSelectionList";
-import { TarefaDocument } from "@/model/quadro";
-import { useRef } from "react";
+import { BoardSections, ColunaKanban, TarefaDTO } from "@/model/quadro";
+import { useSession } from "next-auth/react";
+import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import useDebounce from "./Deb";
 import TituloTarefa from "./TituloTarefa";
+import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioPlanoProjection";
 
 
 export interface DescricaoModalProps {
-    task?: TarefaDocument;
+    task: TarefaDTO;
+    setTask: Dispatch<SetStateAction<TarefaDTO | undefined>>;
+    setBoardSections: Dispatch<SetStateAction<BoardSections>>;
+
     open: boolean;
     setOpen: (open: boolean) => void;
+    pesquisadores: UsuarioPlanoProjection[];
+
 }
 
 
-export default function DescricaoModal({ task, setOpen, open }: DescricaoModalProps) {
+export default function DescricaoModal({ task, setOpen, open, setTask, setBoardSections, pesquisadores }: DescricaoModalProps) {
 
     const rootRef = useRef<HTMLDivElement>(null);
 
-    function save(e: any) {
-        console.log(e);
-        return "aaa";
+    const debouncedSearch = useDebounce(task, saveTask, 500)
+
+    const { data } = useSession();
+
+    function saveTask(task?: TarefaDTO) {
+        if (task != undefined) {
+            updateTarefa(task);
+        }
     }
+
+    useEffect(() => {
+        if (debouncedSearch) {
+            console.log(debouncedSearch)
+        }
+    }, [debouncedSearch])
+
+    function voltarParaInProgress() {
+        newSetTask(task => {
+            if (task != undefined) {
+                const newTask: TarefaDTO = { ...task, colunaKanban: "IN_PROGRESS" as ColunaKanban }
+                return newTask;
+            }
+        })
+    }
+
+    function calcularEsforco() {
+        const usuario: UsuarioPlanoProjection | undefined = pesquisadores.find(pesquisador => pesquisador.usuario.id === task.responsavel?.id)
+
+        if (task.fim !== undefined && task.inicio !== undefined && usuario?.cargaHoraria !== undefined) {
+            const Difference_In_Time = new Date(task.fim).getTime() - new Date(task.inicio).getTime();
+
+            const Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+            const diasSemana = 5;
+
+            const horasDia = usuario?.cargaHoraria / diasSemana;
+
+            return Difference_In_Days * horasDia;
+        }
+        return 0;
+    }
+
+
+    const newSetTask = (updateFunction: SetStateAction<TarefaDTO | undefined>) => {
+        setTask((currentTask) => {
+            const updatedTask = typeof updateFunction === 'function' ? updateFunction(currentTask) : updateFunction;
+
+            if (updatedTask !== undefined) {
+                setBoardSections((secoesDoQuadro) => {
+                    const colunaDoQuadro = updatedTask.colunaKanban;
+                    const novaSecaoDoQuadro = secoesDoQuadro[colunaDoQuadro].map((tarefaNaSecao) => {
+                        if (tarefaNaSecao.id === updatedTask.id) {
+                            return { ...updatedTask };
+                        }
+                        return tarefaNaSecao;
+                    });
+
+                    return {
+                        ...secoesDoQuadro,
+                        [colunaDoQuadro]: novaSecaoDoQuadro,
+                    };
+                });
+            }
+            return updatedTask;
+        });
+    };
+
 
     return (
 
@@ -31,34 +104,39 @@ export default function DescricaoModal({ task, setOpen, open }: DescricaoModalPr
                 dismissible
                 show={open}
                 onClose={() => setOpen(!open)}
+                size="5xl"
             >
                 <Modal.Body>
-                    <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5">
 
-                        <TituloTarefa titulo={task?.titulo} />
+                    <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 p-5">
+                        <TituloTarefa tarefa={task} setTask={newSetTask} />
                         <div className="flex-col flex sm:flex-row ">
                             <div className="flex-auto">
                                 <div className="p-5 space-y-6">
                                     <div className="flex space-x-4 items-center">
                                         <h5 className="flex-auto text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                            Alfredo Gabriel
+                                            {task.responsavel?.nome}
                                         </h5>
 
                                         <div className="flex-col flex sm:flex-row">
-                                            <DataRangeCustom />
+                                            <DataRangeCustom setTask={newSetTask} tarefa={task} />
                                             <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white self-center text-center">
-                                                Esforço: 30 horas.
+                                                Esforço: {calcularEsforco()} horas.
                                             </h5>
                                         </div>
                                     </div>
                                     <div>
-                                        <TinyCustomForm onSave={save} />
+                                        {task !== undefined ?
+                                            <TinyCustomFormm elementoState={[task, newSetTask]} id="task" elementField="descricao" />
+                                            : <></>
+
+                                        }
                                     </div>
                                     <div>
                                         <h5 className="font-bold tracking-tight text-gray-900 dark:text-white my-4">
                                             Atividades
                                         </h5>
-                                        <AtividadesSelectionList />
+                                        {task !== undefined && <AtividadesSelectionList tarefaId={task.id} atividadesIni={task.atividades} />}
                                     </div>
                                 </div>
                             </div>
@@ -66,8 +144,13 @@ export default function DescricaoModal({ task, setOpen, open }: DescricaoModalPr
                                 <h5 className="font-bold tracking-tight text-gray-900 dark:text-white  text-center">
                                     Menu
                                 </h5>
-                                <Button color={'dark'} >Indicar Responsável</Button>
-                                <Button color={'dark'} >Ingressar na Tarefa</Button>
+                                <MultipleSelectResponsavelCheckmarks pesquisadores={pesquisadores} setTask={newSetTask} task={task} />
+                                {task.responsavel === undefined &&
+                                    <Button color={'dark'} onClick={() => ingressarTarefa(task.id)}>Ingressar na Tarefa</Button>
+                                }
+                                {task?.colunaKanban === ColunaKanban.DONE && data?.user?.role?.includes("ROLE_ADMIN") ?
+                                    <Button color={'dark'} onClick={voltarParaInProgress}>Voltar uma etapa</Button> : <></>
+                                }
                             </div>
                         </div>
                     </div>

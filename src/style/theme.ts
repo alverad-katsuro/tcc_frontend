@@ -11,7 +11,7 @@ export const flowbiteTheme: CustomFlowbiteTheme = {
   },
   card: {
     root: {
-      children: "grid justify-center gap-4 p-4"
+      children: "grid gap-4 p-4"
     },
   }
 };

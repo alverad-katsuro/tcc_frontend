@@ -37,7 +37,7 @@ export default function PlanoTrabalhoModal({ planoTrabalho }: PlanoTrabalhoModal
                             <Button className="bg-white dark:bg-gray-800 w-fit m-2" onClick={() => window.location.reload()}><BsArrowUpRightSquare size={20} className="text-gray-900 dark:text-white" /></Button>
                         </div>
                     </Link>
-                    <img className="rounded-t-lg w-full" src={imageMock.src} alt="" />
+                    <img className="rounded-t-lg w-full" src={planoTrabalho.capaUrl} alt="" />
                     <div className="p-5">
                         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                             {planoTrabalho?.titulo}

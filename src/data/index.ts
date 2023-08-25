@@ -1,6 +1,6 @@
-import { ColunaKanban, TarefaDocument } from '@/model/quadro';
+import { ColunaKanban, TarefaDTO } from '@/model/quadro';
 
-export const INITIAL_TASKS: TarefaDocument[] = [
+export const INITIAL_TASKS: TarefaDTO[] = [
   {
     id: '1',
     titulo: "Tax Accountant",

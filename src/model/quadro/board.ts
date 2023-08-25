@@ -1,17 +1,22 @@
-import { BoardSections, ColunaKanban, TarefaDocument } from ".";
-import { BOARD_SECTIONS } from "./BoardSections";
+import { BoardSections, ColunaKanban, TarefaBasicDTO } from ".";
 import { getTasksByStatus } from "./tasks";
 
-export const initializeBoard = (tasks: TarefaDocument[]) => {
+export const initializeBoard = (tasks: TarefaBasicDTO[]) => {
   const boardSections: BoardSections = {};
 
   Object.keys(ColunaKanban).forEach((boardSectionKey) => {
     boardSections[boardSectionKey] = getTasksByStatus(
       tasks,
       boardSectionKey as ColunaKanban
-      );
-    });
+    ).sort((taskA, taskB) => {
+      // Compara as posições kanban das tarefas.
+      // Verifica se os atributos posicaoKanban existem para evitar erros.
+      const posicaoA = taskA.posicaoKanban ?? 0;
+      const posicaoB = taskB.posicaoKanban ?? 0;
 
+      return posicaoA - posicaoB;
+    });
+  });
   return boardSections;
 };
 

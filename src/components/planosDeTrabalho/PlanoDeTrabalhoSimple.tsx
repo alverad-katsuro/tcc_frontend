@@ -1,17 +1,21 @@
 import { Label, Table, TextInput } from "@/components/flowbite-components";
-import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
+import Image from "next/image";
 import ObjetivoSimple from "./ObjetivoSimple";
 import RecursosMateriaisSimple from "./RecursosMateriaisSimple";
+import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 
 export interface PlanosDeTrabalhoFormsProps {
     plano: PlanoTrabalhoModel;
     pesquisadores: UsuarioNovoPlanoProjection[];
 }
-export default function PlanoDeTrabalhoSimple({ plano }: PlanosDeTrabalhoFormsProps) {
+export default async function PlanoDeTrabalhoSimple({ plano }: PlanosDeTrabalhoFormsProps) {
 
     return (
         <>
+            {plano.capaUrl !== undefined &&
+                <Image src={plano.capaUrl} loading="lazy" width={300} quality={100} height={300} alt="Banner do Plano de Trabalho" className="mx-auto w-full max-w-[30%] h-auto rounded-lg" />
+            }
             <div className="col-span-full">
                 <div className="mb-2 block">
                     <Label

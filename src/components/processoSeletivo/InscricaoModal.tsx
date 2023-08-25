@@ -19,7 +19,7 @@ export interface InscricaoRequest {
 
 export default function InscricaoModal({ processoSeletivo, stateModal }: InscricaoModalProps) {
 
-    const [show, setShow] = stateModal ?? useState<boolean>(false);
+    const [show, setShow] = stateModal ?? useState<boolean>(false); //TODO aqui n build
 
     const router = useRouter();
 
@@ -98,7 +98,7 @@ export default function InscricaoModal({ processoSeletivo, stateModal }: Inscric
                             </div>
 
                         </div>
-                        <Button type="submit" onClick={() => console.log(formik.errors)} className="justify-self-center w-fit">Confirmar envio</Button>
+                        <Button type="submit" className="justify-self-center w-fit">Confirmar envio</Button>
                     </div>
                 </form>
             </Modal.Body>

@@ -1,16 +1,16 @@
 import { Button, TextInput } from "@/components/flowbite-components";
-import { useState } from "react";
+import { TarefaDTO } from "@/model/quadro";
+import { Dispatch, SetStateAction, useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 
 export interface Props {
-    titulo?: string;
+    tarefa?: TarefaDTO;
+    setTask: Dispatch<SetStateAction<TarefaDTO | undefined>>;
 }
 
-export default function TituloTarefa({ titulo = "Sem Titulo" }: Props) {
+export default function TituloTarefa({ tarefa, setTask }: Props) {
 
     const [editavel, setEditavel] = useState<boolean>(false);
-
-    const [tituloState, setTitulo] = useState<string>(titulo)
 
     if (editavel) {
         return (
@@ -22,8 +22,13 @@ export default function TituloTarefa({ titulo = "Sem Titulo" }: Props) {
                         sizing="md"
                         className="w-full"
                         placeholder="Titulo"
-                        onChange={(e) => setTitulo(e.currentTarget.value)}
-                        defaultValue={tituloState}
+                        onChange={(e) => setTask((task) => {
+                            if (task != undefined) {
+                                const newTask: TarefaDTO = { ...task, titulo: e?.currentTarget?.value };
+                                return newTask;
+                            }
+                        })}
+                        defaultValue={tarefa?.titulo}
                         required
                     />
 
@@ -41,7 +46,7 @@ export default function TituloTarefa({ titulo = "Sem Titulo" }: Props) {
 
     return (
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white" onClick={() => setEditavel(e => !e)}>
-            {tituloState}
+            {tarefa?.titulo}
         </h5>
     );
 };

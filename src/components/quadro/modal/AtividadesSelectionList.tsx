@@ -1,42 +1,36 @@
-import { AtividadeModel } from "@/model/atividades/index";
-import { getTaskById } from '@/model/atividades/tasks';
+import { criarAtividade, deleteAtividade, updateIndexAtividade } from "@/api/api";
+import { AtividadeCreateDTO, AtividadeModel } from "@/model/atividades/index";
+import { getTaskById } from "@/model/atividades/tasks";
 import {
   DndContext,
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
   DropAnimation,
-  KeyboardSensor,
+  MeasuringStrategy,
   PointerSensor,
+  TouchSensor,
   closestCorners,
   defaultDropAnimation,
   useSensor,
   useSensors
 } from '@dnd-kit/core';
-import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import { arrayMove } from '@dnd-kit/sortable';
 import { Button } from 'flowbite-react';
 import { useState } from 'react';
 import AtividadeItem from './AtividadeItem';
 import BoardSection from './BoardSection';
 
 
-const AtividadesSelectionList = () => {
+export interface Props {
+  tarefaId: string;
+  atividadesIni: AtividadeModel[];
 
-  const [atividades, setAtividades] = useState<AtividadeModel[]>([
-    {
-      id: "1",
-      checked: false,
-      titulo: "asdasdsad"
-    },
-    {
-      id: "2",
-      checked: true,
-      titulo: "111212121212"
-    }
+}
 
-  ]);
+export default function AtividadesSelectionList({ tarefaId, atividadesIni }: Props) {
 
-  const [id, setId] = useState<number>(atividades.length + 1);
+  const [atividades, setAtividades] = useState<AtividadeModel[]>(atividadesIni);
 
   const [activeTaskId, setActiveTaskId] = useState<null | string>(null);
 
@@ -46,8 +40,12 @@ const AtividadesSelectionList = () => {
         distance: 8
       }
     }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
+    useSensor(TouchSensor, {
+      // Press delay of 250ms, with tolerance of 5px of movement
+      activationConstraint: {
+        delay: 1250,
+        tolerance: 5,
+      },
     })
   );
 
@@ -58,19 +56,25 @@ const AtividadesSelectionList = () => {
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
 
     const activeIndex = atividades.findIndex(
-      (task) => task.id === active.id
+      (atividade) => atividade.id === active.id
     );
     const overIndex = atividades.findIndex(
-      (task) => task.id === over?.id
+      (atividade) => atividade.id === over?.id
     );
 
     if (activeIndex !== overIndex) {
-      setAtividades((atividades) =>
-        arrayMove(
+
+      setAtividades(() => {
+        const overAtivides = arrayMove(
           atividades,
           activeIndex,
-          overIndex)
-      )
+          overIndex
+        )
+
+        updateIndex(overAtivides);
+
+        return overAtivides;
+      })
     }
     setActiveTaskId(null);
   };
@@ -79,24 +83,51 @@ const AtividadesSelectionList = () => {
     ...defaultDropAnimation,
   };
 
-  const task = activeTaskId ? getTaskById(atividades, activeTaskId) : null;
+  const atividade = activeTaskId ? getTaskById(atividades, activeTaskId) : null;
 
-  function adicionarAtividade() {
-    const ativi: AtividadeModel = {
-      id: String(id),
+  async function adicionarAtividade() {
+    const novaAtividade: AtividadeCreateDTO = {
       checked: false,
-      titulo: "asdasdsad"
+      titulo: "Atividade Sem Titulo",
+      index: 0,
     }
-    setId(id => id + 1);
-    setAtividades(atividades => {
-      atividades.push(ativi);
+    const id: string = await criarAtividade(tarefaId, novaAtividade);
+    const atividade: AtividadeModel = {
+      ...novaAtividade,
+      id: id
+    }
+    setAtividades(oldAtividades => {
+      const atividades: AtividadeModel[] = [atividade, ...oldAtividades]
+
+      updateIndex(atividades);
       return atividades;
-    });
+
+    })
 
   }
 
+  function updateIndex(atividades: AtividadeModel[]) {
+
+    const novosIndices: AtividadeModel[] = atividades.map((atividade, i) => {
+      const updateIndex: AtividadeModel = {
+        ...atividade,
+        index: i
+      }
+      return updateIndex;
+    })
+    setAtividades(novosIndices)
+
+    updateIndexAtividade(novosIndices);
+  }
+
   function removerAtividade(id: string) {
-    setAtividades(atividades => atividades.filter(atividade => atividade.id !== id))
+
+    deleteAtividade(tarefaId, id)
+    setAtividades(atividades => {
+      const newAtividades = atividades.filter(atividade => atividade.id !== id);
+      return newAtividades;
+    })
+
   }
 
   return (
@@ -106,6 +137,11 @@ const AtividadesSelectionList = () => {
         collisionDetection={closestCorners}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+        measuring={{
+          droppable: {
+            strategy: MeasuringStrategy.Always,
+          }
+        }}
       >
         <div className='flex flex-col gap-4' >
           <BoardSection
@@ -115,12 +151,10 @@ const AtividadesSelectionList = () => {
           />
           <Button className='w-fit' onClick={adicionarAtividade}>Adicionar um item</Button>
           <DragOverlay dropAnimation={dropAnimation}>
-            {task ? <AtividadeItem atividade={task} remover={removerAtividade} /> : null}
+            {atividade ? <AtividadeItem atividadeIni={atividade} remover={removerAtividade} /> : null}
           </DragOverlay>
         </div>
       </DndContext>
     </div>
   );
 };
-
-export default AtividadesSelectionList;

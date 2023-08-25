@@ -1,7 +1,6 @@
 "use client";
 
 import { Card } from "@/components/flowbite-components";
-import imageMock from "@/images/bannerUFPA.png";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import Link from "next/link";
 
@@ -18,8 +17,8 @@ export default function PlanoTrabalhoLista({ planosTrabalhos }: PlanoTrabalhoLis
             {planosTrabalhos.map((e) =>
                 <Link href={`/planoDeTrabalho/${e.id}`} key={e.id} >
 
-                    <Card imgSrc={imageMock.src} key={e.id}>
-                        <div className="overflow-auto max-h-64 gap-4 gap flex flex-col">
+                    <Card imgSrc={e.capaUrl} key={e.id} >
+                        <div className="overflow-auto max-h-64 gap-4 gap flex flex-col w-96">
                             <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                 <strong>Título:</strong> {e.titulo}
                             </h5>

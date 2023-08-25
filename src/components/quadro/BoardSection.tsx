@@ -1,18 +1,18 @@
-import { ColunaKanban, TarefaDocument } from '@/model/quadro';
+import { ColunaKanban, TarefaBasicDTO } from '@/model/quadro';
 import { useDroppable } from '@dnd-kit/core';
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
+import BoardTitulo from './BoardTitulo';
 import SortableTaskItem from './SortableTaskItem';
 import TaskItem from './TaskItem';
-import BoardTitulo from './BoardTitulo';
 
 type BoardSectionProps = {
   id: string;
   title: ColunaKanban;
-  tasks: TarefaDocument[];
-  onClick: (task: TarefaDocument) => void;
+  tasks: TarefaBasicDTO[];
+  onClick: (task: string) => void;
   addTask: () => void;
 };
 
@@ -22,7 +22,7 @@ const BoardSection = ({ id, title, tasks, onClick, addTask }: BoardSectionProps)
   });
 
   return (
-    <div className="flex flex-col gap-4 h-full w-screen max-w-xs">
+    <div className="flex flex-col gap-4 h-full w-screen lg:w-full max-w-xs xl:max-w-lg">
 
       <BoardTitulo titulo={title} addTask={addTask} />
 
@@ -30,6 +30,7 @@ const BoardSection = ({ id, title, tasks, onClick, addTask }: BoardSectionProps)
         id={id}
         items={tasks}
         strategy={verticalListSortingStrategy}
+        disabled={title === ColunaKanban.DONE}
       >
         <div ref={setNodeRef} className='flex flex-col gap-4 overflow-auto'>
           {tasks.map((task) => (

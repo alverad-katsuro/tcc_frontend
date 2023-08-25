@@ -13,24 +13,20 @@ type BoardSectionProps = {
   remover: (id: string) => void;
 };
 
-const BoardSection = ({ id, atividades: atividade, remover }: BoardSectionProps) => {
-  const { setNodeRef } = useDroppable({
-    id,
-  });
+const BoardSection = ({ id, atividades, remover }: BoardSectionProps) => {
 
   return (
     <div className='block h-full overflow-auto'>
       <SortableContext
-        id={id}
-        items={atividade}
+        items={atividades}
         strategy={verticalListSortingStrategy}
       >
 
-        <div ref={setNodeRef} className='flex flex-col gap-2 px-2'>
-          {atividade.map((task) => (
+        <div className='flex flex-col gap-2 px-2'>
+          {atividades.map((task) => (
             <div key={task.id}>
               <SortableTaskItem id={task.id}>
-                <AtividadeItem atividade={task} remover={remover} />
+                <AtividadeItem atividadeIni={task} remover={remover} />
               </SortableTaskItem>
             </div>
           ))}

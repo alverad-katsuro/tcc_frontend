@@ -1,17 +1,13 @@
-import { TokenAuth } from '@/model/TokenAuth';
-import { UserLogin } from '@/model/UserLogin';
+import { InscricaoRequest } from '@/components/processoSeletivo/InscricaoModal';
+import { AtividadeCreateDTO, AtividadeModel } from '@/model/atividades';
 import { ProcessoSeletivoDTO } from '@/model/processoSeletivo/ProcessoSeletivoDTO';
+import { TarefaDTO } from '@/model/quadro';
+import { TarefaCreateDTO } from '@/model/quadro/TarefaCreaeteDTO';
+import { UpdateIndex } from '@/model/quadro/UpdateIndex';
 import { PlanoTrabalhoModel } from '@/model/response/PlanoTrabalhoModel';
 import { AxiosResponse } from 'axios';
 import { VariantType, enqueueSnackbar } from 'notistack';
 import apiAxios from './apiOptions';
-import { InscricaoRequest } from '@/components/processoSeletivo/InscricaoModal';
-import { TarefaDocument } from '@/model/quadro';
-
-export async function loginAuth(data: UserLogin): Promise<TokenAuth> {
-    const resp = (await apiAxios.post<TokenAuth>("/auth/login", data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, withCredentials: true }));
-    return resp.data;
-}
 
 
 // Plano de Trabalho
@@ -22,13 +18,25 @@ export function salvarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: 
 
 async function criarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: string, response: AxiosResponse<string, any> }> {
     plano.id = undefined;
-    const resp = (await apiAxios.post<string>("/planoTrabalho", plano));
+    const resp = (await apiAxios.postForm<string>("/planoTrabalho", {
+        planoTrabalho: new Blob([JSON.stringify({ ...plano, arquivo: undefined })], {
+            type: 'application/json'
+        }),
+        arquivo: plano.arquivo
+    }));
     return { data: resp.data, response: resp };
 }
 
 async function atualizarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: string, response: AxiosResponse<string, any> }> {
-    const resp = (await apiAxios.put<string>("/planoTrabalho", plano));
-    return { data: resp.data, response: resp };
+    console.log(plano, "asdasdas");
+
+    const resp = (await apiAxios.putForm<string>("/planoTrabalho", {
+        planoTrabalho: new Blob([JSON.stringify({ ...plano, arquivo: undefined })], {
+            type: 'application/json'
+        }),
+        arquivo: plano.arquivo ?? undefined
+    }));
+    return { data: resp.data, response: resp }; //TODO fazer aqui tbm
 }
 
 export async function deletarPlanoTrabalho(id: number) {
@@ -82,10 +90,57 @@ export async function criarInscricao(data: InscricaoRequest): Promise<string> {
 
 // Tarefas
 
-export async function criarTarefa(data: TarefaDocument): Promise<string> {
+export async function consultarTarefa(id: string): Promise<TarefaDTO | undefined> {
+    const resp = (await apiAxios.get<TarefaDTO | undefined>(`/tarefa/${id}`));
+    if (resp.data && resp.data?.atividades === undefined) {
+        resp.data.atividades = []
+    }
+    return resp.data;
+}
+
+export async function criarTarefa(data: TarefaCreateDTO): Promise<string> {
     const resp = (await apiAxios.post<string>("/tarefa", data));
     return resp.data;
 }
+
+export async function updateTarefa(data: TarefaDTO): Promise<string> {
+    const resp = (await apiAxios.put<string>("/tarefa", data));
+    return resp.data;
+}
+
+export async function updateIndexTarefa(data: UpdateIndex[]): Promise<string> {
+    const resp = (await apiAxios.put<string>("/tarefa/index", data));
+    return resp.data;
+}
+
+export async function criarAtividade(tarefaId: string, data: AtividadeCreateDTO): Promise<string> {
+    const resp = (await apiAxios.post<string>(`/tarefa/${tarefaId}/atividade`, data));
+    return resp.data;
+}
+
+export async function atualizarAtividade(data: AtividadeCreateDTO): Promise<string> {
+    const resp = (await apiAxios.put<string>(`/tarefa/atividade`, data));
+    return resp.data;
+}
+
+export async function deleteAtividade(tarefaId: string, atividadeId: string): Promise<AxiosResponse<any, any>> {
+    const resp = (await apiAxios.delete(`/tarefa/${tarefaId}/atividade/${atividadeId}`));
+    return resp.data;
+}
+
+export async function updateIndexAtividade(data: AtividadeModel[]): Promise<string> {
+    const resp = (await apiAxios.put<string>(`/tarefa/atividade/index`, data));
+    return resp.data;
+}
+
+export async function ingressarTarefa(tarefaId: string): Promise<void> {
+    const resp = (await apiAxios.post<void>(`/tarefa/${tarefaId}/ingressar`));
+}
+
+export async function indicarPesquisadorTarefa(tarefaId: string, pesquisadorId?: string): Promise<void> {
+    const resp = (await apiAxios.post<void>(`/tarefa/${tarefaId}/indicarPesquisadorTarefa`, { pesquisadorId: pesquisadorId }));
+}
+
 
 //
 

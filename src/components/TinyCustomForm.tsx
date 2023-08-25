@@ -28,7 +28,7 @@ export default function TinyCustomForm({ onSave, descricao, isEditavel = false, 
             <div>
 
                 <div className='flex-col flex sm:flex-row'>
-                    {label ? label :
+                    {label !== undefined ? label :
                         <h5 className="font-bold tracking-tight text-gray-900 dark:text-white my-4 flex-auto">
                             Descrição
                         </h5>
