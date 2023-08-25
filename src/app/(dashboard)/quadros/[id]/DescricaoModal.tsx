@@ -1,15 +1,15 @@
-import { ingressarTarefa, updateTarefa } from "@/api/api";
+import { deleteTarefa, ingressarTarefa, updateTarefa } from "@/api/api";
 import TinyCustomFormm from "@/components/TinyCustomFormm";
 import { Button, Modal } from "@/components/flowbite-components";
 import DataRangeCustom from "@/components/quadro/DataRangeCustom";
 import MultipleSelectResponsavelCheckmarks from "@/components/quadro/MultipleSelectResponsavelCheckmarks";
 import AtividadesSelectionList from "@/components/quadro/modal/AtividadesSelectionList";
+import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioPlanoProjection";
 import { BoardSections, ColunaKanban, TarefaDTO } from "@/model/quadro";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import useDebounce from "./Deb";
 import TituloTarefa from "./TituloTarefa";
-import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioPlanoProjection";
 
 
 export interface DescricaoModalProps {
@@ -95,6 +95,27 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
         });
     };
 
+    function deletarTarefa() {
+        deleteTarefa(task.id).then(() => {
+            setBoardSections((secoesDoQuadro) => {
+                const colunaDoQuadro = task.colunaKanban;
+                const novaSecaoDoQuadro = secoesDoQuadro[colunaDoQuadro].filter((tarefaNaSecao) => {
+                    if (tarefaNaSecao.id === task.id) {
+                        return false;
+                    }
+                    return true;
+                });
+                return {
+                    ...secoesDoQuadro,
+                    [colunaDoQuadro]: novaSecaoDoQuadro,
+                }
+
+            });
+            setOpen(false);
+        });
+
+    }
+
 
     return (
 
@@ -150,6 +171,9 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                                 }
                                 {task?.colunaKanban === ColunaKanban.DONE && data?.user?.role?.includes("ROLE_ADMIN") ?
                                     <Button color={'dark'} onClick={voltarParaInProgress}>Voltar uma etapa</Button> : <></>
+                                }
+                                {data?.user?.role?.includes("ROLE_ADMIN") ?
+                                    <Button color={'red'} onClick={deletarTarefa}>Deletar Tarefa</Button> : <></>
                                 }
                             </div>
                         </div>

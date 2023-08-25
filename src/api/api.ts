@@ -108,6 +108,11 @@ export async function updateTarefa(data: TarefaDTO): Promise<string> {
     return resp.data;
 }
 
+export async function deleteTarefa(tarefaId: string): Promise<AxiosResponse<any, any>> {
+    const resp = (await apiAxios.delete(`/tarefa/${tarefaId}`));
+    return resp.data;
+}
+
 export async function updateIndexTarefa(data: UpdateIndex[]): Promise<string> {
     const resp = (await apiAxios.put<string>("/tarefa/index", data));
     return resp.data;
