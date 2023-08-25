@@ -1,7 +1,5 @@
 "use client";
 import { TarefaBasicDTO } from "@/model/quadro";
-import { LinearProgress } from "@mui/material";
-import { data } from "autoprefixer";
 import { Avatar, Badge, Progress } from "flowbite-react";
 
 type TaskItemProps = {
@@ -45,7 +43,7 @@ export default function TaskItem({ task, onClick }: TaskItemProps) {
           <div className="col-span-3">
             <Progress progress={progresso} className={`h-[10px] rounded-full ${color}`} />
           </div>
-          <Avatar rounded className="place-self-end" />
+          <Avatar img={task.responsavel?.imagemUrl} rounded className="place-self-end" />
         </div>
       </div>
     </div>

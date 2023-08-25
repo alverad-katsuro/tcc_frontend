@@ -24,12 +24,14 @@ import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import BoardSection from './BoardSection';
 import TaskItem from './TaskItem';
+import { UsuarioPlanoProjection } from '@/model/planoDeTrabalho/UsuarioNovoPlanoProjection';
 
 export interface Props {
   tarefasIniciais: TarefaBasicDTO[];
   quadroId: number;
+  pesquisadores: UsuarioPlanoProjection[];
 }
-function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
+function BoardSectionList({ tarefasIniciais, quadroId, pesquisadores }: Props) {
   const [boardSections, setBoardSections] =
     useState<BoardSections>(initializeBoard(tarefasIniciais));
 
@@ -218,7 +220,7 @@ function BoardSectionList({ tarefasIniciais, quadroId }: Props) {
   return (
     <div className='block h-full'>
       {taskModal !== undefined ?
-        <DescricaoModal open={open} setOpen={setOpen} task={taskModal} setTask={setTaskModal} setBoardSections={setBoardSections} />
+        <DescricaoModal open={open} setOpen={setOpen} task={taskModal} pesquisadores={pesquisadores} setTask={setTaskModal} setBoardSections={setBoardSections} />
         : <></>
       }
       <DndContext

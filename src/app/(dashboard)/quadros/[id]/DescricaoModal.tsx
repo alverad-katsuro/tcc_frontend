@@ -2,13 +2,14 @@ import { updateTarefa } from "@/api/api";
 import TinyCustomFormm from "@/components/TinyCustomFormm";
 import { Button, Modal } from "@/components/flowbite-components";
 import DataRangeCustom from "@/components/quadro/DataRangeCustom";
+import MultipleSelectResponsavelCheckmarks from "@/components/quadro/MultipleSelectResponsavelCheckmarks";
 import AtividadesSelectionList from "@/components/quadro/modal/AtividadesSelectionList";
+import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { BoardSections, ColunaKanban, TarefaDTO } from "@/model/quadro";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import useDebounce from "./Deb";
 import TituloTarefa from "./TituloTarefa";
-import MultipleSelectCheckmarks from "@/components/quadro/MultiSelect";
 
 
 export interface DescricaoModalProps {
@@ -18,10 +19,12 @@ export interface DescricaoModalProps {
 
     open: boolean;
     setOpen: (open: boolean) => void;
+    pesquisadores: UsuarioPlanoProjection[];
+
 }
 
 
-export default function DescricaoModal({ task, setOpen, open, setTask, setBoardSections }: DescricaoModalProps) {
+export default function DescricaoModal({ task, setOpen, open, setTask, setBoardSections, pesquisadores }: DescricaoModalProps) {
 
     const rootRef = useRef<HTMLDivElement>(null);
 
@@ -48,6 +51,23 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                 return newTask;
             }
         })
+    }
+
+    function calcularEsforco() {
+        const usuario: UsuarioPlanoProjection | undefined = pesquisadores.find(pesquisador => pesquisador.usuario.id === task.responsavel?.id)
+
+        if (task.fim !== undefined && task.inicio !== undefined && usuario?.cargaHoraria !== undefined) {
+            const Difference_In_Time = new Date(task.fim).getTime() - new Date(task.inicio).getTime();
+
+            const Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+
+            const diasSemana = 5;
+
+            const horasDia = usuario?.cargaHoraria / diasSemana;
+
+            return Difference_In_Days * horasDia;
+        }
+        return 0;
     }
 
 
@@ -95,14 +115,13 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                                 <div className="p-5 space-y-6">
                                     <div className="flex space-x-4 items-center">
                                         <h5 className="flex-auto text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                            {/* //FIXME mudar para o nome da requisição */}
-                                            {data?.user?.given_name}
+                                            {task.responsavel?.nome}
                                         </h5>
 
                                         <div className="flex-col flex sm:flex-row">
                                             <DataRangeCustom setTask={newSetTask} tarefa={task} />
                                             <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white self-center text-center">
-                                                Esforço: 30 horas.
+                                                Esforço: {calcularEsforco()} horas.
                                             </h5>
                                         </div>
                                     </div>
@@ -125,9 +144,10 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                                 <h5 className="font-bold tracking-tight text-gray-900 dark:text-white  text-center">
                                     Menu
                                 </h5>
-                                <Button color={'dark'} >Indicar Responsável</Button>
-                                <MultipleSelectCheckmarks />
-                                <Button color={'dark'} >Ingressar na Tarefa</Button>
+                                <MultipleSelectResponsavelCheckmarks pesquisadores={pesquisadores} setTask={newSetTask} task={task} />
+                                {task.responsavel === undefined &&
+                                    <Button color={'dark'} >Ingressar na Tarefa</Button>
+                                }
                                 {task?.colunaKanban === ColunaKanban.DONE && data?.user?.role?.includes("ROLE_ADMIN") ?
                                     <Button color={'dark'} onClick={voltarParaInProgress}>Voltar uma etapa</Button> : <></>
                                 }

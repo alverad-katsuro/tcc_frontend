@@ -1,4 +1,5 @@
 import { AtividadeModel } from "../atividades";
+import { UsuarioDTO } from "./UsuarioDTO";
 
 export enum ColunaKanban {
   TODO = 'TODO',
@@ -34,7 +35,7 @@ export type TarefaDTO = {
 
   etiquetas?: string[];
 
-  responsavel?: number;
+  responsavel?: UsuarioDTO;
 
   resultadosObtidos?: number[];
 
@@ -63,7 +64,7 @@ export type TarefaBasicDTO = {
 
   etiquetas?: string[];
 
-  responsavel?: number;
+  responsavel?: UsuarioDTO;
 
 };
 

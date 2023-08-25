@@ -1,6 +1,7 @@
 import { authOptions } from "@/app/(dashboard)/api/auth/[...nextauth]/route";
 import { PageInterface } from "@/interface/PageInterface";
-import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
+import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
+import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioPlanoProjection";
 import { ProcessoSeletivoDTO, ProcessoSeletivoPlanoTrabalhoDTO } from "@/model/processoSeletivo/ProcessoSeletivoDTO";
 import { TarefaBasicDTO, TarefaDTO } from "@/model/quadro";
 import { QuadroPainelDTO } from "@/model/quadro/dto/QuadroPainelDTO";
@@ -56,6 +57,13 @@ export async function consultarTarefa(id: string): Promise<TarefaDTO> {
 
 export async function consultarPesquisadores(planoId: number = 0): Promise<UsuarioNovoPlanoProjection[]> {
     const resp: Promise<UsuarioNovoPlanoProjection[]> = apiFetch(apiAddress + `/usuarioPlanoTrabalho/estaNoPlanoTrabalho?planoTrabalhoId=${planoId}`, {
+        method: 'GET', cache: "no-cache"
+    }).then(r => r.status === 200 ? r.json() : []);
+    return resp;
+}
+
+export async function consultarPesquisadoresNoPlano(planoId: number): Promise<UsuarioPlanoProjection[]> {
+    const resp: Promise<UsuarioPlanoProjection[]> = apiFetch(apiAddress + `/usuarioPlanoTrabalho/${planoId}/usuarios`, {
         method: 'GET', cache: "no-cache"
     }).then(r => r.status === 200 ? r.json() : []);
     return resp;
