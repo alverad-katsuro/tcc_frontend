@@ -1,8 +1,6 @@
-export interface UsuarioNovoPlanoProjection {
-    id: number;
-    participante: boolean;
-    cargaHoraria: number;
-    nome: string;
-    planoTrabalhoId: number;
+import { UsuarioDTO } from "../quadro/UsuarioDTO";
 
+export interface UsuarioPlanoProjection {
+    cargaHoraria: number,
+    usuario: UsuarioDTO
 }

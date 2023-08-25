@@ -2,8 +2,8 @@
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import PlanoDeTrabalhoSimple from "./PlanoDeTrabalhoSimple";
 import PlanosDeTrabalhoForms from "./PlanosDeTrabalhoForms";
-import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { useSession } from "next-auth/react";
+import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 
 export interface PlanosDeTrabalhoFormsProps {
     plano: PlanoTrabalhoModel;

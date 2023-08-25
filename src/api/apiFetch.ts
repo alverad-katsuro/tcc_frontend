@@ -1,13 +1,13 @@
 import { authOptions } from "@/app/(dashboard)/api/auth/[...nextauth]/route";
 import { PageInterface } from "@/interface/PageInterface";
-import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
-import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioPlanoProjection";
 import { ProcessoSeletivoDTO, ProcessoSeletivoPlanoTrabalhoDTO } from "@/model/processoSeletivo/ProcessoSeletivoDTO";
 import { TarefaBasicDTO, TarefaDTO } from "@/model/quadro";
 import { QuadroPainelDTO } from "@/model/quadro/dto/QuadroPainelDTO";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import { getServerSession } from "next-auth";
 import { apiAddress } from "./apiOptions";
+import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
+import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioPlanoProjection";
 
 
 

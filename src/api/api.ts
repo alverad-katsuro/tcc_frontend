@@ -132,6 +132,16 @@ export async function updateIndexAtividade(data: AtividadeModel[]): Promise<stri
     const resp = (await apiAxios.put<string>(`/tarefa/atividade/index`, data));
     return resp.data;
 }
+
+export async function ingressarTarefa(tarefaId: string): Promise<void> {
+    const resp = (await apiAxios.post<void>(`/tarefa/${tarefaId}/ingressar`));
+}
+
+export async function indicarPesquisadorTarefa(tarefaId: string, pesquisadorId?: string): Promise<void> {
+    const resp = (await apiAxios.post<void>(`/tarefa/${tarefaId}/indicarPesquisadorTarefa`, { pesquisadorId: pesquisadorId }));
+}
+
+
 //
 
 function notification(mensagem: string, variant: VariantType): void {

@@ -24,7 +24,7 @@ import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { useState } from 'react';
 import BoardSection from './BoardSection';
 import TaskItem from './TaskItem';
-import { UsuarioPlanoProjection } from '@/model/planoDeTrabalho/UsuarioNovoPlanoProjection';
+import { UsuarioPlanoProjection } from '@/model/planoDeTrabalho/UsuarioPlanoProjection';
 
 export interface Props {
   tarefasIniciais: TarefaBasicDTO[];

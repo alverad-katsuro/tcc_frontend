@@ -1,10 +1,9 @@
 import { Label, Table, TextInput } from "@/components/flowbite-components";
-import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
+import Image from "next/image";
 import ObjetivoSimple from "./ObjetivoSimple";
 import RecursosMateriaisSimple from "./RecursosMateriaisSimple";
-import { Suspense } from "react";
-import Image from "next/image";
+import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 
 export interface PlanosDeTrabalhoFormsProps {
     plano: PlanoTrabalhoModel;

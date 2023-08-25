@@ -1,4 +1,4 @@
-import { UsuarioNovoPlanoProjection } from "../planoDeTrabalho/UsuarioNovoPlanoProjection";
+import { UsuarioNovoPlanoProjection } from "../planoDeTrabalho/UsuarioPlanoProjection";
 import { ObjetivoModel } from "./ObjetivoModel";
 import { RecursoMaterialModel } from "./RecursoMaterialModel";
 

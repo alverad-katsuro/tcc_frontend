@@ -1,15 +1,15 @@
-import { updateTarefa } from "@/api/api";
+import { ingressarTarefa, updateTarefa } from "@/api/api";
 import TinyCustomFormm from "@/components/TinyCustomFormm";
 import { Button, Modal } from "@/components/flowbite-components";
 import DataRangeCustom from "@/components/quadro/DataRangeCustom";
 import MultipleSelectResponsavelCheckmarks from "@/components/quadro/MultipleSelectResponsavelCheckmarks";
 import AtividadesSelectionList from "@/components/quadro/modal/AtividadesSelectionList";
-import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { BoardSections, ColunaKanban, TarefaDTO } from "@/model/quadro";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import useDebounce from "./Deb";
 import TituloTarefa from "./TituloTarefa";
+import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioPlanoProjection";
 
 
 export interface DescricaoModalProps {
@@ -146,7 +146,7 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                                 </h5>
                                 <MultipleSelectResponsavelCheckmarks pesquisadores={pesquisadores} setTask={newSetTask} task={task} />
                                 {task.responsavel === undefined &&
-                                    <Button color={'dark'} >Ingressar na Tarefa</Button>
+                                    <Button color={'dark'} onClick={() => ingressarTarefa(task.id)}>Ingressar na Tarefa</Button>
                                 }
                                 {task?.colunaKanban === ColunaKanban.DONE && data?.user?.role?.includes("ROLE_ADMIN") ?
                                     <Button color={'dark'} onClick={voltarParaInProgress}>Voltar uma etapa</Button> : <></>
