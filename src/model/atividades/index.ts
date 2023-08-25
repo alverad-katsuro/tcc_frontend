@@ -3,13 +3,13 @@ export type StatusAtividade = 'ATIVIDADES';
 export type AtividadeModel = {
   id: string;
   titulo?: string;
-  checked: boolean;
+  concluida: boolean;
   index?: number;
 };
 
 export type AtividadeCreateDTO = {
   titulo?: string;
-  checked: boolean;
+  concluida: boolean;
   index?: number;
 };
 

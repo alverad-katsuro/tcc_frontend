@@ -21,10 +21,11 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BoardSection from './BoardSection';
 import TaskItem from './TaskItem';
 import { UsuarioPlanoProjection } from '@/model/planoDeTrabalho/UsuarioPlanoProjection';
+import { useRouter } from 'next/navigation';
 
 export interface Props {
   tarefasIniciais: TarefaBasicDTO[];

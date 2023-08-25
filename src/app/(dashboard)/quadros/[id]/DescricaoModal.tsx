@@ -5,7 +5,7 @@ import DataRangeCustom from "@/components/quadro/DataRangeCustom";
 import MultipleSelectResponsavelCheckmarks from "@/components/quadro/MultipleSelectResponsavelCheckmarks";
 import AtividadesSelectionList from "@/components/quadro/modal/AtividadesSelectionList";
 import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioPlanoProjection";
-import { BoardSections, ColunaKanban, TarefaDTO } from "@/model/quadro";
+import { BoardSections, TarefaDTO } from "@/model/quadro";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import useDebounce from "./Deb";
@@ -42,16 +42,7 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
         if (debouncedSearch) {
             console.log(debouncedSearch)
         }
-    }, [debouncedSearch])
-
-    function voltarParaInProgress() {
-        newSetTask(task => {
-            if (task != undefined) {
-                const newTask: TarefaDTO = { ...task, colunaKanban: "IN_PROGRESS" as ColunaKanban }
-                return newTask;
-            }
-        })
-    }
+    }, [debouncedSearch, task])
 
     function calcularEsforco() {
         const usuario: UsuarioPlanoProjection | undefined = pesquisadores.find(pesquisador => pesquisador.usuario.id === task.responsavel?.id)
@@ -59,7 +50,7 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
         if (task.fim !== undefined && task.inicio !== undefined && usuario?.cargaHoraria !== undefined) {
             const Difference_In_Time = new Date(task.fim).getTime() - new Date(task.inicio).getTime();
 
-            const Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
+            const Difference_In_Days = 1 + (Difference_In_Time / (1000 * 3600 * 24)); // 1 + para contar o dia inicial
 
             const diasSemana = 5;
 
@@ -116,15 +107,18 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
 
     }
 
-
     return (
 
         <div ref={rootRef}>
+
             <Modal
                 root={rootRef.current ?? undefined}
                 dismissible
                 show={open}
-                onClose={() => setOpen(!open)}
+                onClose={() => {
+                    setOpen(!open)
+                    setTask(undefined);
+                }}
                 size="5xl"
             >
                 <Modal.Body>
@@ -157,25 +151,27 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                                         <h5 className="font-bold tracking-tight text-gray-900 dark:text-white my-4">
                                             Atividades
                                         </h5>
-                                        {task !== undefined && <AtividadesSelectionList tarefaId={task.id} atividadesIni={task.atividades} />}
+                                        {task !== undefined ? <AtividadesSelectionList tarefaId={task.id} atividadesIni={task.atividades} /> : <></>}
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex flex-auto flex-col gap-4 p-4 max-w-[12rem]">
-                                <h5 className="font-bold tracking-tight text-gray-900 dark:text-white  text-center">
-                                    Menu
-                                </h5>
-                                <MultipleSelectResponsavelCheckmarks pesquisadores={pesquisadores} setTask={newSetTask} task={task} />
-                                {task.responsavel === undefined &&
-                                    <Button color={'dark'} onClick={() => ingressarTarefa(task.id)}>Ingressar na Tarefa</Button>
-                                }
-                                {task?.colunaKanban === ColunaKanban.DONE && data?.user?.role?.includes("ROLE_ADMIN") ?
-                                    <Button color={'dark'} onClick={voltarParaInProgress}>Voltar uma etapa</Button> : <></>
-                                }
-                                {data?.user?.role?.includes("ROLE_ADMIN") ?
-                                    <Button color={'red'} onClick={deletarTarefa}>Deletar Tarefa</Button> : <></>
-                                }
-                            </div>
+                            {task.responsavel === undefined || data?.user?.role?.includes("ROLE_ADMIN") ?
+                                <div className="flex flex-auto flex-col gap-4 p-4 max-w-[12rem]">
+                                    <h5 className="font-bold tracking-tight text-gray-900 dark:text-white  text-center">
+                                        Menu
+                                    </h5>
+                                    {task.responsavel === undefined &&
+                                        (<Button color={'dark'} onClick={() => ingressarTarefa(task.id)}>Ingressar na Tarefa</Button>)
+                                    }
+                                    {data?.user?.role?.includes("ROLE_ADMIN") ? (
+                                        <>
+                                            <MultipleSelectResponsavelCheckmarks pesquisadores={pesquisadores} setTask={newSetTask} task={task} />
+                                            <Button color={'red'} onClick={deletarTarefa}>Deletar Tarefa</Button>
+                                        </>)
+                                        : <></>
+                                    }
+                                </div> : <></>
+                            }
                         </div>
                     </div>
                 </Modal.Body>

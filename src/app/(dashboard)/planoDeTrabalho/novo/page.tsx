@@ -30,7 +30,7 @@ export default async function NovoPlanoTrabalho() {
             <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Cadastrar Plano de Trabalho</h5>
 
             <div className="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 w-full">
-                <PlanosDeTrabalhoForms plano={plano} pesquisadores={pesquisadores}/>
+                <PlanosDeTrabalhoForms plano={plano} pesquisadoresInit={pesquisadores} />
             </div>
         </main>
 

@@ -87,7 +87,7 @@ export default function AtividadesSelectionList({ tarefaId, atividadesIni }: Pro
 
   async function adicionarAtividade() {
     const novaAtividade: AtividadeCreateDTO = {
-      checked: false,
+      concluida: false,
       titulo: "Atividade Sem Titulo",
       index: 0,
     }

@@ -1,9 +1,9 @@
 "use client";
+import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
+import { useSession } from "next-auth/react";
 import PlanoDeTrabalhoSimple from "./PlanoDeTrabalhoSimple";
 import PlanosDeTrabalhoForms from "./PlanosDeTrabalhoForms";
-import { useSession } from "next-auth/react";
-import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 
 export interface PlanosDeTrabalhoFormsProps {
     plano: PlanoTrabalhoModel;
@@ -14,7 +14,7 @@ export default function PlanoDeTrabalhoView({ plano, pesquisadores }: PlanosDeTr
 
     const { data } = useSession();
     if (data?.user?.role?.includes("ROLE_ADMIN")) {
-        return <PlanosDeTrabalhoForms plano={plano} pesquisadores={pesquisadores} />
+        return <PlanosDeTrabalhoForms plano={plano} pesquisadoresInit={pesquisadores} />
     } else {
         //@ts-ignore
         return <PlanoDeTrabalhoSimple plano={plano} pesquisadores={pesquisadores} />

@@ -4,9 +4,9 @@ import DatePicker from "react-multi-date-picker";
 import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
 
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { TarefaDTO } from "@/model/quadro";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
 
 export type numberArray = number[];
 
@@ -27,14 +27,22 @@ export default function DataRangeCustom({ tarefa, setTask }: DataRangeCustomProp
     }, [setMode])
 
     function setDate(datas: numberArray[]) {
+        if (datas.length === 0) {
+            setTask(task => {
+                if (task !== undefined) {
+                    const newTask: TarefaDTO = { ...task, fim: undefined, inicio: undefined }
+                    return newTask;
+                }
+            })
+        }
         if (datas.length > 1) {
             datas.shift();
         }
-        const primeiraData = datas[0];
-        if (primeiraData.length === 2) {
+        const primeiraData: numberArray | undefined = datas[0];
+        if (primeiraData?.length === 2) {
             setTask(task => {
                 if (task !== undefined) {
-                    const newTask: TarefaDTO = { ...task, fim: new Date(primeiraData[1]), inicio: new Date(primeiraData[0]) }
+                    const newTask: TarefaDTO = { ...task, fim: new Date(primeiraData[1]).toISOString(), inicio: new Date(primeiraData[0]).toISOString() }
                     return newTask;
                 }
             })
@@ -66,7 +74,7 @@ export default function DataRangeCustom({ tarefa, setTask }: DataRangeCustomProp
             }}
             plugins={[
                 <DatePanel key={1} />,
-                <TimePicker key={2} position="bottom" />
+                // <TimePicker key={2} position="bottom" />
             ]} />
     )
 

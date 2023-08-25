@@ -9,7 +9,7 @@ import { RecursoMaterialModel } from "@/model/response/RecursoMaterialModel";
 import { useFormik } from "formik";
 import Image from "next/image";
 import { VariantType, enqueueSnackbar } from "notistack";
-import { ChangeEvent, Suspense } from "react";
+import { ChangeEvent, useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { array, mixed, object, string } from "yup";
 import TinyCustomForm from "../TinyCustomForm";
@@ -18,9 +18,9 @@ import RecursosMateriaisForm from "./RecursosMateriaisForm";
 
 export interface PlanosDeTrabalhoFormsProps {
     plano: PlanoTrabalhoModel;
-    pesquisadores: UsuarioNovoPlanoProjection[];
+    pesquisadoresInit: UsuarioNovoPlanoProjection[];
 }
-export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDeTrabalhoFormsProps) {
+export default function PlanosDeTrabalhoForms({ plano, pesquisadoresInit }: PlanosDeTrabalhoFormsProps) {
 
     const validationSchema = object<PlanoTrabalhoModel>({
         capaResourceId: string(),
@@ -43,6 +43,8 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDe
             }
         )).min(1, "No minimo 1 objetivo.").required("Campo obrigatório.")
     })
+
+    const [pesquisadores, setPesquisadores] = useState<UsuarioNovoPlanoProjection[]>(pesquisadoresInit)
 
     const formik = useFormik({
         initialValues: plano,
@@ -94,7 +96,15 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadores }: PlanosDe
     }
 
     function adicionarRemoverPesquisador(pesquisador: UsuarioNovoPlanoProjection) {
-        pesquisador.participante = !pesquisador.participante;
+        setPesquisadores(pesquisadores => {
+            const novosPesquisadores = pesquisadores.map(e => {
+                if (e.id === pesquisador.id) {
+                    e.participante = !e.participante;
+                }
+                return e;
+            })
+            return novosPesquisadores;
+        })
     }
 
     function uploadArquivo(e: ChangeEvent<HTMLInputElement>) {

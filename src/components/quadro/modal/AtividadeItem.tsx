@@ -72,7 +72,10 @@ const AtividadeItem = ({ atividadeIni, remover }: AtividadeItemProps) => {
   return (
     <div className="flex items-center gap-2 p-3 bg-white border border-gray-200 shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
       <div className="flex-auto flex items-center gap-2 p-3">
-        <Checkbox id={atividade.id} />
+        <Checkbox id={atividade.id} onChange={(e) => newSetAtividade((atividade) => {
+          const newAtividade: AtividadeModel = { ...atividade, concluida: e.currentTarget.checked }
+          return newAtividade;
+        })} defaultChecked={atividade.concluida} />
         <div
           ref={ref}
           className="w-full"

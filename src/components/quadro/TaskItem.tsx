@@ -1,17 +1,17 @@
 "use client";
-import { TarefaBasicDTO } from "@/model/quadro";
+import { ColunaKanban, TarefaBasicDTO } from "@/model/quadro";
 import { Avatar, Badge, Progress } from "flowbite-react";
-
+import { AiOutlineFieldTime } from "react-icons/ai";
 type TaskItemProps = {
   task: TarefaBasicDTO;
   onClick: (task: string) => void;
 };
 
-export default function TaskItem({ task, onClick }: TaskItemProps) {
+export default function TaskItem({ task, onClick }: TaskItemProps) {// TODO: Se task concluida retornar color green
 
   const progresso = calculaPrazo(task.fim, task.inicio);
 
-  const color = ["red", "yellow", "green"][Math.floor(progresso % 3)];
+  const color = task.colunaKanban === ColunaKanban.DONE ? "green" : ["green", "yellow", "red"][Math.floor(progresso % 3)];
 
   function calculaPrazo(dataFim?: string, dataIni?: string) {
     if (!dataFim || !dataIni) {
@@ -40,8 +40,11 @@ export default function TaskItem({ task, onClick }: TaskItemProps) {
         </div>
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{task.titulo}</h5>
         <div className="grid grid-cols-4 items-center">
-          <div className="col-span-3">
-            <Progress progress={progresso} className={`h-[10px] rounded-full ${color}`} />
+          <div className="col-span-3 flex flex-row gap-4">
+            <div className="w-full self-center">
+              <Progress progress={progresso} className="h-[10px] rounded-full flex-1" color={color} />
+            </div>
+            <AiOutlineFieldTime className="font-bold tracking-tight text-gray-900 dark:text-white"  size={30}/>
           </div>
           <Avatar img={task.responsavel?.imagemUrl} rounded className="place-self-end" />
         </div>
