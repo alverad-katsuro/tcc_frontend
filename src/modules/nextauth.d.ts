@@ -19,6 +19,8 @@ declare module "next-auth" {
             // Adicione as propriedades given_name e family_name
             given_name?: string | null;
             family_name?: string | null;
+            picture?: string | null;
+            lattes?: string | null;
         };
         expires: string;
         // Adicione novas propriedades personalizadas, se necessário

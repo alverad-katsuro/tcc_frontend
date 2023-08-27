@@ -23,7 +23,7 @@ export default function HeaderAvatar() {
                         {data?.user?.email}
                     </span>
                 </Dropdown.Header>
-                <Dropdown.Item as={Link} href="">
+                <Dropdown.Item as={Link} href="/perfil">
                     Perfil
                 </Dropdown.Item>
                 <Dropdown.Divider />

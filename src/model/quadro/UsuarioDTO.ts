@@ -3,5 +3,5 @@ export interface UsuarioDTO {
     email?: string,
     nome?: string,
     lattes?: string,
-    imagemUrl?: string
+    picture?: string
 }

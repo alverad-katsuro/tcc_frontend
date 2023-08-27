@@ -27,4 +27,6 @@ interface TokenPayload {
     given_name: string;
     family_name: string;
     email: string;
+    lattes: string;
+    picture: string;
 }

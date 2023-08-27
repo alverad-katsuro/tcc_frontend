@@ -44,9 +44,9 @@ export default function TaskItem({ task, onClick }: TaskItemProps) {// TODO: Se 
             <div className="w-full self-center">
               <Progress progress={progresso} className="h-[10px] rounded-full flex-1" color={color} />
             </div>
-            <AiOutlineFieldTime className="font-bold tracking-tight text-gray-900 dark:text-white"  size={30}/>
+            <AiOutlineFieldTime className="font-bold tracking-tight text-gray-900 dark:text-white" size={30} />
           </div>
-          <Avatar img={task.responsavel?.imagemUrl} rounded className="place-self-end" />
+          <Avatar img={task.responsavel?.picture} rounded className="place-self-end" />
         </div>
       </div>
     </div>
