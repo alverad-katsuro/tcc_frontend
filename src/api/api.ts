@@ -1,5 +1,6 @@
 import { InscricaoRequest } from '@/components/processoSeletivo/InscricaoModal';
 import { AtividadeCreateDTO, AtividadeModel } from '@/model/atividades';
+import { UserDataKeycloak } from '@/model/keycloak/UserDataKeycloak';
 import { ProcessoSeletivoDTO } from '@/model/processoSeletivo/ProcessoSeletivoDTO';
 import { TarefaDTO } from '@/model/quadro';
 import { TarefaCreateDTO } from '@/model/quadro/TarefaCreaeteDTO';
@@ -9,6 +10,16 @@ import { AxiosResponse } from 'axios';
 import { VariantType, enqueueSnackbar } from 'notistack';
 import apiAxios from './apiOptions';
 
+
+export async function atualizarPerfil(perfil: UserDataKeycloak, foto?: File): Promise<AxiosResponse<void, any>> {
+    const resp = (await apiAxios.putForm<void>("/usuario", {
+        usuario: new Blob([JSON.stringify(perfil)], {
+            type: 'application/json'
+        }),
+        foto: foto
+    }));
+    return resp;
+}
 
 // Plano de Trabalho
 

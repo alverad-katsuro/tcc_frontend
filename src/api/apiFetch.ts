@@ -8,8 +8,15 @@ import { getServerSession } from "next-auth";
 import { apiAddress } from "./apiOptions";
 import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioPlanoProjection";
+import { UserDataKeycloak } from "@/model/keycloak/UserDataKeycloak";
 
 
+export async function recuperarPerfil(): Promise<UserDataKeycloak> {
+    const resp: Promise<UserDataKeycloak> = apiFetch(apiAddress + `/usuario`, {
+        method: 'GET', cache: "no-cache"
+    }).then(r => r.status === 200 ? r.json() : undefined);
+    return resp;
+}
 
 
 

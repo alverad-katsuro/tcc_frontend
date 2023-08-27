@@ -1,8 +1,8 @@
 "use client";
 import { Button } from '@/components/flowbite-components';
+import errorSVG from "@/public/icon/404.svg";
 import '@/style/globals.css';
 import Image from "next/image";
-import errorSVG from "@/images/404.svg";
 
 export default function NotFound() {
     return (
@@ -12,7 +12,7 @@ export default function NotFound() {
                     <Image
                         priority
                         src={errorSVG}
-                        alt="Follow us on Twitter"
+                        alt="404"
                     />
                 </div>
                 <div className="text-center xl:max-w-4xl">
