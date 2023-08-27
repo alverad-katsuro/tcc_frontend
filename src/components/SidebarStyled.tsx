@@ -16,7 +16,7 @@ export default function SidebarStyled(): JSX.Element {
 
   const { isCollapsed, setCollapsed } = useSidebarContext();
 
-  const { data } = useSession();
+  const { data, status } = useSession();
 
   function toggle() {
     setCollapsed(!isCollapsed);
@@ -29,34 +29,39 @@ export default function SidebarStyled(): JSX.Element {
             <Sidebar.Item href="/" icon={HiChartPie}>
               Dashboard
             </Sidebar.Item>
-            <Sidebar.Item href="/quadros" icon={HiViewBoards}>
-              Quadros Kanban
-            </Sidebar.Item>
-            {data?.user?.role?.includes("ROLE_ADMIN") ?
-              <Sidebar.Collapse icon={MdOutlineWork} label="Planos de Trabalho">
-                <Sidebar.Item href="/planoDeTrabalho/novo" icon={AiFillPlusCircle} >
-                  Novo
-                </Sidebar.Item>
-                <Sidebar.Item href="/planoDeTrabalho" icon={AiOutlineSearch}>
-                  Visualizar
-                </Sidebar.Item>
-              </Sidebar.Collapse> :
-              <Sidebar.Item href="/planoDeTrabalho" icon={MdOutlineWork}>
-                Planos de Trabalho
+            {status === "authenticated" ?
+              <Sidebar.Item href="/quadros" icon={HiViewBoards}>
+                Quadros Kanban
               </Sidebar.Item>
-            }
+              : <></>}
             {data?.user?.role?.includes("ROLE_ADMIN") ?
-              <Sidebar.Collapse icon={BsFillPeopleFill} label="Processo Seletivo">
-                <Sidebar.Item href="/processoSeletivo/novo" icon={AiFillPlusCircle} >
-                  Novo
+              <>
+                <Sidebar.Collapse icon={MdOutlineWork} label="Planos de Trabalho">
+                  <Sidebar.Item href="/planoDeTrabalho/novo" icon={AiFillPlusCircle} >
+                    Novo
+                  </Sidebar.Item>
+                  <Sidebar.Item href="/planoDeTrabalho" icon={AiOutlineSearch}>
+                    Visualizar
+                  </Sidebar.Item>
+                </Sidebar.Collapse>
+                <Sidebar.Collapse icon={BsFillPeopleFill} label="Processo Seletivo">
+                  <Sidebar.Item href="/processoSeletivo/novo" icon={AiFillPlusCircle} >
+                    Novo
+                  </Sidebar.Item>
+                  <Sidebar.Item href="/processoSeletivo" icon={AiOutlineSearch}>
+                    Visualizar
+                  </Sidebar.Item>
+                </Sidebar.Collapse>
+              </>
+              :
+              <>
+                <Sidebar.Item href="/planoDeTrabalho" icon={MdOutlineWork}>
+                  Planos de Trabalho
                 </Sidebar.Item>
-                <Sidebar.Item href="/processoSeletivo" icon={AiOutlineSearch}>
-                  Visualizar
+                <Sidebar.Item href="/processoSeletivo" icon={BsFillPeopleFill}>
+                  Processo Seletivo
                 </Sidebar.Item>
-              </Sidebar.Collapse> :
-              <Sidebar.Item href="/processoSeletivo" icon={BsFillPeopleFill}>
-                Processo Seletivo
-              </Sidebar.Item>
+              </>
             }
           </Sidebar.ItemGroup>
           <Sidebar.ItemGroup>

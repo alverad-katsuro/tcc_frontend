@@ -1,14 +1,14 @@
 "use client";
+import { atualizarPerfil } from "@/api/api";
 import { Button, Card, FileInput, Label, TextInput } from "@/components/flowbite-components";
 import { AtibutosUser, UserDataKeycloak } from "@/model/keycloak/UserDataKeycloak";
+import { notification } from "@/utils/Notification";
 import { useFormik } from "formik";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import { AiFillMail } from "react-icons/ai";
 import { array, object, string } from "yup";
 import LattesSVG from "./LattesSVG";
-import { atualizarPerfil } from "@/api/api";
-import { notification } from "@/utils/Notification";
 
 interface Props {
     userKeycloak: UserDataKeycloak;
@@ -25,7 +25,7 @@ export default function PerfilForm({ userKeycloak }: Props) {
         lastName: string().required("Campo obrigatório."),
         email: string().required("Campo obrigatório."),
         attributes: object<AtibutosUser>({
-            lattes: array(),
+            lattes: array().of(string().required("Campo Obrigatorio")).min(1, "Campo Obrigatorio").required("Campo obrigatório."),
             pictureId: array(),
             picture: array(),
         }),
@@ -174,15 +174,15 @@ export default function PerfilForm({ userKeycloak }: Props) {
                             <Label
                                 htmlFor="attributes.lattes[0]"
                                 value="Lattes"
-                                color={formik.errors.attributes?.lattes?.[0] ? "failure" : undefined}
+                                color={(formik.errors.attributes?.lattes?.[0] || formik.errors.attributes?.lattes) ? "failure" : undefined}
                             />
                         </div>
                         <TextInput
                             icon={LattesSVG}
                             id="attributes.lattes[0]"
-                            type="text"
+                            type="url"
                             sizing="md"
-                            placeholder="Link do latees"
+                            placeholder="Link do lattes"
                             onChange={formik.handleChange}
                             helperText={formik.errors.attributes?.lattes?.[0]}
                             defaultValue={formik.values?.attributes?.lattes?.[0]}

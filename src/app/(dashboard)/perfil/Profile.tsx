@@ -20,7 +20,7 @@ export default function Profile({ user }: Props) {
                 </Link>
             </div>
             <div className="w-44 h-44 sm:w-72 sm:h-72 object-none relative justify-self-center">
-                <Image fill src={user?.attributes.picture?.[0] ?? ""} className="object-cover rounded-3xl" alt="foto de perfil" />
+                <Image fill src={user?.attributes?.picture?.[0] ?? ""} className="object-cover rounded-3xl" alt="foto de perfil" />
             </div>
             <div className=" flex flex-row gap-4">
                 <div>
