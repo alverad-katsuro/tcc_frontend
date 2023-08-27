@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.MuiFormLabel-root {
+  @apply text-black dark:text-white;
+}
+.MuiInputBase-input {
+  @apply text-black dark:text-white;
+}
+.MuiSvgIcon-root {
+  @apply text-black dark:text-white;
+}
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #5e585f #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+  background-color: #4e4e4e57;
+}
+
+*::-webkit-scrollbar-track {
+  background: #35353544;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #38587498;
+  border-radius: 10px;
+  border: 2px solid;
+}

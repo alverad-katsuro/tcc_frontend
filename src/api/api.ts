@@ -158,7 +158,7 @@ apiAxios.interceptors.response.use(response => response, (error) => {
     switch (error.code) {
         case "ERR_BAD_REQUEST":
             if (error.response.status == 401) {
-                notification("Aviso: Usuario não autenticado", "error");
+                notification(`Error: ${error.response.data.message}`, "error");
             } else {
                 notification("Aviso: Não foi possivel salvar as alterações", "error");
             }

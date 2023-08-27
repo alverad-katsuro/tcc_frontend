@@ -1,6 +1,7 @@
 "use client";
 import { Avatar, Dropdown } from "@/components/flowbite-components";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function HeaderAvatar() {
 
@@ -22,14 +23,8 @@ export default function HeaderAvatar() {
                         {data?.user?.email}
                     </span>
                 </Dropdown.Header>
-                <Dropdown.Item>
-                    Dashboard
-                </Dropdown.Item>
-                <Dropdown.Item>
-                    Settings
-                </Dropdown.Item>
-                <Dropdown.Item>
-                    Earnings
+                <Dropdown.Item as={Link} href="">
+                    Perfil
                 </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={signOut}>

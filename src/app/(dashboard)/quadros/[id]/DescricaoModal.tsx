@@ -86,6 +86,18 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
         });
     };
 
+    function ingressarTarefaDisponivel() {
+        ingressarTarefa(task.id).then(() => {
+            newSetTask((currentTask) => {
+                if (currentTask) {
+                    const newTask: TarefaDTO | undefined = { ...currentTask, responsavel: {id: data?.user?.sub} }; // ,  responsavel: data?.user?.name
+                    return newTask
+                }
+                return currentTask;
+            });
+        })
+    }
+
     function deletarTarefa() {
         deleteTarefa(task.id).then(() => {
             setBoardSections((secoesDoQuadro) => {
@@ -161,7 +173,7 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                                         Menu
                                     </h5>
                                     {task.responsavel === undefined &&
-                                        (<Button color={'dark'} onClick={() => ingressarTarefa(task.id)}>Ingressar na Tarefa</Button>)
+                                        (<Button color={'dark'} onClick={ingressarTarefaDisponivel}>Ingressar na Tarefa</Button>)
                                     }
                                     {data?.user?.role?.includes("ROLE_ADMIN") ? (
                                         <>

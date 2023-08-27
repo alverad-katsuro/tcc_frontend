@@ -12,7 +12,8 @@ declare module "next-auth" {
             image?: string | null;
             // Adicione novas propriedades personalizadas, se necessário
             role?: string[] | null;
-            accessToken?: string | null;
+            accessToken?: string;
+            sub?: string;
             // Adicione a propriedade refreshToken
             refreshToken?: string | null;
             // Adicione as propriedades given_name e family_name
