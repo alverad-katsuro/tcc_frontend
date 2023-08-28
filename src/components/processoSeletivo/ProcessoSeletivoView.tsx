@@ -1,10 +1,10 @@
 "use client";
+import { criarInscricao, estouNoProcesso } from "@/api/api";
 import { ProcessoSeletivoDTO, ProcessoSeletivoPlanoTrabalhoDTO } from "@/model/processoSeletivo/ProcessoSeletivoDTO";
 import { notification } from "@/utils/Notification";
 import { Button } from "flowbite-react";
 import { signIn, useSession } from "next-auth/react";
-import { useState } from "react";
-import InscricaoModal from "./InscricaoModal";
+import { useEffect, useState } from "react";
 import ProcessoSeletivoForms from "./ProcessoSeletivoForms";
 import ProcessoSeletivoSimple from "./ProcessoSeletivoSimple";
 
@@ -17,14 +17,29 @@ export default function ProcessoSeletivoView({ planosTrabalho, processoSeletivo 
 
     const { data, status } = useSession();
 
-    const [show, setShow] = useState<boolean>(false);
+    // const [noProcesso, setNoProcesso] = useState(false);
+
+    // useEffect(() => {
+    //     if (processoSeletivo.id) {
+    //         estouNoProcesso(processoSeletivo.id).then((r) => setNoProcesso(r));
+    //     }
+    // }, [])
 
     function validaRegistro() {
         if (data?.user?.lattes === undefined) {
             notification("Preencha seus dados de perfil", 'warning');
             setTimeout(() => window.location.href = "/perfil/editar", 2000)
         } else {
-            setShow(e => !e)
+            alert("vai madnar request")
+            if (processoSeletivo.id) {
+                criarInscricao(processoSeletivo.id).then((r) => {
+                    notification(r, 'success');
+                    window.location.reload();
+                }).catch((e) => {
+                    notification(e.response.data.message, 'error');
+                })
+
+            }
         }
 
     }
@@ -36,10 +51,9 @@ export default function ProcessoSeletivoView({ planosTrabalho, processoSeletivo 
     } else {
         return (
             <>
-                <InscricaoModal processoSeletivo={processoSeletivo} stateModal={[show, setShow]} />
                 <ProcessoSeletivoSimple planosTrabalho={planosTrabalho} processoSeletivo={processoSeletivo} />
                 {status === "authenticated" ?
-                    <Button onClick={validaRegistro} className="mx-auto">Inscrever-se</Button>
+                    <Button onClick={validaRegistro} className="mx-auto">{processoSeletivo.inscrito ? "Estou Inscrito" : "Inscrever-se"}</Button>
                     :
                     <Button onClick={() => signIn("keycloak")} className="mx-auto">Inscrever-se</Button>
 

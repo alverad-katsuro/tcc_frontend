@@ -1,4 +1,3 @@
-import { InscricaoRequest } from '@/components/processoSeletivo/InscricaoModal';
 import { AtividadeCreateDTO, AtividadeModel } from '@/model/atividades';
 import { UserDataKeycloak } from '@/model/keycloak/UserDataKeycloak';
 import { ProcessoSeletivoDTO } from '@/model/processoSeletivo/ProcessoSeletivoDTO';
@@ -92,8 +91,13 @@ export async function baixarArquivo(url: string): Promise<Blob> {
 
 // Se Inscrever
 
-export async function criarInscricao(data: InscricaoRequest): Promise<string> {
-    const resp = (await apiAxios.postForm<string>("/usuarioProcessoSeletivo", data));
+export async function criarInscricao(processoId: number): Promise<string> {
+    const resp = (await apiAxios.post<string>(`/usuarioProcessoSeletivo/processo/${processoId}`));
+    return resp.data;
+}
+
+export async function estouNoProcesso(processoId: number): Promise<boolean> {
+    const resp = (await apiAxios.get<boolean>(`/usuarioProcessoSeletivo/estouNoProcesso/${processoId}`));
     return resp.data;
 }
 
@@ -149,12 +153,14 @@ export async function updateIndexAtividade(data: AtividadeModel[]): Promise<stri
     return resp.data;
 }
 
-export async function ingressarTarefa(tarefaId: string): Promise<void> {
+export async function ingressarTarefa(tarefaId: string): Promise<AxiosResponse<void, any>> {
     const resp = (await apiAxios.post<void>(`/tarefa/${tarefaId}/ingressar`));
+    return resp
 }
 
-export async function indicarPesquisadorTarefa(tarefaId: string, pesquisadorId?: string): Promise<void> {
+export async function indicarPesquisadorTarefa(tarefaId: string, pesquisadorId?: string): Promise<AxiosResponse<void, any>> {
     const resp = (await apiAxios.post<void>(`/tarefa/${tarefaId}/indicarPesquisadorTarefa`, { pesquisadorId: pesquisadorId }));
+    return resp;
 }
 
 

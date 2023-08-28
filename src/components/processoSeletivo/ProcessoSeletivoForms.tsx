@@ -213,9 +213,9 @@ export default function ProcessoSeletivoForms({ processoSeletivo, planosTrabalho
                 </div>
             </div>
             <div className="flex gap-4 place-self-center">
-                <Button className="w-fit justify-self-center" type="submit">Salvar</Button>
+                <Button className="w-fit justify-self-center" type="submit" color='green'>Salvar</Button>
                 {processoSeletivo.id ?
-                    <Button className="w-fit justify-self-center" color={'red'} onClick={deletePlano}>Deletar Plano de Trabalho</Button>
+                    <Button className="w-fit justify-self-center" color={'red'} onClick={deletePlano}>Deletar Processo Seletivo</Button>
                     : <></>}
 
             </div>
