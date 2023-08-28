@@ -1,47 +1,38 @@
-import { criarInscricao } from "@/api/api";
+import { submeterRelatorioPlanoTrabalho } from "@/api/api";
 import { Button, FileInput, Modal } from "@/components/flowbite-components";
-import { ProcessoSeletivoDTO } from "@/model/processoSeletivo/ProcessoSeletivoDTO";
 import { notification } from "@/utils/Notification";
 import { useFormik } from "formik";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, Dispatch, SetStateAction, useCallback, useState } from "react";
-import { mixed, number, object } from "yup";
+import { ChangeEvent, Dispatch, SetStateAction, useCallback } from "react";
+import { mixed, object } from "yup";
 
 interface InscricaoModalProps {
-    processoSeletivo: ProcessoSeletivoDTO;
-    stateModal?: [boolean, Dispatch<SetStateAction<boolean>>];
+    planoTrabalhoId: number;
+    stateModal: [boolean, Dispatch<SetStateAction<boolean>>];
 }
 
-export interface InscricaoRequest {
-    processoSeletivoId: number;
-    arquivo?: File;
-}
 
-export default function InscricaoModal({ processoSeletivo, stateModal }: InscricaoModalProps) {
+export default function RelatorioModal({ planoTrabalhoId, stateModal }: InscricaoModalProps) {
 
-    const [show, setShow] = stateModal ?? useState<boolean>(false); //TODO aqui n build
+    const [show, setShow] = stateModal;
 
     const router = useRouter();
 
-    const validationSchema = object<InscricaoRequest>({
-        processoSeletivoId: number().min(1, "Selecione um plano de trabalho.").required("Obrigatório"),
+    const validationSchema = object<{ arquivo: File | undefined }>({
         arquivo: mixed().required("Insira o curriculo"),
     })
 
-
     const formik = useFormik({
-        initialValues: {
-            processoSeletivoId: processoSeletivo.id!,
-            arquivo: undefined
-        },
+        initialValues: { arquivo: undefined },
         enableReinitialize: true,
         validationSchema: validationSchema,
-        onSubmit: (values: InscricaoRequest, { resetForm }) => {
-            criarInscricao(values).then((r) => {
-                notification(r, 'success');
-                resetForm();
-                router.refresh();
-            });
+        onSubmit: (values, { resetForm }) => {
+            if (values.arquivo) {
+                submeterRelatorioPlanoTrabalho(planoTrabalhoId, values.arquivo).then(({ data, response }) => {
+                    notification(data, 'success');
+                    setShow(e => !e);
+                });
+            }
         }
     })
 
@@ -75,14 +66,14 @@ export default function InscricaoModal({ processoSeletivo, stateModal }: Inscric
             onClose={onDismiss}
         >
             <Modal.Header>
-                Menu de Inscrição - {processoSeletivo?.planoTrabalho.titulo}
+                Menu de Submissão do Relatório
             </Modal.Header>
             <Modal.Body>
 
                 <form className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 block" onSubmit={(e) => { e.preventDefault(); formik.handleSubmit(); }}>
                     <div className="p-5 grid gap-8">
                         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center">
-                            Envie seu curriculo.
+                            Envie o relatório.
                         </h5>
                         <div className="space-y-6">
                             <div className="relative z-0 w-full mb-6 group">
@@ -90,7 +81,7 @@ export default function InscricaoModal({ processoSeletivo, stateModal }: Inscric
                                 <FileInput
                                     required
                                     id="arquivo"
-                                    accept="image/*"
+                                    accept="application/pdf"
                                     onChange={uploadArquivo}
                                     helperText={formik.errors.arquivo as string}
                                     color={formik.errors.arquivo ? "failure" : undefined}
