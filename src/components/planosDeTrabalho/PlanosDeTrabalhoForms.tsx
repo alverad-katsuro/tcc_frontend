@@ -1,6 +1,6 @@
 "use client";
 
-import { deletarPlanoTrabalho, salvarPlanoTrabalho } from "@/api/api";
+import { deletarPlanoTrabalho, finalizarPlanoTrabalho, salvarPlanoTrabalho } from "@/api/api";
 import { Button, Checkbox, FileInput, Label, Table, TextInput } from "@/components/flowbite-components";
 import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { ObjetivoModel } from "@/model/response/ObjetivoModel";
@@ -8,6 +8,7 @@ import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import { RecursoMaterialModel } from "@/model/response/RecursoMaterialModel";
 import { useFormik } from "formik";
 import Image from "next/image";
+import Link from "next/link";
 import { VariantType, enqueueSnackbar } from "notistack";
 import { ChangeEvent, useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
@@ -92,6 +93,15 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadoresInit }: Plan
                 notification('Deletado com sucesso', 'success');
                 window.location.href = "/planoDeTrabalho"
             }).catch((error) => console.log(error));
+        }
+    }
+
+    function finalizarPlano() {
+        if (plano.id) {
+            finalizarPlanoTrabalho(plano.id).then((r) => {
+                notification(r, 'success');
+                window.location.reload();
+            })
         }
     }
 
@@ -211,7 +221,7 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadoresInit }: Plan
                         color={formik.errors.descricao ? "failure" : undefined}
                     />
                 </div>
-                <TinyCustomForm descricao={formik.values?.descricao} onSave={setTexto} isEditavel={plano.id ? false : true} />
+                <TinyCustomForm descricao={formik.values?.descricao} onSave={setTexto} isEditavel={plano.id === undefined} />
             </div>
             <div className="col-span-full grid gap-4">
                 <div className="grid grid-cols-2">
@@ -285,12 +295,23 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadoresInit }: Plan
                 </div>
             </div>
 
-            <div className="flex gap-4 place-self-center">
-                <Button className="w-fit justify-self-center" type="submit">Salvar</Button>
-                {plano.id ?
-                    <Button className="w-fit justify-self-center" color={'red'} onClick={deletePlano}>Deletar Plano de Trabalho</Button>
-                    : <></>}
+            <div className="col-span-full grid gap-4">
+                <div className="grid grid-cols-2">
+                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white self-center">Relatorio</h5>
+                </div>
+                <div className="col-span-full grid gap-5">
+                    <Link href={plano.relatorioUrl ?? ""} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Visualizar</Link>
+                </div>
+            </div>
 
+            <div className="flex gap-4 place-self-center">
+                <Button className="w-fit justify-self-center" type="submit" color='green'>Salvar</Button>
+                {plano.id ?
+                    <>
+                        <Button className="w-fit justify-self-center" color='yellow' onClick={finalizarPlano}>Finalizar Plano de Trabalho</Button>
+                        <Button className="w-fit justify-self-center" color='red' onClick={deletePlano}>Deletar Plano de Trabalho</Button>
+                    </>
+                    : <></>}
             </div>
 
         </form>

@@ -1,18 +1,48 @@
-import { Label, Table, TextInput } from "@/components/flowbite-components";
+import { isUsuarioNoPlano, reabrirPlanoTrabalho } from "@/api/api";
+import { Button, Label, Table, TextInput } from "@/components/flowbite-components";
+import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
+import { notification } from "@/utils/Notification";
+import { Session } from "next-auth";
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 import ObjetivoSimple from "./ObjetivoSimple";
 import RecursosMateriaisSimple from "./RecursosMateriaisSimple";
-import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
+import RelatorioModal from "./RelatorioModal";
 
 export interface PlanosDeTrabalhoFormsProps {
     plano: PlanoTrabalhoModel;
     pesquisadores: UsuarioNovoPlanoProjection[];
+    session?: Session | null;
 }
-export default async function PlanoDeTrabalhoSimple({ plano }: PlanosDeTrabalhoFormsProps) {
+export default function PlanoDeTrabalhoSimple({ plano, session }: PlanosDeTrabalhoFormsProps) {
+
+    const [open, setOpen] = useState(false);
+
+    const [noPlano, setNoPlano] = useState(false);
+
+    console.log(plano)
+    useEffect(() => {
+        if (plano.relatorioResourceId === undefined && plano.id) {
+            isUsuarioNoPlano(plano.id).then(r => setNoPlano(r));
+        }
+    }, []);
+
+    function reabrirPlano() {
+        if (plano.id) {
+            reabrirPlanoTrabalho(plano.id).then((r) => {
+                notification(r, 'success');
+                window.location.reload();
+            })
+        }
+    }
 
     return (
-        <>
+        <div className="flex flex-col gap-4">
+            {open && plano.id !== undefined ?
+                <RelatorioModal planoTrabalhoId={plano.id} stateModal={[open, setOpen]} /> : <></>
+            }
             {plano.capaUrl !== undefined &&
                 <Image src={plano.capaUrl} loading="lazy" width={300} quality={100} height={300} alt="Banner do Plano de Trabalho" className="mx-auto w-full max-w-[30%] h-auto rounded-lg" />
             }
@@ -76,7 +106,7 @@ export default async function PlanoDeTrabalhoSimple({ plano }: PlanosDeTrabalhoF
                         <Table hoverable>
                             <Table.Head>
                                 <Table.HeadCell>
-                                    Pesquisadores Disponiveis
+                                    Pesquisadores no Projeto
                                 </Table.HeadCell>
                             </Table.Head>
                             <Table.Body className="divide-y">
@@ -104,7 +134,22 @@ export default async function PlanoDeTrabalhoSimple({ plano }: PlanosDeTrabalhoF
 
                 </div>
             </div>
-        </>
+            <div className="col-span-full grid gap-4">
+                <div className="grid grid-cols-2">
+                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white self-center">Relatorio</h5>
+                </div>
+                <div className="col-span-full grid gap-5">
+                    <Link href={plano.relatorioUrl ?? ""} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Visualizar</Link>
+                </div>
+            </div>
+            {plano.relatorioResourceId === undefined && noPlano ?
+                <Button className="w-fit justify-self-center m-4 mx-auto" color='yellow' onClick={() => setOpen(true)}>Submeter Relatorio</Button>
+                : <></>
+            }
+            {session?.user?.role?.includes("ROLE_ADMIN") && plano.finalizado ?
+                <Button className="w-fit justify-self-center m-4 mx-auto" color='yellow' onClick={reabrirPlano}>Reabrir Plano de Trabalho</Button>
+                : <></>}
+        </div>
 
     )
 

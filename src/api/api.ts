@@ -54,6 +54,26 @@ export async function deletarPlanoTrabalho(id: number) {
     return resp.data;
 }
 
+export async function finalizarPlanoTrabalho(id: number): Promise<string> {
+    const resp = (await apiAxios.put<string>(`/planoTrabalho/finalizar/${id}`));
+    return resp.data;
+}
+
+export async function reabrirPlanoTrabalho(id: number): Promise<string> {
+    const resp = (await apiAxios.put<string>(`/planoTrabalho/reabrir/${id}`));
+    return resp.data;
+}
+
+export async function submeterRelatorioPlanoTrabalho(planoTrabalhoId: number, arquivo: File): Promise<{ data: string, response: AxiosResponse<string, any> }> {
+    const resp = (await apiAxios.putForm<string>(`/planoTrabalho/${planoTrabalhoId}/relatorio`, {arquivo}));
+    return { data: resp.data, response: resp };
+}
+
+export async function isUsuarioNoPlano(planoTrabalhoId: number): Promise<boolean> {
+    const resp = (await apiAxios.get<boolean>(`/planoTrabalho/${planoTrabalhoId}/estouNele`));
+    return resp.data;
+}
+
 // END
 
 // Processos Seletivos

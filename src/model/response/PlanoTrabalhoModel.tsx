@@ -12,7 +12,9 @@ export interface PlanoTrabalhoModel {
     descricao: string;
     recursoMateriais: RecursoMaterialModel[];
     objetivos: ObjetivoModel[];
-
+    finalizado?: boolean;
+    relatorioUrl?: string;
+    relatorioResourceId?: string;
     pesquisadores?: UsuarioNovoPlanoProjection[];
 
 }

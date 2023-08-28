@@ -13,11 +13,12 @@ export interface PlanosDeTrabalhoFormsProps {
 export default function PlanoDeTrabalhoView({ plano, pesquisadores }: PlanosDeTrabalhoFormsProps) {
 
     const { data } = useSession();
-    if (data?.user?.role?.includes("ROLE_ADMIN")) {
+
+    if (data?.user?.role?.includes("ROLE_ADMIN") && !plano.finalizado) {
         return <PlanosDeTrabalhoForms plano={plano} pesquisadoresInit={pesquisadores} />
     } else {
         //@ts-ignore
-        return <PlanoDeTrabalhoSimple plano={plano} pesquisadores={pesquisadores} />
+        return <PlanoDeTrabalhoSimple plano={plano} pesquisadores={pesquisadores} session={data} />
     }
 
 }
