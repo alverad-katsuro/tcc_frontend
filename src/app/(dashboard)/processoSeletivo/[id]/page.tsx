@@ -8,9 +8,6 @@ export default async function AtualizarProcessoSeletivo({ params }: { params: { 
 
     const planosTrabalho: ProcessoSeletivoPlanoTrabalhoDTO[] = await consultaPlanoTrabalhosProcessoSeletivo();
 
-    console.log(processoSeletivo)
-
-
     if (planosTrabalho.length == 0) {
         planosTrabalho.push(processoSeletivo.planoTrabalho);
     }

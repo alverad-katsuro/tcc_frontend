@@ -18,6 +18,13 @@ export async function recuperarPerfil(): Promise<UserDataKeycloak> {
     return resp;
 }
 
+export async function recuperarPerfilAdm(usuarioId: string): Promise<UserDataKeycloak> {
+    const resp: Promise<UserDataKeycloak> = apiFetch(apiAddress + `/usuario/` + usuarioId, {
+        method: 'GET', cache: "no-cache"
+    }).then(r => r.status === 200 ? r.json() : undefined);
+    return resp;
+}
+
 
 
 async function apiFetch(url: string, params?: RequestInit): Promise<Response> {

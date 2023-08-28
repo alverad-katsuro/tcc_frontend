@@ -169,13 +169,16 @@ export default function ProcessoSeletivoForms({ processoSeletivo, planosTrabalho
                         <Table hoverable>
                             <Table.Head>
                                 <Table.HeadCell>
+                                    Nome
+                                </Table.HeadCell>
+                                <Table.HeadCell>
                                     Email
                                 </Table.HeadCell>
                                 <Table.HeadCell>
                                     Inscrito em
                                 </Table.HeadCell>
                                 <Table.HeadCell>
-                                    Curriculo
+                                    Link Perfil
                                 </Table.HeadCell>
                                 <Table.HeadCell>
                                     Aprovado
@@ -198,8 +201,8 @@ export default function ProcessoSeletivoForms({ processoSeletivo, planosTrabalho
                                             }
                                         </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                                            <Link href={e.curriculo} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                                Download
+                                            <Link href={`/perfil/${e.usuario.id}`} target="_blank" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                                Visualizar
                                             </Link>
                                         </Table.Cell>
                                         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">

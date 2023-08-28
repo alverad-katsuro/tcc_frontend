@@ -7,7 +7,7 @@ export interface UsuarioProcessoSeletivoDTO {
     inscricao: string;
     curriculo: string;
     usuario: {
-        id: number;
+        id: string;
         nome: string;
         email: string;
     }
