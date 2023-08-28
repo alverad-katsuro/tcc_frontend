@@ -1,10 +1,9 @@
 "use client";
-import { criarInscricao, estouNoProcesso } from "@/api/api";
+import { criarInscricao } from "@/api/api";
 import { ProcessoSeletivoDTO, ProcessoSeletivoPlanoTrabalhoDTO } from "@/model/processoSeletivo/ProcessoSeletivoDTO";
 import { notification } from "@/utils/Notification";
 import { Button } from "flowbite-react";
 import { signIn, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import ProcessoSeletivoForms from "./ProcessoSeletivoForms";
 import ProcessoSeletivoSimple from "./ProcessoSeletivoSimple";
 
@@ -17,20 +16,11 @@ export default function ProcessoSeletivoView({ planosTrabalho, processoSeletivo 
 
     const { data, status } = useSession();
 
-    // const [noProcesso, setNoProcesso] = useState(false);
-
-    // useEffect(() => {
-    //     if (processoSeletivo.id) {
-    //         estouNoProcesso(processoSeletivo.id).then((r) => setNoProcesso(r));
-    //     }
-    // }, [])
-
     function validaRegistro() {
         if (data?.user?.lattes === undefined) {
             notification("Preencha seus dados de perfil", 'warning');
             setTimeout(() => window.location.href = "/perfil/editar", 2000)
         } else {
-            alert("vai madnar request")
             if (processoSeletivo.id) {
                 criarInscricao(processoSeletivo.id).then((r) => {
                     notification(r, 'success');
