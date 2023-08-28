@@ -12,16 +12,15 @@ export default function PlanoTrabalhoLista({ planosTrabalhos }: PlanoTrabalhoLis
 
     return (
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap gap-y-4">
 
             {planosTrabalhos.map((e) =>
-                <Link href={`/planoDeTrabalho/${e.id}`} key={e.id} >
-
+                <Link href={`/planoDeTrabalho/${e.id}`} key={e.id} className="grow sm:basis-1/2 xl:basis-1/3 px-2 max-w-md">
                     <Card imgSrc={e.capaUrl} key={e.id} >
-                        <div className="overflow-auto max-h-64 gap-4 gap flex flex-col w-96">
-                            <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        <div className="overflow-auto max-h-64 gap-4 gap flex flex-col ">
+                            <p className="text-2xl text-gray-900 dark:text-white break-all text-justify">
                                 <strong>Título:</strong> {e.titulo}
-                            </h5>
+                            </p>
 
                             <p className="font-normal text-gray-800 dark:text-white">
                                 {e.areaTrabalho}

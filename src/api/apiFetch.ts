@@ -1,15 +1,29 @@
 import { authOptions } from "@/app/(dashboard)/api/auth/[...nextauth]/route";
 import { PageInterface } from "@/interface/PageInterface";
+import { UserDataKeycloak } from "@/model/keycloak/UserDataKeycloak";
+import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
+import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioPlanoProjection";
 import { ProcessoSeletivoDTO, ProcessoSeletivoPlanoTrabalhoDTO } from "@/model/processoSeletivo/ProcessoSeletivoDTO";
 import { TarefaBasicDTO, TarefaDTO } from "@/model/quadro";
 import { QuadroPainelDTO } from "@/model/quadro/dto/QuadroPainelDTO";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import { getServerSession } from "next-auth";
 import { apiAddress } from "./apiOptions";
-import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
-import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioPlanoProjection";
 
 
+export async function recuperarPerfil(): Promise<UserDataKeycloak> {
+    const resp: Promise<UserDataKeycloak> = apiFetch(apiAddress + `/usuario`, {
+        method: 'GET', cache: "no-cache"
+    }).then(r => r.status === 200 ? r.json() : undefined);
+    return resp;
+}
+
+export async function recuperarPerfilAdm(usuarioId: string): Promise<UserDataKeycloak> {
+    const resp: Promise<UserDataKeycloak> = apiFetch(apiAddress + `/usuario/` + usuarioId, {
+        method: 'GET', cache: "no-cache"
+    }).then(r => r.status === 200 ? r.json() : undefined);
+    return resp;
+}
 
 
 
@@ -78,6 +92,13 @@ export async function consultaPlanoTrabalho(id: number): Promise<PlanoTrabalhoMo
 
 // Processo Seletivo
 
+export async function consultarProcessos(): Promise<PageInterface<ProcessoSeletivoDTO> | undefined> {
+    const resp: Promise<PageInterface<ProcessoSeletivoDTO>> = apiFetch(apiAddress + "/processoSeletivo", {
+        method: 'GET', cache: "no-cache"
+    }).then(r => r.json()).catch(() => undefined);
+    return resp;
+
+}
 export async function consultaProcessoSeletivo(id: number): Promise<ProcessoSeletivoDTO> {
     const resp: Promise<ProcessoSeletivoDTO> = apiFetch(apiAddress + `/processoSeletivo/${id}`, {
         method: 'GET', cache: "no-cache"

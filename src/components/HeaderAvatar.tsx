@@ -28,7 +28,7 @@ export default function HeaderAvatar() {
                 </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={signOut}>
-                    Sign out
+                    Sair
                 </Dropdown.Item>
             </Dropdown >
             : <button onClick={() => signIn("keycloak")}>

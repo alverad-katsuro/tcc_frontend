@@ -23,6 +23,9 @@ export default withAuth(
                 if (!(req.nextUrl.pathname === '/auth/signin' || req.nextUrl.pathname === '/api/auth/callback/keycloak') && (token?.error === 'RefreshAccessTokenError')) {
                     return false;
                 }
+                if ((req.nextUrl.pathname.startsWith('/perfil') || req.nextUrl.pathname.startsWith('/quadros')) && token === null) {
+                    return false
+                }
                 return true;
             }
         }
