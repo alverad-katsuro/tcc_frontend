@@ -17,7 +17,6 @@ export default function PlanoDeTrabalhoView({ plano, pesquisadores }: PlanosDeTr
     if (data?.user?.role?.includes("ROLE_ADMIN") && !plano.finalizado) {
         return <PlanosDeTrabalhoForms plano={plano} pesquisadoresInit={pesquisadores} />
     } else {
-        //@ts-ignore
         return <PlanoDeTrabalhoSimple plano={plano} pesquisadores={pesquisadores} session={data} />
     }
 

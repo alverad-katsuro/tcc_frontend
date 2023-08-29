@@ -134,14 +134,16 @@ export default function PlanoDeTrabalhoSimple({ plano, session }: PlanosDeTrabal
 
                 </div>
             </div>
-            <div className="col-span-full grid gap-4">
-                <div className="grid grid-cols-2">
-                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white self-center">Relatorio</h5>
+            {plano.relatorioResourceId !== undefined ?
+                <div className="col-span-full grid gap-4">
+                    <div className="grid grid-cols-2">
+                        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white self-center">Relatorio</h5>
+                    </div>
+                    <div className="col-span-full grid gap-5">
+                        <Link href={plano.relatorioUrl ?? ""} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Visualizar</Link>
+                    </div>
                 </div>
-                <div className="col-span-full grid gap-5">
-                    <Link href={plano.relatorioUrl ?? ""} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Visualizar</Link>
-                </div>
-            </div>
+                : <></>}
             {plano.relatorioResourceId === undefined && noPlano ?
                 <Button className="w-fit justify-self-center m-4 mx-auto" color='yellow' onClick={() => setOpen(true)}>Submeter Relatorio</Button>
                 : <></>

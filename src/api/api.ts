@@ -65,7 +65,7 @@ export async function reabrirPlanoTrabalho(id: number): Promise<string> {
 }
 
 export async function submeterRelatorioPlanoTrabalho(planoTrabalhoId: number, arquivo: File): Promise<{ data: string, response: AxiosResponse<string, any> }> {
-    const resp = (await apiAxios.putForm<string>(`/planoTrabalho/${planoTrabalhoId}/relatorio`, {arquivo}));
+    const resp = (await apiAxios.putForm<string>(`/planoTrabalho/${planoTrabalhoId}/relatorio`, { arquivo }));
     return { data: resp.data, response: resp };
 }
 
@@ -173,8 +173,8 @@ export async function updateIndexAtividade(data: AtividadeModel[]): Promise<stri
     return resp.data;
 }
 
-export async function ingressarTarefa(tarefaId: string): Promise<AxiosResponse<void, any>> {
-    const resp = (await apiAxios.post<void>(`/tarefa/${tarefaId}/ingressar`));
+export async function ingressarTarefa(tarefaId: string): Promise<AxiosResponse<any, any>> {
+    const resp = (await apiAxios.post(`/tarefa/${tarefaId}/ingressar`));
     return resp
 }
 
@@ -199,14 +199,13 @@ apiAxios.interceptors.response.use(response => response, (error) => {
             } else {
                 notification("Aviso: Não foi possivel salvar as alterações", "error");
             }
-            break;
+            return Promise.reject();
 
         case "ERR_NETWORK":
             notification("Error: Não foi possivel se conectar a base de dados", "error");
-            break;
+            return Promise.reject();
 
         default:
             return Promise.reject(error);
-        //break;
     }
 })

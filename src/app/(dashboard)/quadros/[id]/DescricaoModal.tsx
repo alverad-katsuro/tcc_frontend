@@ -90,12 +90,12 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
         ingressarTarefa(task.id).then(() => {
             newSetTask((currentTask) => {
                 if (currentTask) {
-                    const newTask: TarefaDTO | undefined = { ...currentTask, responsavel: {id: data?.user?.sub} }; // ,  responsavel: data?.user?.name
+                    const newTask: TarefaDTO | undefined = { ...currentTask, responsavel: { id: data?.user?.sub } }; // ,  responsavel: data?.user?.name
                     return newTask
                 }
                 return currentTask;
             });
-        })
+        }).catch()
     }
 
     function deletarTarefa() {

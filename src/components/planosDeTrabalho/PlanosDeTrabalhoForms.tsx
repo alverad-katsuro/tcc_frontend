@@ -26,7 +26,7 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadoresInit }: Plan
     const validationSchema = object<PlanoTrabalhoModel>({
         capaResourceId: string(),
         arquivo: mixed().when('capaResourceId', {
-            is: (e: string) => e !== undefined,
+            is: (e: string) => e === undefined,
             then: (schema) => schema.required("Insira a imagem."),
             otherwise: (schema) => schema.notRequired(),
         }),
@@ -295,14 +295,16 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadoresInit }: Plan
                 </div>
             </div>
 
-            <div className="col-span-full grid gap-4">
-                <div className="grid grid-cols-2">
-                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white self-center">Relatorio</h5>
-                </div>
-                <div className="col-span-full grid gap-5">
-                    <Link href={plano.relatorioUrl ?? ""} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Visualizar</Link>
-                </div>
-            </div>
+            {plano.id !== undefined && plano.relatorioResourceId !== undefined ?
+                <div className="col-span-full grid gap-4">
+                    <div className="grid grid-cols-2">
+                        <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white self-center">Relatorio</h5>
+                    </div>
+                    <div className="col-span-full grid gap-5">
+                        <Link href={plano.relatorioUrl ?? ""} className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Visualizar</Link>
+                    </div>
+                </div> : <></>
+            }
 
             <div className="flex gap-4 place-self-center">
                 <Button className="w-fit justify-self-center" type="submit" color='green'>Salvar</Button>

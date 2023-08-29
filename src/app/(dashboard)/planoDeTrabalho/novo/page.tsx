@@ -8,7 +8,7 @@ export default async function NovoPlanoTrabalho() {
     const pesquisadores: UsuarioNovoPlanoProjection[] = await consultarPesquisadores();
 
     const plano: PlanoTrabalhoModel = {
-        id: 0,
+        id: undefined,
         titulo: '',
         areaTrabalho: '',
         descricao: '',
