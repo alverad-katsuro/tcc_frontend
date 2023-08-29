@@ -12,7 +12,7 @@ export default function HeaderAvatar() {
             < Dropdown
                 arrowIcon={false}
                 inline={true}
-                label={< Avatar alt="User settings" img={data?.user?.image ?? ""
+                label={< Avatar alt="User settings" img={data?.user?.picture ?? ""
                 } rounded={true} />}
             >
                 <Dropdown.Header>

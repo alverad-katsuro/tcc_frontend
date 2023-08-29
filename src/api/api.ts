@@ -20,6 +20,11 @@ export async function atualizarPerfil(perfil: UserDataKeycloak, foto?: File): Pr
     return resp;
 }
 
+export async function recuperarPerfil(): Promise<UserDataKeycloak> {
+    const resp = (await apiAxios.get<UserDataKeycloak>("/usuario"));
+    return resp.data;
+}
+
 // Plano de Trabalho
 
 export function salvarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: string, response: AxiosResponse<string, any> }> {

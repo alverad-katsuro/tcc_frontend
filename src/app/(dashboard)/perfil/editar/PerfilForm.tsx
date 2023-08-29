@@ -1,5 +1,5 @@
 "use client";
-import { atualizarPerfil } from "@/api/api";
+import { atualizarPerfil, recuperarPerfil } from "@/api/api";
 import { Button, Card, FileInput, Label, TextInput } from "@/components/flowbite-components";
 import { AtibutosUser, UserDataKeycloak } from "@/model/keycloak/UserDataKeycloak";
 import { notification } from "@/utils/Notification";
@@ -9,6 +9,8 @@ import { ChangeEvent, useState } from "react";
 import { AiFillMail } from "react-icons/ai";
 import { array, object, string } from "yup";
 import LattesSVG from "./LattesSVG";
+import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
 
 interface Props {
     userKeycloak: UserDataKeycloak;
@@ -17,6 +19,8 @@ export default function PerfilForm({ userKeycloak }: Props) {
 
     const [fotoUrl, setFotoUrl] = useState<string | undefined>(userKeycloak.attributes?.picture?.[0])
     const [foto, setFoto] = useState<File | undefined>(undefined);
+
+    const { data, update } = useSession();
 
     const validationSchema = object<{ userDataKeycloak: UserDataKeycloak, foto: File | undefined }>({
         id: string().required("Campo obrigatório."),
@@ -65,7 +69,11 @@ export default function PerfilForm({ userKeycloak }: Props) {
         onSubmit: (values, { resetForm }) => {
             atualizarPerfil(values, foto).then((resp) => {
                 notification("Atualizado com sucesso", 'success');
-                window.location.href = `/perfil`
+                recuperarPerfil().then((r) => {
+                    update({ image: r.attributes.picture?.[0], picture: r.attributes.picture?.[0] }).then(() =>
+                        window.location.href = `/perfil`
+                    );
+                })
             });
         }
     })
