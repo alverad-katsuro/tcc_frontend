@@ -65,12 +65,12 @@ export default function SidebarStyled(): JSX.Element {
             }
           </Sidebar.ItemGroup>
           <Sidebar.ItemGroup>
-            <Sidebar.Item href="#" icon={HiViewBoards}>
+            {/* <Sidebar.Item href="#" icon={HiViewBoards}>
               Documentation
             </Sidebar.Item>
             <Sidebar.Item href="#" icon={BiBuoy}>
               Help
-            </Sidebar.Item>
+            </Sidebar.Item> */}
             <Button onClick={toggle} className="mx-auto my-5 w-full">
               {isCollapsed ? <AiOutlineArrowRight className="text-xl" /> : <AiOutlineArrowLeft className="text-xl" />}
             </Button>
