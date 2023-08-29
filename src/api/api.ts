@@ -132,10 +132,16 @@ export async function estouNoProcesso(processoId: number): Promise<boolean> {
 
 export async function consultarTarefa(id: string): Promise<TarefaDTO | undefined> {
     const resp = (await apiAxios.get<TarefaDTO | undefined>(`/tarefa/${id}`));
-    if (resp.data && resp.data?.atividades === undefined) {
-        resp.data.atividades = []
+    const data = resp.data;
+    if (data) {
+        if (data.atividades === undefined) {
+            data.atividades = [];
+        }
+        if (data.impedimentos === undefined) {
+            data.impedimentos = [];
+        }
     }
-    return resp.data;
+    return data;
 }
 
 export async function criarTarefa(data: TarefaCreateDTO): Promise<string> {

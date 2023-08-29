@@ -21,7 +21,7 @@ const BoardSectionAtividade = ({ id, atividades, remover }: BoardSectionProps) =
         strategy={verticalListSortingStrategy}
       >
 
-        <div className='flex flex-col gap-2 px-2'>
+        <div className='flex flex-col gap-2'>
           {atividades.map((task) => (
             <div key={task.id}>
               <SortableItems id={task.id}>

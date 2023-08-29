@@ -4,10 +4,12 @@ import { Button, Modal } from "@/components/flowbite-components";
 import DataRangeCustom from "@/components/quadro/DataRangeCustom";
 import MultipleSelectResponsavelCheckmarks from "@/components/quadro/MultipleSelectResponsavelCheckmarks";
 import AtividadesSelectionList from "@/components/quadro/modal/AtividadesSelectionList";
+import Impedimentos from "@/components/quadro/modal/Impedimentos";
 import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioPlanoProjection";
 import { BoardSections, TarefaDTO } from "@/model/quadro";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 import useDebounce from "./Deb";
 import TituloTarefa from "./TituloTarefa";
 
@@ -153,17 +155,31 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                                         </div>
                                     </div>
                                     <div>
-                                        {task !== undefined ?
-                                            <TinyCustomFormm elementoState={[task, newSetTask]} id="task" elementField="descricao" />
-                                            : <></>
-
-                                        }
+                                        <TinyCustomFormm elementoState={[task, newSetTask]} id="task" elementField="descricao" />
                                     </div>
                                     <div>
                                         <h5 className="font-bold tracking-tight text-gray-900 dark:text-white my-4">
                                             Atividades
                                         </h5>
-                                        {task !== undefined ? <AtividadesSelectionList tarefaId={task.id} atividadesIni={task.atividades} /> : <></>}
+                                        <AtividadesSelectionList tarefaId={task.id} atividadesIni={task.atividades} />
+                                    </div>
+                                    <div className="flex flex-col gap-4">
+                                        <div className="flex flex-row">
+                                            <h5 className="font-bold tracking-tight text-gray-900 dark:text-white my-4 flex-1">
+                                                Impedimentos
+                                            </h5>
+                                            <Button className="place-self-end w-fit self-center" color="green" onClick={() => newSetTask(old => {
+                                                if (old) {
+                                                    const newTask: TarefaDTO = { ...old, impedimentos: [...old.impedimentos, { impedimento: "Não informado" }] }
+                                                    return newTask;
+                                                }
+                                            })} >
+                                                <AiOutlinePlusCircle className="text-2xl " />
+                                            </Button>
+                                        </div>
+                                        {task.impedimentos.map((impedimento, index) =>
+                                            <Impedimentos key={index} index={index} impedimento={impedimento} setTask={newSetTask} />
+                                        )}
                                     </div>
                                 </div>
                             </div>
