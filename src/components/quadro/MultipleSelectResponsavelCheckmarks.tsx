@@ -44,7 +44,7 @@ export default function MultipleSelectResponsavelCheckmarks({ task, setTask, pes
         >
             {pesquisadores.length === 0 && <Dropdown.Item>Nenhum pesquisador disponível</Dropdown.Item>}
             {pesquisadores.map(pesquisador =>
-                <Dropdown.Item className="flex gap-4" >
+                <Dropdown.Item className="flex gap-4" key={pesquisador.usuario.id}  >
                     <Checkbox id={pesquisador.usuario.id} checked={pesquisador.usuario.id === task.responsavel?.id} onChange={() => selecionaPesquisador(pesquisador.usuario.id)} />
                     {pesquisador.usuario.nome}
                 </Dropdown.Item>

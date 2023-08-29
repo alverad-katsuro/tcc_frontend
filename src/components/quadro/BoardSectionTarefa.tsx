@@ -6,7 +6,7 @@ import {
 } from '@dnd-kit/sortable';
 import { useSession } from "next-auth/react";
 import BoardTitulo from './BoardTitulo';
-import SortableTaskItem from './SortableTaskItem';
+import SortableItems from './SortableTaskItem';
 import TaskItem from './TaskItem';
 
 type BoardSectionProps = {
@@ -17,7 +17,7 @@ type BoardSectionProps = {
   addTask: () => void;
 };
 
-const BoardSection = ({ id, title, tasks, onClick, addTask }: BoardSectionProps) => {
+const BoardSectionTarefa = ({ id, title, tasks, onClick, addTask }: BoardSectionProps) => {
   const { setNodeRef } = useDroppable({
     id,
   });
@@ -40,9 +40,9 @@ const BoardSection = ({ id, title, tasks, onClick, addTask }: BoardSectionProps)
         <div ref={setNodeRef} className='flex flex-col gap-4 overflow-auto'>
           {tasks.map((task) => (
             <div key={task.id}>
-              <SortableTaskItem id={task.id}>
+              <SortableItems id={task.id}>
                 <TaskItem task={task} onClick={onClick} />
-              </SortableTaskItem>
+              </SortableItems>
             </div>
           ))}
         </div>
@@ -51,4 +51,4 @@ const BoardSection = ({ id, title, tasks, onClick, addTask }: BoardSectionProps)
   );
 };
 
-export default BoardSection;
+export default BoardSectionTarefa;

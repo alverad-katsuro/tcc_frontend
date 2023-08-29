@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { AiOutlineCheck } from "react-icons/ai";
 
 export interface Props {
-    tarefa?: TarefaDTO;
+    tarefa: TarefaDTO;
     setTask: Dispatch<SetStateAction<TarefaDTO | undefined>>;
 }
 
@@ -22,12 +22,18 @@ export default function TituloTarefa({ tarefa, setTask }: Props) {
                         sizing="md"
                         className="w-full"
                         placeholder="Titulo"
-                        onChange={(e) => setTask((task) => {
-                            if (task != undefined) {
-                                const newTask: TarefaDTO = { ...task, titulo: e?.currentTarget?.value };
-                                return newTask;
+                        onChange={(e) => {
+                            const value = e.currentTarget.value;
+                            if (value != undefined && value !== "" && value.length > 3) {
+                                setTask((task) => {
+                                    if (task != undefined) {
+                                        const newTask: TarefaDTO = { ...task, titulo: value };
+                                        return newTask;
+                                    }
+                                    return task;
+                                })
                             }
-                        })}
+                        }}
                         defaultValue={tarefa?.titulo}
                         required
                     />

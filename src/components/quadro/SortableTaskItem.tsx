@@ -14,7 +14,7 @@ function customAnimateLayoutChanges(args: any) {
   return true;
 }
 
-const SortableTaskItem = ({ children, id }: SortableTaskItemProps) => {
+const SortableItems = ({ children, id }: SortableTaskItemProps) => {
   const {
     attributes,
     listeners,
@@ -40,4 +40,4 @@ const SortableTaskItem = ({ children, id }: SortableTaskItemProps) => {
   );
 };
 
-export default SortableTaskItem;
+export default SortableItems;

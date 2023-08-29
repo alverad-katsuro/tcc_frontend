@@ -1,10 +1,9 @@
 import { AtividadeModel } from '@/model/atividades';
-import { useDroppable } from '@dnd-kit/core';
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import SortableTaskItem from '../SortableTaskItem';
+import SortableItems from '../SortableTaskItem';
 import AtividadeItem from './AtividadeItem';
 
 type BoardSectionProps = {
@@ -13,7 +12,7 @@ type BoardSectionProps = {
   remover: (id: string) => void;
 };
 
-const BoardSection = ({ id, atividades, remover }: BoardSectionProps) => {
+const BoardSectionAtividade = ({ id, atividades, remover }: BoardSectionProps) => {
 
   return (
     <div className='block h-full overflow-auto'>
@@ -22,12 +21,12 @@ const BoardSection = ({ id, atividades, remover }: BoardSectionProps) => {
         strategy={verticalListSortingStrategy}
       >
 
-        <div className='flex flex-col gap-2 px-2'>
+        <div className='flex flex-col gap-2'>
           {atividades.map((task) => (
             <div key={task.id}>
-              <SortableTaskItem id={task.id}>
+              <SortableItems id={task.id}>
                 <AtividadeItem atividadeIni={task} remover={remover} />
-              </SortableTaskItem>
+              </SortableItems>
             </div>
           ))}
         </div>
@@ -36,4 +35,4 @@ const BoardSection = ({ id, atividades, remover }: BoardSectionProps) => {
   );
 };
 
-export default BoardSection;
+export default BoardSectionAtividade;

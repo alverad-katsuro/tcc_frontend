@@ -7,11 +7,21 @@ type TaskItemProps = {
   onClick: (task: string) => void;
 };
 
-export default function TaskItem({ task, onClick }: TaskItemProps) {// TODO: Se task concluida retornar color green
+export default function TaskItem({ task, onClick }: TaskItemProps) {
 
   const progresso = calculaPrazo(task.fim, task.inicio);
 
-  const color = task.colunaKanban === ColunaKanban.DONE ? "green" : ["green", "yellow", "red"][Math.floor(progresso % 3)];
+  const color = task.colunaKanban === ColunaKanban.DONE ? "green" : ["green", "yellow", "red"][calcColor()];
+
+  function calcColor() {
+    if (progresso <= 60) {
+      return 0;
+    } else if (progresso <= 80)
+      return 1;
+    else {
+      return 2;
+    }
+  }
 
   function calculaPrazo(dataFim?: string, dataIni?: string) {
     if (!dataFim || !dataIni) {

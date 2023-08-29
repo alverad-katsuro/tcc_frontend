@@ -1,6 +1,7 @@
 "use client";
 import { consultarTarefa, criarTarefa, updateIndexTarefa } from '@/api/api';
 import DescricaoModal from '@/app/(dashboard)/quadros/[id]/DescricaoModal';
+import { UsuarioPlanoProjection } from '@/model/planoDeTrabalho/UsuarioPlanoProjection';
 import { TarefaCreateDTO } from '@/model/quadro/TarefaCreaeteDTO';
 import { UpdateIndex } from '@/model/quadro/UpdateIndex';
 import { findBoardSectionContainer, initializeBoard } from '@/model/quadro/board';
@@ -21,11 +22,9 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import { useEffect, useState } from 'react';
-import BoardSection from './BoardSection';
+import { useState } from 'react';
+import BoardSectionTarefa from './BoardSectionTarefa';
 import TaskItem from './TaskItem';
-import { UsuarioPlanoProjection } from '@/model/planoDeTrabalho/UsuarioPlanoProjection';
-import { useRouter } from 'next/navigation';
 
 export interface Props {
   tarefasIniciais: TarefaBasicDTO[];
@@ -236,7 +235,7 @@ function BoardSectionList({ tarefasIniciais, quadroId, pesquisadores }: Props) {
             <div className='bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full w-screen lg:w-full max-w-xs xl:max-w-lg mx-auto'
               key={boardSectionKey}
             >
-              <BoardSection
+              <BoardSectionTarefa
                 id={boardSectionKey}
                 title={boardSectionKey as ColunaKanban}
                 tasks={boardSections[boardSectionKey]}

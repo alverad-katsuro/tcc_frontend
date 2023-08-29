@@ -13,10 +13,18 @@ export const authOptions: NextAuthOptions = {
         })],
     callbacks: {
         async session({ session, token }) {
-            session.user = {...token, role: decodeJWT(token.accessToken).realm_access.roles};
+            session.user = { ...token, role: decodeJWT(token.accessToken).realm_access.roles };
             return session;
         },
-        async jwt({ token, user, account, profile }) {
+        async jwt({ token, user, account, profile, trigger }) {
+            if (trigger === "update") {
+                const response = await fetch(`${process.env.KEYCLOAK_ISSUER}/protocol/openid-connect/userinfo`, {
+                    headers: { "Authorization": `Bearer ${token.accessToken}` },
+                    method: "GET",
+                })
+                const responseJson = await response.json();
+                user = {...user, ...responseJson};
+            }
             if (account) {
                 token.accessToken = account.access_token ?? "";
                 token.refreshToken = account.refresh_token ?? "";

@@ -41,7 +41,7 @@ export type TarefaDTO = {
 
   atividades: AtividadeModel[];
 
-  impedimentos?: ImpedimentoDocument[];
+  impedimentos: ImpedimentoDocument[];
 };
 
 export type TarefaBasicDTO = {
@@ -83,9 +83,9 @@ interface AtividadeDocument {
   concluida: boolean;
 }
 
-interface ImpedimentoDocument {
+export interface ImpedimentoDocument {
   impedimento: string;
-  dataOcorrido: Date;
+  dataOcorrido?: string;
 }
 
 export type BoardSections = {
