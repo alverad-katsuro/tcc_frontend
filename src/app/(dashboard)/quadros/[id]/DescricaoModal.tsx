@@ -28,7 +28,7 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
 
     const rootRef = useRef<HTMLDivElement>(null);
 
-    const debouncedSearch = useDebounce(task, saveTask, 500)
+    const debouncedSearch = useDebounce(task, saveTask, 1000)
 
     const { data } = useSession();
 
@@ -42,7 +42,7 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
         if (debouncedSearch) {
             console.log(debouncedSearch)
         }
-    }, [debouncedSearch, task])
+    }, [debouncedSearch]) //TODO pq coloquei task?
 
     function calcularEsforco() {
         const usuario: UsuarioPlanoProjection | undefined = pesquisadores.find(pesquisador => pesquisador.usuario.id === task.responsavel?.id)
