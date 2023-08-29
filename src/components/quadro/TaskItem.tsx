@@ -7,7 +7,7 @@ type TaskItemProps = {
   onClick: (task: string) => void;
 };
 
-export default function TaskItem({ task, onClick }: TaskItemProps) {// TODO: Se task concluida retornar color green
+export default function TaskItem({ task, onClick }: TaskItemProps) {
 
   const progresso = calculaPrazo(task.fim, task.inicio);
 
