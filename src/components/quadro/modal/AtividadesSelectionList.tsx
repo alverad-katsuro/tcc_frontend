@@ -19,7 +19,7 @@ import { arrayMove } from '@dnd-kit/sortable';
 import { Button } from 'flowbite-react';
 import { useState } from 'react';
 import AtividadeItem from './AtividadeItem';
-import BoardSection from './BoardSection';
+import BoardSectionAtividade from './BoardSectionAtividade';
 
 
 export interface Props {
@@ -144,12 +144,12 @@ export default function AtividadesSelectionList({ tarefaId, atividadesIni }: Pro
         }}
       >
         <div className='flex flex-col gap-4' >
-          <BoardSection
+          <BoardSectionAtividade
             id={"Atividades"}
             atividades={atividades}
             remover={removerAtividade}
           />
-          <Button className='w-fit' onClick={adicionarAtividade}>Adicionar um item</Button>
+          <Button className='w-fit' onClick={adicionarAtividade} color="green">Adicionar um item</Button>
           <DragOverlay dropAnimation={dropAnimation}>
             {atividade ? <AtividadeItem atividadeIni={atividade} remover={removerAtividade} /> : null}
           </DragOverlay>

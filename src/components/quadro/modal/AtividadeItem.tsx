@@ -103,7 +103,7 @@ const AtividadeItem = ({ atividadeIni, remover }: AtividadeItemProps) => {
           }
         </div>
       </div>
-      <Button onClick={() => remover(atividade.id)}>
+      <Button onClick={() => remover(atividade.id)} color='red'>
         <CiCircleRemove size={20} />
         <p className="mx-2">
           Remover
