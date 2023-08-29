@@ -1,16 +1,15 @@
 "use client";
-import { atualizarPerfil, recuperarPerfil } from "@/api/api";
+import { atualizarPerfil } from "@/api/api";
 import { Button, Card, FileInput, Label, TextInput } from "@/components/flowbite-components";
 import { AtibutosUser, UserDataKeycloak } from "@/model/keycloak/UserDataKeycloak";
 import { notification } from "@/utils/Notification";
 import { useFormik } from "formik";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react";
 import { AiFillMail } from "react-icons/ai";
 import { array, object, string } from "yup";
 import LattesSVG from "./LattesSVG";
-import { useSession } from "next-auth/react";
-import { Session } from "next-auth";
 
 interface Props {
     userKeycloak: UserDataKeycloak;
@@ -20,7 +19,7 @@ export default function PerfilForm({ userKeycloak }: Props) {
     const [fotoUrl, setFotoUrl] = useState<string | undefined>(userKeycloak.attributes?.picture?.[0])
     const [foto, setFoto] = useState<File | undefined>(undefined);
 
-    const { data, update } = useSession();
+    const { update } = useSession();
 
     const validationSchema = object<{ userDataKeycloak: UserDataKeycloak, foto: File | undefined }>({
         id: string().required("Campo obrigatório."),
@@ -67,20 +66,16 @@ export default function PerfilForm({ userKeycloak }: Props) {
         enableReinitialize: true,
         validationSchema: validationSchema,
         onSubmit: (values, { resetForm }) => {
-            atualizarPerfil(values, foto).then((resp) => {
+            atualizarPerfil(values, foto).then(async function (resp) {
                 notification("Atualizado com sucesso", 'success');
-                recuperarPerfil().then((r) => {
-                    update({ image: r.attributes.picture?.[0], picture: r.attributes.picture?.[0] }).then(() =>
-                        window.location.href = `/perfil`
-                    );
-                })
+                await update();
+                window.location.href = `/perfil`;
             });
         }
     })
 
     return (
         <form onSubmit={(e) => { e.preventDefault(); formik.handleSubmit(); }}>
-
             <Card className="justify-center w-full mx-auto p-4">
                 <h1 className="text-xl font-bold leading-tight text-gray-900 dark:text-white flex-1">Editar Perfil</h1>
                 <div className="w-44 h-44 sm:w-72 sm:h-72 object-none relative justify-self-center">
