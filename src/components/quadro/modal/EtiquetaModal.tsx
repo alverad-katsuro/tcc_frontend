@@ -106,7 +106,7 @@ export default function ModalEtiqueta({ setIndex, setTask, index, state }: Modal
                         />
                     </div>
 
-                    <SwatchesPicker onChange={(e) => {
+                    <SwatchesPicker onChangeComplete={(e) => {
                         if (e !== undefined) {
                             setEtiqueta(et => {
                                 if (et) {
@@ -117,10 +117,9 @@ export default function ModalEtiqueta({ setIndex, setTask, index, state }: Modal
                                 }
                             })
                         }
-                    }
+                    }}
 
-                    }
-
+                        styles={{ default: { picker: { height: "100%", width: "100%" } } }}
                     />
                     <div className="flex flex-row gap-4 mx-auto">
                         <Button color="green" onClick={salvarImpedimento}>Salvar</Button>

@@ -1,9 +1,6 @@
-import { QuadroModel } from "@/model/response/QuadroModel"
-
-import quadrosMock from "@/mock/QuadroModel.json"
-import { QuadroPainelDTO } from "@/model/quadro/dto/QuadroPainelDTO";
-import { PageInterface } from "@/interface/PageInterface";
 import { consultarQuadrosPainel } from "@/api/apiFetch";
+import { PageInterface } from "@/interface/PageInterface";
+import { QuadroPainelDTO } from "@/model/quadro/dto/QuadroPainelDTO";
 
 export default async function Quadros() {
 

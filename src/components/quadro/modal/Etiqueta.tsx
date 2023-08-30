@@ -70,12 +70,14 @@ export default function EtiquetaComponentes({ tarefa, setTask, setIndex }: Props
 
                 <Dropdown.Divider />
 
-                {
-                    tarefa.etiquetas?.map((etiqueta, index) =>
+                <div className="overflow-y-auto max-h-52">
+                    {tarefa.etiquetas?.map((etiqueta, index) =>
                         <div className="items-center justify-start py-2 px-4 text-sm text-gray-700 cursor-pointer w-ful hover:bg-gray-100 focus:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 focus:outline-none dark:hover:text-white dark:focus:bg-gray-600 dark:focus:text-white flex gap-4" key={index}>
                             <Etiqueta etiqueta={etiqueta} index={index} setTask={setTask} setIndex={setIndex} />
                         </div>
                     )}
+
+                </div>
             </Dropdown>
         </>
 

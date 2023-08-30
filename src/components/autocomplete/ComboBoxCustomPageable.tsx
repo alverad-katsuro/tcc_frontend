@@ -6,8 +6,7 @@ import { AiFillCheckCircle } from 'react-icons/ai';
 import { HiOutlineChevronUpDown } from 'react-icons/hi2';
 
 export interface ComboBoxCustomPageableProps<T> {
-    elementosInit?: PageInterface<T>;
-    elementosState?: [PageInterface<T> | undefined, Dispatch<SetStateAction<PageInterface<T> | undefined>>];
+    elementosState: [PageInterface<T> | undefined, Dispatch<SetStateAction<PageInterface<T> | undefined>>];
     elementoId: keyof T;
     elementoField: keyof T;
     callbackSelect?: (elemento: T) => void;
@@ -21,7 +20,6 @@ export interface ComboBoxCustomPageableProps<T> {
 }
 
 export default function ComboBoxCustomPageable<T>({
-    elementosInit,
     elementosState,
     label,
     elementoId,
@@ -35,7 +33,7 @@ export default function ComboBoxCustomPageable<T>({
 
     const [page, setPage] = useState<number>(0);
     const [selected, setSelected] = useState<T | undefined>(defaultValue)
-    const [elementos, setElementos] = elementosState ?? useState<PageInterface<T> | undefined>(elementosInit)
+    const [elementos, setElementos] = elementosState;
 
     const optionsRef = useRef<HTMLDivElement>(null);
 
