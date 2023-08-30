@@ -5,7 +5,7 @@ services:
     build:
       context: ./
       dockerfile: docker/Dockerfile
-    image: meu-bolsista-front:latest
+    image: alverad/meu-bolsista:front-latest
     env_file:
       - .env
     environment:
