@@ -16,6 +16,7 @@ export default function ProcessoSeletivoView({ planosTrabalho, processoSeletivo 
 
     const { data, status } = useSession();
 
+    console.log(data)
     function validaRegistro() {
         if (data?.user?.lattes === undefined) {
             notification("Preencha seus dados de perfil", 'warning');

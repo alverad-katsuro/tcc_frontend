@@ -12,8 +12,11 @@ export default function HeaderAvatar() {
             < Dropdown
                 arrowIcon={false}
                 inline={true}
+
+                style={{ zIndex: "10" }}
                 label={< Avatar alt="User settings" img={data?.user?.picture ?? ""
-                } rounded={true} />}
+                } rounded={true}
+                />}
             >
                 <Dropdown.Header>
                     <span className="block text-sm">
