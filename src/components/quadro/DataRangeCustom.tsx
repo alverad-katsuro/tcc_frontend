@@ -6,7 +6,6 @@ import "react-multi-date-picker/styles/backgrounds/bg-dark.css";
 
 import { TarefaDTO } from "@/model/quadro";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
 
 export type numberArray = number[];
 
@@ -64,7 +63,7 @@ export default function DataRangeCustom({ tarefa, setTask }: DataRangeCustomProp
             dateSeparator=" até "
             multipleRangeSeparator="&"
             locale={gregorian_pt_br_minusculas}
-            value={initData}
+            value={initData as any}
             placeholder="Escolha um período"
             className={mode ? "bg-dark" : ""}
             inputClass="bg-white dark:bg-gray-800 border-none text-xl text-gray-900 dark:text-white"

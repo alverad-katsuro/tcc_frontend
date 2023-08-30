@@ -5,11 +5,10 @@ export const metadata = {
 }
 
 
-function Layout({ children, modal }: { children: React.ReactNode; modal: React.ReactNode; }) {
+function Layout({ children }: { children: React.ReactNode; }) {
   return (
     <>
       {children}
-      {modal}
     </>
   );
 };

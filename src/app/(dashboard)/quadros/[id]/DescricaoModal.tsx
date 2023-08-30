@@ -4,11 +4,13 @@ import { Button, Modal } from "@/components/flowbite-components";
 import DataRangeCustom from "@/components/quadro/DataRangeCustom";
 import MultipleSelectResponsavelCheckmarks from "@/components/quadro/MultipleSelectResponsavelCheckmarks";
 import AtividadesSelectionList from "@/components/quadro/modal/AtividadesSelectionList";
+import Etiqueta from "@/components/quadro/modal/Etiqueta";
+import ModalEtiqueta from "@/components/quadro/modal/EtiquetaModal";
 import Impedimentos from "@/components/quadro/modal/Impedimentos";
 import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioPlanoProjection";
-import { BoardSections, TarefaDTO } from "@/model/quadro";
+import { BoardSections, EtiquetaDTO, TarefaDTO } from "@/model/quadro";
 import { useSession } from "next-auth/react";
-import { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import useDebounce from "./Deb";
 import TituloTarefa from "./TituloTarefa";
@@ -34,6 +36,18 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
 
     const { data } = useSession();
 
+    const [indexImpedimento, setIndexImpedimento] = useState<number | undefined>();
+
+    const [etiqueta, setEtiqueta] = useState<EtiquetaDTO | undefined>(undefined);
+
+    useEffect(() => {
+        if (indexImpedimento !== undefined) {
+            setEtiqueta(task.etiquetas[indexImpedimento]);
+        } else {
+            setEtiqueta(undefined);
+        }
+    }, [indexImpedimento])
+
     function saveTask(task?: TarefaDTO) {
         if (task != undefined) {
             updateTarefa(task);
@@ -42,7 +56,6 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
 
     useEffect(() => {
         if (debouncedSearch) {
-            console.log(debouncedSearch)
         }
     }, [debouncedSearch]) //TODO pq coloquei task?
 
@@ -124,6 +137,8 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
     return (
 
         <div ref={rootRef}>
+            {etiqueta !== undefined && indexImpedimento !== undefined ? <ModalEtiqueta setTask={newSetTask} state={[etiqueta, setEtiqueta]} index={indexImpedimento} setIndex={setIndexImpedimento} task={task} /> : <></>}
+
 
             <Modal
                 root={rootRef.current ?? undefined}
@@ -185,9 +200,10 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                             </div>
                             {task.responsavel === undefined || data?.user?.role?.includes("ROLE_ADMIN") ?
                                 <div className="flex flex-auto flex-col gap-4 p-4 max-w-[12rem]">
-                                    <h5 className="font-bold tracking-tight text-gray-900 dark:text-white  text-center">
+                                    <h5 className="font-bold tracking-tight text-gray-900 dark:text-white text-center w-full">
                                         Menu
                                     </h5>
+                                    <Etiqueta tarefa={task} setTask={newSetTask} setIndex={setIndexImpedimento} />
                                     {task.responsavel === undefined &&
                                         (<Button color={'dark'} onClick={ingressarTarefaDisponivel}>Ingressar na Tarefa</Button>)
                                     }

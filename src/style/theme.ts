@@ -29,4 +29,9 @@ export const flowbiteTheme: CustomFlowbiteTheme = {
     itemGroup:
       "list-none border-t border-gray-200 pt-3 first:mt-0 first:border-t-0 first:pt-0 dark:border-gray-700",
   },
+  dropdown: {
+    floating: {
+      target: "w-full",
+    }
+  }
 };

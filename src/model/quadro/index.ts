@@ -33,7 +33,7 @@ export type TarefaDTO = {
 
   cargaHoraria?: number;
 
-  etiquetas?: string[];
+  etiquetas: EtiquetaDTO[];
 
   responsavel?: UsuarioDTO;
 
@@ -43,6 +43,11 @@ export type TarefaDTO = {
 
   impedimentos: ImpedimentoDocument[];
 };
+
+export interface EtiquetaDTO {
+  color?: string;
+  nome: string;
+}
 
 export type TarefaBasicDTO = {
 
@@ -62,7 +67,7 @@ export type TarefaBasicDTO = {
 
   posicaoKanban?: number;
 
-  etiquetas?: string[];
+  etiquetas: EtiquetaDTO[];
 
   responsavel?: UsuarioDTO;
 

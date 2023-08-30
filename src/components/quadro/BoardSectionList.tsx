@@ -191,6 +191,7 @@ function BoardSectionList({ tarefasIniciais, quadroId, pesquisadores }: Props) {
     const tarefa: TarefaBasicDTO = {
       ...tarefaCreate,
       id: id,
+      etiquetas: []
     }
     setBoardSections((boardSection) => {
       const newTodoTasks = [
@@ -230,7 +231,7 @@ function BoardSectionList({ tarefasIniciais, quadroId, pesquisadores }: Props) {
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <div className='flex flex-row gap-4 h-full' >
+        <div className='flex flex-nowrap gap-4 h-full' >
           {Object.keys(boardSections).map((boardSectionKey) => (
             <div className='bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 h-full w-screen lg:w-full max-w-xs xl:max-w-lg mx-auto'
               key={boardSectionKey}

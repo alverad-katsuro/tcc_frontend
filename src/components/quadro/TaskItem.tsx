@@ -1,6 +1,6 @@
 "use client";
 import { ColunaKanban, TarefaBasicDTO } from "@/model/quadro";
-import { Avatar, Badge, Progress } from "flowbite-react";
+import { Avatar, Progress, Tooltip } from "flowbite-react";
 import { AiOutlineFieldTime } from "react-icons/ai";
 type TaskItemProps = {
   task: TarefaBasicDTO;
@@ -38,15 +38,20 @@ export default function TaskItem({ task, onClick }: TaskItemProps) {
 
   return (
 
-    <div className="flex h-full mx-4">
+    <div className="flex h-full mx-4 z-0">
+      <div onClick={() => onClick(task.id)} className="flex flex-col gap-4 p-6 mx-auto w-full bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700  max-w-[300px]">
+        <div className="flex flex-wrap gap-x-4 gap-y-2">
+          {task.etiquetas?.map((etiqueta, index) => {
+            return (
+              <Tooltip content={etiqueta.nome} theme={{ target: " basis-1/5" }} key={index}>
+                <div style={{ backgroundColor: etiqueta.color }} className={`rounded-2xl text-transparent`}>
+                  0
+                </div>
+              </Tooltip>
+            )
+          }
+          )}
 
-      <div onClick={() => onClick(task.id)} className="grid gap-4 p-6 mx-auto w-full bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-        <div className="flex gap-4">
-          <Badge color="red" className="w-1/6 text-sm block" />
-          <Badge color="red" className="w-1/6 text-sm block" />
-          <Badge color="red" className="w-1/6 text-sm block" />
-          <Badge color="red" className="w-1/6 text-sm block" />
-          <Badge color="red" className="w-1/6 text-sm block" />
         </div>
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{task.titulo}</h5>
         <div className="grid grid-cols-4 items-center">
