@@ -5,7 +5,6 @@ export default function useDebounce<T extends Record<string, any>>(element: T, c
     const [debouncedValue, setDebouncedValue] = useState<T>(element)
 
     function saoConteudosIguais(obj1: T, obj2: T): boolean {
-        console.log(obj1, obj2)
         if (Array.isArray(obj1) && Array.isArray(obj2)) {
             if (obj1.length !== obj2.length) {
                 return false;

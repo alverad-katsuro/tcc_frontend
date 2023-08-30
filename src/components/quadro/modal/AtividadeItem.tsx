@@ -32,7 +32,6 @@ const AtividadeItem = ({ atividadeIni, remover }: AtividadeItemProps) => {
 
   useEffect(() => {
     if (debouncedSearch) {
-      console.log(debouncedSearch)
     }
   }, [debouncedSearch])
 

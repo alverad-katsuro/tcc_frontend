@@ -18,7 +18,6 @@ export default function MultipleSelectResponsavelCheckmarks({ task, setTask, pes
     function selecionaPesquisador(pesquisadorId?: string) {
         if (pesquisadorId !== undefined) {
             if (task.responsavel?.id === pesquisadorId) {
-                console.log(pesquisadorId)
                 indicarPesquisadorTarefa(task.id, undefined).then(() => {
                     consultarTarefa(task.id).then(tarefa => {
                         setTask(tarefa)

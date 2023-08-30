@@ -62,7 +62,6 @@ export default function ComboBoxCustomPageable<T>({
                 return r;
             }
             )).catch((e) => console.log(e));
-            console.log('Chegou ao fim da lista. Carregando mais elementos...');
         }
     };
 

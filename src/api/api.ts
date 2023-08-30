@@ -43,8 +43,6 @@ async function criarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: st
 }
 
 async function atualizarPlanoTrabalho(plano: PlanoTrabalhoModel): Promise<{ data: string, response: AxiosResponse<string, any> }> {
-    console.log(plano, "asdasdas");
-
     const resp = (await apiAxios.putForm<string>("/planoTrabalho", {
         planoTrabalho: new Blob([JSON.stringify({ ...plano, arquivo: undefined })], {
             type: 'application/json'
