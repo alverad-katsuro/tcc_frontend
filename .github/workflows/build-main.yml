@@ -25,7 +25,7 @@ jobs:
           echo PAGE_INIT_LATTE=${{ secrets.PAGE_INIT_LATTE }} >> .env
 
       - name: Build the Docker image
-        run: docker compose build
+        run: docker-compose build
 
       - name: Docker Push
-        run: docker compose up -d
+        run: docker-compose up -d
