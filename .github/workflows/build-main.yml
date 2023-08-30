@@ -1,0 +1,31 @@
+name: "Build Meu Egresso Front Main"
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    environment: prod
+    name: Build and Deploy
+    runs-on: ufpa
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Create .env
+        run: |
+          echo NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} >> .env
+          echo NODE_ENV=${{ secrets.NODE_ENV }} >> .env
+          echo NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} >> .env
+          echo NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} >> .env
+          echo KEYCLOAK_SECRET=${{ secrets.KEYCLOAK_SECRET }} >> .env
+          echo KEYCLOAK_ISSUER=${{ secrets.KEYCLOAK_ISSUER }} >> .env
+          echo NEXT_PUBLIC_TINY_MCE=${{ secrets.NEXT_PUBLIC_TINY_MCE }} >> .env
+          echo PAGE_INIT_LATTE=${{ secrets.PAGE_INIT_LATTE }} >> .env
+
+      - name: Build the Docker image
+        run: docker compose build
+
+      - name: Docker Push
+        run: docker compose up -d
