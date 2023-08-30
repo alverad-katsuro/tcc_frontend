@@ -4,6 +4,7 @@ import { Button, Modal } from "@/components/flowbite-components";
 import DataRangeCustom from "@/components/quadro/DataRangeCustom";
 import MultipleSelectResponsavelCheckmarks from "@/components/quadro/MultipleSelectResponsavelCheckmarks";
 import AtividadesSelectionList from "@/components/quadro/modal/AtividadesSelectionList";
+import Etiqueta from "@/components/quadro/modal/Etiqueta";
 import Impedimentos from "@/components/quadro/modal/Impedimentos";
 import { UsuarioPlanoProjection } from "@/model/planoDeTrabalho/UsuarioPlanoProjection";
 import { BoardSections, TarefaDTO } from "@/model/quadro";
@@ -185,9 +186,10 @@ export default function DescricaoModal({ task, setOpen, open, setTask, setBoardS
                             </div>
                             {task.responsavel === undefined || data?.user?.role?.includes("ROLE_ADMIN") ?
                                 <div className="flex flex-auto flex-col gap-4 p-4 max-w-[12rem]">
-                                    <h5 className="font-bold tracking-tight text-gray-900 dark:text-white  text-center">
+                                    <h5 className="font-bold tracking-tight text-gray-900 dark:text-white text-center w-full">
                                         Menu
                                     </h5>
+                                    <Etiqueta tarefa={task} setTask={newSetTask} />
                                     {task.responsavel === undefined &&
                                         (<Button color={'dark'} onClick={ingressarTarefaDisponivel}>Ingressar na Tarefa</Button>)
                                     }

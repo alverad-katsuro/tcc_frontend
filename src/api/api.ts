@@ -140,6 +140,9 @@ export async function consultarTarefa(id: string): Promise<TarefaDTO | undefined
         if (data.impedimentos === undefined) {
             data.impedimentos = [];
         }
+        if (data.etiquetas === undefined) {
+            data.etiquetas = [];
+        }
     }
     return data;
 }
