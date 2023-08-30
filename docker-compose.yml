@@ -1,0 +1,16 @@
+version: "3.3"
+services:
+  meu-bolsista-front:
+    container_name: meu-bolsista-front
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile
+    image: meu-bolsista-front:latest
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: development
+    restart: always
+    command: npm run start
+    ports:
+      - 4000:80
