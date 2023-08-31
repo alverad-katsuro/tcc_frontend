@@ -12,13 +12,12 @@ export default function HeaderAvatar() {
             < Dropdown
                 arrowIcon={false}
                 inline={true}
-
-                style={{ zIndex: "10" }}
+                className="z-50"
                 label={< Avatar alt="User settings" img={data?.user?.picture ?? ""
                 } rounded={true}
                 />}
             >
-                <Dropdown.Header>
+                <Dropdown.Header className="z-50">
                     <span className="block text-sm">
                         {data?.user?.name}
                     </span>

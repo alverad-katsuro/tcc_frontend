@@ -55,7 +55,7 @@ export default function ModalEtiqueta({ setIndex, setTask, index, state }: Modal
                 show={true}
                 theme={{
                     root: {
-                        base: "fixed top-0 right-0 left-0 z-100 h-modal h-screen overflow-y-auto overflow-x-hidden md:inset-0 md:h-full items-center justify-center flex bg-gray-900 bg-opacity-50 dark:bg-opacity-80",
+                        base: "fixed top-0 right-0 left-0 z-100 h-modal h-screen overflow-y-auto overflow-x-hidden md:inset-0 md:h-full items-center justify-center flex bg-gray-900 bg-opacity-50 dark:bg-opacity-80 z-50",
                     }
                 }}
                 onClose={() => {
