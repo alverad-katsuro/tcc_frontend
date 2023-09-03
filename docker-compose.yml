@@ -5,7 +5,7 @@ services:
     build:
       context: ./
       dockerfile: docker/Dockerfile
-    image: alverad/meu-bolsista:front-latest
+    image: registry.gitlab.com/meu-bolsista/tcc_frontend
     env_file:
       - .env
     environment:

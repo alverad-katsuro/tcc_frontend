@@ -1,0 +1,52 @@
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  GIT_CLEAN_FLAGS: none
+
+after_script:
+  - docker compose ps meu_bolsista_api
+
+docker_build:
+  stage: build
+  environment: prod
+  only:
+    - main
+  tags:
+    - prod
+  script:
+    # create .env file
+    - echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env
+    - echo "NODE_ENV=$NODE_ENV" >> .env
+    - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env
+    - echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
+    - echo "KEYCLOAK_ID=$KEYCLOAK_ID" >> .env
+    - echo "KEYCLOAK_SECRET=$KEYCLOAK_SECRET" >> .env
+    - echo "KEYCLOAK_ISSUER=$KEYCLOAK_ISSUER" >> .env
+    - echo "NEXT_PUBLIC_TINY_MCE=$NEXT_PUBLIC_TINY_MCE" >> .env
+    - echo "PAGE_INIT_LATTE=$PAGE_INIT_LATTE" >> .env
+
+    # perform login on docker registry
+    # - docker login -u $CI_REGISTER_USER -p $REGISTRY_PASSWORD $CI_REGISTRY
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+    # build project images
+    - docker compose build
+
+    # push project images to registry
+    - docker compose push
+
+docker_up:
+  stage: deploy
+  environment: prod
+  only:
+    - main
+  tags:
+    - prod
+  script:
+    # perform login on docker registry
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    # up docker containers
+    - docker compose up -d --remove-orphans
