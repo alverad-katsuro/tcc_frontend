@@ -95,7 +95,6 @@ export default function ModalEtiqueta({ setIndex, setTask, index, state }: Modal
                             placeholder="nome"
                             onChange={(e) =>
                                 setEtiqueta(et => {
-                                    console.log(etiqueta.nome)
                                     const newImp: EtiquetaDTO = {
                                         ...et, nome: e.currentTarget?.value
                                     };

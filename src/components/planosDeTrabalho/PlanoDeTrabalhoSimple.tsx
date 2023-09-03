@@ -22,7 +22,6 @@ export default function PlanoDeTrabalhoSimple({ plano, session }: PlanosDeTrabal
 
     const [noPlano, setNoPlano] = useState(false);
 
-    console.log(plano)
     useEffect(() => {
         if (plano.relatorioResourceId === undefined && plano.id) {
             isUsuarioNoPlano(plano.id).then(r => setNoPlano(r));
