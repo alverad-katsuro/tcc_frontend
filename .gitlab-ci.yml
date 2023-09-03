@@ -7,7 +7,7 @@ variables:
   GIT_CLEAN_FLAGS: none
 
 after_script:
-  - docker compose ps meu_bolsista_api
+  - docker compose ps meu_bolsista_front
 
 docker_build:
   stage: build
