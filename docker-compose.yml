@@ -1,15 +1,13 @@
 version: "3.3"
 services:
-  meu-bolsista-front:
-    container_name: meu-bolsista-front
+  meu_bolsista_front:
+    container_name: meu_bolsista_front
     build:
       context: ./
       dockerfile: docker/Dockerfile
-    image: registry.gitlab.com/meu-bolsista/tcc_frontend
+    image: registry.gitlab.com/meu-bolsista/meu_bolsista_front
     env_file:
       - .env
-    environment:
-      NODE_ENV: development
     restart: always
     command: npm run start
     ports:
