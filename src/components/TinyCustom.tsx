@@ -1,3 +1,4 @@
+import { tinymceKey } from '@/constants/TinymceKey';
 import { Editor } from '@tinymce/tinymce-react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -27,7 +28,7 @@ export default function TinyCustom({ texto, setTexto, id = "textArea" }: TinyCus
             <Editor
                 id={id}
                 onInit={(evt, editor) => editorRef.current = editor}
-                apiKey='62cqow4ni7it7aic3ti7otiey0heae9aupfz6y9vayv9tfqf'
+                apiKey={tinymceKey}
                 value={texto}
                 init={{
                     menubar: true,

@@ -27,6 +27,7 @@ docker_build:
     - echo "KEYCLOAK_ISSUER=$KEYCLOAK_ISSUER" >> .env
     - echo "NEXT_PUBLIC_TINY_MCE=$NEXT_PUBLIC_TINY_MCE" >> .env
     - echo "PAGE_INIT_LATTE=$PAGE_INIT_LATTE" >> .env
+    - echo "TINYMCE_KEY=$TINYMCE_KEY" >> .env
 
     # perform login on docker registry
     # - docker login -u $CI_REGISTER_USER -p $REGISTRY_PASSWORD $CI_REGISTRY

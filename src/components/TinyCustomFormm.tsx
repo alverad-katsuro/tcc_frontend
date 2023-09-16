@@ -1,4 +1,5 @@
 import { Button, ToggleSwitch } from '@/components/flowbite-components';
+import { tinymceKey } from '@/constants/TinymceKey';
 import { Editor } from '@tinymce/tinymce-react';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
@@ -56,7 +57,7 @@ export default function TinyCustomFormm<T>({ isEditavel = false, label, id, elem
                         <Editor
                             id={id}
                             onInit={(evt, editor) => editorRef.current = editor}
-                            apiKey='62cqow4ni7it7aic3ti7otiey0heae9aupfz6y9vayv9tfqf'
+                            apiKey={tinymceKey}
                             value={element !== undefined && element !== null ? element[elementField] as string : ""}
                             init={{
                                 menubar: true,
