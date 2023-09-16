@@ -6,6 +6,7 @@ import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoP
 import { ObjetivoModel } from "@/model/response/ObjetivoModel";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
 import { RecursoMaterialModel } from "@/model/response/RecursoMaterialModel";
+import { loaderExternalImage } from "@/utils/LoaderExternalImage";
 import { useFormik } from "formik";
 import Image from "next/image";
 import Link from "next/link";
@@ -148,7 +149,15 @@ export default function PlanosDeTrabalhoForms({ plano, pesquisadoresInit }: Plan
             <div className="col-span-full">
                 <div className="w-full">
                     {formik.values.capaUrl !== undefined &&
-                        <Image src={formik.values.capaUrl} loading="lazy" width={300} quality={100} height={300} alt="Banner do Plano de Trabalho" className="mx-auto w-full max-w-[30%] h-auto rounded-lg" />
+                        <Image
+                            src={formik.values.capaUrl}
+                            loading="lazy"
+                            width={300}
+                            quality={100}
+                            height={300}
+                            alt="Banner do Plano de Trabalho"
+                            loader={loaderExternalImage}
+                            className="mx-auto w-full max-w-[30%] h-auto rounded-lg" />
                     }
                 </div>
                 <div className="space-y-6">

@@ -2,6 +2,7 @@
 
 import { Card } from "@/components/flowbite-components";
 import { ProcessoSeletivoDTO } from "@/model/processoSeletivo/ProcessoSeletivoDTO";
+import { loaderExternalImage } from "@/utils/LoaderExternalImage";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -19,7 +20,13 @@ export default function ProcessoSeletivoLista({ processoSeletivoDTO }: PlanoTrab
                 <Link href={`/processoSeletivo/${e.id}`} key={e.id} className="grow sm:basis-1/2 xl:basis-1/3 px-2 max-w-md" >
                     <Card key={e.id}>
                         <div className="w-44 h-44 sm:w-72 sm:h-72 object-none relative justify-self-center">
-                            <Image priority fill src={e.planoTrabalho.capaUrl ?? ""} className="object-cover rounded-3xl" alt="foto de perfil" /> : <></>
+                            <Image
+                                priority
+                                fill
+                                src={e.planoTrabalho.capaUrl ?? ""}
+                                loader={loaderExternalImage}
+                                className="object-cover rounded-3xl"
+                                alt="foto de perfil" /> : <></>
                         </div>
                         <div className="overflow-auto max-h-64 gap-4 gap flex flex-col">
                             <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">

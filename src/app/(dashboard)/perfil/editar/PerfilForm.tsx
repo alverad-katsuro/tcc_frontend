@@ -2,6 +2,7 @@
 import { atualizarPerfil } from "@/api/api";
 import { Button, Card, FileInput, Label, TextInput } from "@/components/flowbite-components";
 import { AtibutosUser, UserDataKeycloak } from "@/model/keycloak/UserDataKeycloak";
+import { loaderExternalImage } from "@/utils/LoaderExternalImage";
 import { notification } from "@/utils/Notification";
 import { useFormik } from "formik";
 import { useSession } from "next-auth/react";
@@ -80,7 +81,13 @@ export default function PerfilForm({ userKeycloak }: Props) {
                 <h1 className="text-xl font-bold leading-tight text-gray-900 dark:text-white flex-1">Editar Perfil</h1>
                 <div className="w-44 h-44 sm:w-72 sm:h-72 object-none relative justify-self-center">
                     {fotoUrl !== undefined ?
-                        <Image priority fill src={fotoUrl} className="object-cover rounded-3xl" alt="foto de perfil" /> : <></>
+                        <Image priority
+                            fill
+                            src={fotoUrl}
+                            className="object-cover rounded-3xl"
+                            alt="foto de perfil"
+                            loader={loaderExternalImage}
+                        /> : <></>
                     }
                 </div>
                 <div className="space-y-6">

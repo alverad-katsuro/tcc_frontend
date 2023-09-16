@@ -1,5 +1,6 @@
 import { Button, Card } from "@/components/flowbite-components";
 import { UserDataKeycloak } from "@/model/keycloak/UserDataKeycloak";
+import { loaderExternalImage } from "@/utils/LoaderExternalImage";
 import Image from "next/image";
 import Link from "next/link";
 import { AiFillMail } from "react-icons/ai";
@@ -20,7 +21,13 @@ export default function Profile({ user }: Props) {
                 </Link>
             </div>
             <div className="w-44 h-44 sm:w-72 sm:h-72 object-none relative justify-self-center">
-                <Image fill src={user?.attributes?.picture?.[0] ?? ""} className="object-cover rounded-3xl" alt="foto de perfil" />
+                <Image
+                    fill
+                    src={user?.attributes?.picture?.[0] ?? ""}
+                    className="object-cover rounded-3xl"
+                    alt="foto de perfil"
+                    loader={loaderExternalImage}
+                />
             </div>
             <div className=" flex flex-row gap-4">
                 <div>

@@ -2,6 +2,7 @@ import { isUsuarioNoPlano, reabrirPlanoTrabalho } from "@/api/api";
 import { Button, Label, Table, TextInput } from "@/components/flowbite-components";
 import { UsuarioNovoPlanoProjection } from "@/model/planoDeTrabalho/UsuarioNovoPlanoProjection";
 import { PlanoTrabalhoModel } from "@/model/response/PlanoTrabalhoModel";
+import { loaderExternalImage } from "@/utils/LoaderExternalImage";
 import { notification } from "@/utils/Notification";
 import { Session } from "next-auth";
 import Image from "next/image";
@@ -43,7 +44,15 @@ export default function PlanoDeTrabalhoSimple({ plano, session }: PlanosDeTrabal
                 <RelatorioModal planoTrabalhoId={plano.id} stateModal={[open, setOpen]} /> : <></>
             }
             {plano.capaUrl !== undefined &&
-                <Image src={plano.capaUrl} loading="lazy" width={300} quality={100} height={300} alt="Banner do Plano de Trabalho" className="mx-auto w-full max-w-[30%] h-auto rounded-lg" />
+                <Image
+                    src={plano.capaUrl}
+                    loading="lazy"
+                    width={300}
+                    quality={100}
+                    height={300}
+                    alt="Banner do Plano de Trabalho"
+                    loader={loaderExternalImage}
+                    className="mx-auto w-full max-w-[30%] h-auto rounded-lg" />
             }
             <div className="col-span-full">
                 <div className="mb-2 block">
