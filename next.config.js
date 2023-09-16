@@ -12,12 +12,10 @@ const nextConfig = {
                 hostname: 'localhost',
                 port: '11000',
             },
-            {
-                protocol: 'https',
-                hostname: 'api.meubolsista.alverad.com.br',
-                port: '*',
-            },
         ],
+        domains: [
+            'api.meubolsista.alverad.com.br'
+        ]
     },
 
 }
