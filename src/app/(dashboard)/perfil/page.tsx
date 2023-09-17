@@ -1,5 +1,5 @@
 import { recuperarPerfil } from "@/api/apiFetch";
-import Profile from "./Profile";
+import { Profile } from "./Profile";
 
 export default async function Page() {
 
