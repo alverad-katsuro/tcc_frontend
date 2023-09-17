@@ -11,7 +11,7 @@ interface Props {
     user: UserDataKeycloak;
 }
 
-export function Profile({ user }: Props) {
+export default function Profile({ user }: Props) {
 
     return (
 
