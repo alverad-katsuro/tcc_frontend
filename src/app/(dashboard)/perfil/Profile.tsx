@@ -26,7 +26,6 @@ export default function Profile({ user }: Props) {
                     src={user?.attributes?.picture?.[0] ?? ""}
                     className="object-cover rounded-3xl"
                     alt="foto de perfil"
-                    loader={loaderExternalImage}
                 />
             </div>
             <div className=" flex flex-row gap-4">
