@@ -3,19 +3,14 @@ stages:
   - build
   - deploy
 
-variables:
-  GIT_CLEAN_FLAGS: none
-
-after_script:
-  - docker compose ps meu_bolsista_front
-
 docker_build:
   stage: build
   environment: prod
   only:
     - main
   tags:
-    - prod
+    - build
+    - docker
   script:
     # create .env file
     - echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env
@@ -44,9 +39,26 @@ docker_up:
   only:
     - main
   tags:
+    - ssh
     - prod
   script:
+    # create .env file
+    - echo "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" >> .env
+    - echo "NODE_ENV=$NODE_ENV" >> .env
+    - echo "NEXTAUTH_URL=$NEXTAUTH_URL" >> .env
+    - echo "NEXTAUTH_SECRET=$NEXTAUTH_SECRET" >> .env
+    - echo "KEYCLOAK_ID=$KEYCLOAK_ID" >> .env
+    - echo "KEYCLOAK_SECRET=$KEYCLOAK_SECRET" >> .env
+    - echo "KEYCLOAK_ISSUER=$KEYCLOAK_ISSUER" >> .env
+    - echo "NEXT_PUBLIC_TINY_MCE=$NEXT_PUBLIC_TINY_MCE" >> .env
+    - echo "PAGE_INIT_LATTE=$PAGE_INIT_LATTE" >> .env
+    - echo "DOMAIN_APPLICATION=$DOMAIN_APPLICATION" >> .env
+
     # perform login on docker registry
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-    # up docker containers
-    - docker compose up -d --remove-orphans
+    - docker login $CI_REGISTRY
+
+    - docker compose pull
+
+    - docker stack deploy -c <(docker compose -f docker-compose.yml config | tail -n +2) meu_bolsista --with-registry-auth
+
+    - docker system prune -f
