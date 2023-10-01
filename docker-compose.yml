@@ -1,11 +1,12 @@
 version: "3.9"
 services:
-  meu_bolsista_front:
-    container_name: meu_bolsista_front
+  front:
     build:
       context: ./
       dockerfile: docker/Dockerfile
     image: registry.gitlab.alverad.com.br/meu-bolsista/meu_bolsista_front
+    env_file:
+      - .env
     restart: always
     networks:
       - traefik-public
