@@ -22,16 +22,17 @@ docker_build:
     - echo "KEYCLOAK_ISSUER=$KEYCLOAK_ISSUER" >> .env
     - echo "NEXT_PUBLIC_TINY_MCE=$NEXT_PUBLIC_TINY_MCE" >> .env
     - echo "PAGE_INIT_LATTE=$PAGE_INIT_LATTE" >> .env
+    - echo DATE_VERSION=$(date +%d-%m-%Y) >> .env
 
     # perform login on docker registry
-    # - docker login -u $CI_REGISTER_USER -p $REGISTRY_PASSWORD $CI_REGISTRY
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
     # build project images
-    - docker compose build
+    - docker compose -f docker-compose.build.yml build
 
     # push project images to registry
-    - docker compose push
+    - docker compose -f docker-compose.build.yml push
+
     - docker system prune -f
 
 docker_up:
@@ -54,6 +55,7 @@ docker_up:
     - echo "NEXT_PUBLIC_TINY_MCE=$NEXT_PUBLIC_TINY_MCE" >> .env
     - echo "PAGE_INIT_LATTE=$PAGE_INIT_LATTE" >> .env
     - echo "DOMAIN_APPLICATION=$DOMAIN_APPLICATION" >> .env
+    - echo "SENTRY_DNS=$SENTRY_DNS" >> .env
 
     # perform login on docker registry
     - docker login $CI_REGISTRY
